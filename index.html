@@ -1,0 +1,366 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Modern Myths</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    :root {
+      --bg:     #0a0a0a;
+      --text:   #f5f2ec;
+      --copper: #b87333;
+      --rule:   rgba(245, 242, 236, 0.08);
+    }
+
+    body {
+      background-color: var(--bg);
+      color: var(--text);
+      font-family: 'Space Mono', monospace;
+      font-size: 14px;
+      line-height: 1.75;
+    }
+
+    .wrap {
+      max-width: 920px;
+      margin: 0 auto;
+      padding: 0 2.5rem;
+    }
+
+    section {
+      border-bottom: 1px solid var(--rule);
+    }
+
+    /* BADGE */
+
+    .badge {
+      display: block;
+      font-size: 0.65rem;
+      letter-spacing: 0.12em;
+      color: var(--text);
+      opacity: 0.35;
+    }
+
+    /* HERO */
+
+    .hero {
+      padding: 8rem 0 6.5rem;
+    }
+
+    .hero .badge {
+      margin-bottom: 3rem;
+    }
+
+    .hero h1 {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(2rem, 4.5vw, 3.2rem);
+      font-weight: 400;
+      line-height: 1.18;
+      letter-spacing: -0.01em;
+      max-width: 700px;
+      margin-bottom: 1.75rem;
+    }
+
+    .hero .subhead {
+      font-size: 0.875rem;
+      opacity: 0.55;
+      max-width: 500px;
+      line-height: 1.8;
+    }
+
+    /* NEWSLETTER */
+
+    .newsletter {
+      padding: 6rem 0;
+    }
+
+    .newsletter .badge {
+      margin-bottom: 1.25rem;
+    }
+
+    .newsletter .body {
+      font-size: 0.875rem;
+      opacity: 0.72;
+      max-width: 460px;
+      line-height: 1.82;
+      margin-bottom: 2.25rem;
+    }
+
+    .btn {
+      display: inline-block;
+      font-family: 'Space Mono', monospace;
+      font-size: 0.68rem;
+      letter-spacing: 0.07em;
+      text-decoration: none;
+      color: var(--text);
+      border: 1px solid rgba(245, 242, 236, 0.22);
+      padding: 0.65rem 1.35rem;
+      opacity: 0.65;
+      transition: opacity 200ms ease, border-color 200ms ease, color 200ms ease;
+    }
+
+    .btn:hover {
+      opacity: 1;
+      border-color: var(--copper);
+      color: var(--copper);
+    }
+
+    /* TOOLS */
+
+    .tools {
+      padding: 6rem 0;
+    }
+
+    .section-mark {
+      font-size: 0.58rem;
+      letter-spacing: 0.16em;
+      opacity: 0.2;
+      margin-bottom: 2.25rem;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1px;
+      background-color: var(--rule);
+    }
+
+    .card {
+      display: block;
+      background-color: var(--bg);
+      text-decoration: none;
+      color: var(--text);
+      padding: 2rem 2.25rem;
+      opacity: 0.6;
+      border-left: 2px solid transparent;
+      transition: opacity 200ms ease, border-left-color 200ms ease;
+    }
+
+    .card:hover {
+      opacity: 1;
+      border-left-color: var(--copper);
+    }
+
+    .card .tagline {
+      font-size: 0.82rem;
+      line-height: 1.68;
+      margin-bottom: 0.9rem;
+    }
+
+    .card .evidence {
+      font-size: 0.68rem;
+      opacity: 0.5;
+      line-height: 1.65;
+      margin-bottom: 0.9rem;
+    }
+
+    .card .hook {
+      font-size: 0.78rem;
+      opacity: 0.55;
+      line-height: 1.65;
+    }
+
+    /* COHORT */
+
+    .cohort {
+      padding: 6rem 0;
+    }
+
+    .cohort-card {
+      display: block;
+      background-color: var(--bg);
+      text-decoration: none;
+      color: var(--text);
+      border: 1px solid var(--rule);
+      border-left: 2px solid transparent;
+      padding: 2.25rem 2.5rem;
+      max-width: 620px;
+      opacity: 0.6;
+      transition: opacity 200ms ease, border-left-color 200ms ease;
+    }
+
+    .cohort-card:hover {
+      opacity: 1;
+      border-left-color: var(--copper);
+    }
+
+    .cohort-card .tagline {
+      font-size: 0.85rem;
+      line-height: 1.7;
+      margin-bottom: 0.85rem;
+    }
+
+    .cohort-card .hook {
+      font-size: 0.78rem;
+      opacity: 0.55;
+      line-height: 1.65;
+    }
+
+    /* ABOUT */
+
+    .about {
+      padding: 6rem 0;
+    }
+
+    .about p {
+      font-size: 0.82rem;
+      opacity: 0.55;
+      max-width: 560px;
+      line-height: 1.9;
+    }
+
+    /* FOOTER */
+
+    footer {
+      padding: 3.75rem 0 4.5rem;
+    }
+
+    .footer-mark {
+      font-size: 0.62rem;
+      letter-spacing: 0.08em;
+      opacity: 0.28;
+      margin-bottom: 1.5rem;
+    }
+
+    .footer-nav {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.4rem 1.75rem;
+    }
+
+    .footer-nav a {
+      font-size: 0.62rem;
+      color: var(--text);
+      text-decoration: none;
+      opacity: 0.28;
+      transition: opacity 200ms ease, color 200ms ease;
+    }
+
+    .footer-nav a:hover {
+      opacity: 1;
+      color: var(--copper);
+    }
+
+    /* MOBILE */
+
+    @media (max-width: 768px) {
+      .wrap {
+        padding: 0 1.5rem;
+      }
+
+      .hero {
+        padding: 5rem 0 4rem;
+      }
+
+      .newsletter,
+      .tools,
+      .cohort,
+      .about {
+        padding: 4.5rem 0;
+      }
+
+      .grid {
+        grid-template-columns: 1fr;
+      }
+
+      .card {
+        padding: 1.5rem 1.75rem;
+      }
+
+      .cohort-card {
+        padding: 1.75rem;
+      }
+
+      footer {
+        padding: 3rem 0 3.5rem;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <section class="hero">
+    <div class="wrap">
+      <span class="badge">// Modern Myths</span>
+      <h1>Every era runs on stories people mistake for reality.</h1>
+      <p class="subhead">Modern Myths finds them - before they spend a decade determining your future.</p>
+    </div>
+  </section>
+
+  <section class="newsletter">
+    <div class="wrap">
+      <span class="badge">// Modern Myths</span>
+      <p class="body">The weekly essay. One hidden narrative, named before it closes your options.</p>
+      <a class="btn" href="https://themohammadkhan.substack.com" target="_blank" rel="noopener noreferrer">Subscribe on Substack</a>
+    </div>
+  </section>
+
+  <section class="tools">
+    <div class="wrap">
+      <p class="section-mark">// tools</p>
+      <div class="grid">
+
+        <a class="card" href="https://orbit-psi-sepia.vercel.app" target="_blank" rel="noopener noreferrer">
+          <p class="tagline">Find the people who share your obsession, not your industry - and bring them into your orbit.</p>
+          <p class="evidence">The Lunar Society of Birmingham: Watt, Wedgwood, Priestley, Darwin. A steam engineer, a potter, a chemist, a physician. Same obsession. They industrialized the world.</p>
+        </a>
+
+        <a class="card" href="https://early-warning-system-kappa.vercel.app" target="_blank" rel="noopener noreferrer">
+          <p class="tagline">You're not broken. You're following a narrative someone else gave you.</p>
+          <p class="hook">The narrative running your choices, named before it runs the next one.</p>
+        </a>
+
+        <a class="card" href="https://think-better-nine.vercel.app" target="_blank" rel="noopener noreferrer">
+          <p class="tagline">Confidence is not evidence.</p>
+          <p class="hook">Paste any argument. See exactly where it holds, where it breaks, and what it's actually standing on.</p>
+        </a>
+
+        <a class="card" href="https://five-stories-strong.lovable.app" target="_blank" rel="noopener noreferrer">
+          <p class="tagline">You've been someone who hasn't finished anything for long enough.</p>
+          <p class="hook">5 weeks. Five stories. Your name on the cover of a printed anthology.</p>
+        </a>
+
+      </div>
+    </div>
+  </section>
+
+  <section class="cohort">
+    <div class="wrap">
+      <p class="section-mark">// cohort</p>
+      <a class="cohort-card" href="#" target="_blank" rel="noopener noreferrer">
+        <p class="tagline">You can see that things are changing but you just don't know what to do with it.</p>
+        <p class="hook">6 sessions. From noise to action.</p>
+      </a>
+    </div>
+  </section>
+
+  <section class="about">
+    <div class="wrap">
+      <p>I'm Mohammad. I write Modern Myths - a weekly essay about the stories we mistake for reality. I've written 200+ short stories, researched 48 paradigm-shift case studies, and built these tools because I needed them first.</p>
+    </div>
+  </section>
+
+  <footer>
+    <div class="wrap">
+      <p class="footer-mark">// Modern Myths &middot; &copy; 2026 &middot; hello@modernmyths.co</p>
+      <nav class="footer-nav">
+        <a href="https://themohammadkhan.substack.com" target="_blank" rel="noopener noreferrer">Newsletter</a>
+        <a href="https://orbit-psi-sepia.vercel.app" target="_blank" rel="noopener noreferrer">ORBIT</a>
+        <a href="https://early-warning-system-kappa.vercel.app" target="_blank" rel="noopener noreferrer">EWS</a>
+        <a href="https://think-better-nine.vercel.app" target="_blank" rel="noopener noreferrer">Reasoning Machine</a>
+        <a href="https://five-stories-strong.lovable.app" target="_blank" rel="noopener noreferrer">Five Stories Strong</a>
+        <a href="#" target="_blank" rel="noopener noreferrer">Making Sense of the Future</a>
+      </nav>
+    </div>
+  </footer>
+
+</body>
+</html>
