@@ -46,7 +46,7 @@ function tracker() {
   for (const w of ws) { const t = new Date(w).getTime(); run = prev && t - prev < 8 * 864e5 ? run + 1 : 1; best = Math.max(best, run); prev = t; }
   const now = new Date().getFullYear(), first = Math.min(now, ...items.map(m => +m.d.slice(0, 4))), Y = [];
   for (let y = now; y >= first; y--) Y.push(y);
-  $('stats').innerHTML = `<div><b>${items.length}</b><span>things made</span></div><div><b>${ws.length}</b><span>weeks with something new</span></div><div><b>${best}</b><span>longest run of weeks in a row</span></div><div><b>${yrs[now] || 0}</b><span>made in ${now}</span></div>`;
+  $('stats').innerHTML = `<div><b>${items.length}</b><span>things created</span></div><div><b>${ws.length}</b><span>weeks with new work</span></div><div><b>${best}</b><span>week longest streak</span></div><div><b>${yrs[now] || 0}</b><span>made in ${now}</span></div>`;
   const lvl = n => !n ? '' : n >= 5 ? 'var(--acc)' : `color-mix(in srgb,var(--acc) ${[0, 30, 55, 80, 80][n]}%,var(--soft))`;
   $('grid').innerHTML = Y.map(y => `<div class="yr"><span>${y}</span><div class="cells">${Array.from({ length: 53 }, (_, w) => { const a = by[y + '-' + w] || []; return `<button data-c="${y}-${w}" aria-pressed="${selCell === y + '-' + w}" aria-label="${y} week ${w + 1}: ${a.length} made" title="${a.length ? a.length + ' made' : ''}" style="--c:${lvl(a.length)}"></button>`; }).join('')}</div><span>${yrs[y] || 0}</span></div>`).join('');
   const det = $('det'), a = by[selCell] || []; det.hidden = !selCell;
