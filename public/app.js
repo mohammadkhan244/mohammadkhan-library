@@ -14,6 +14,7 @@ const FC = {
   'Song':            'var(--spine-rap)',
   'Anthology':       'var(--spine-rap)',
 };
+const DEWEY_LABELS = { '100': 'Philosophy & Meaning', '808': 'Writing & Learning', '650': 'Work & Business', '600': 'Technology' };
 
 const slug = s => s.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '').slice(0, 48);
 const esc = s => String(s).replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
@@ -197,8 +198,92 @@ function renderCharts() {
   cv.innerHTML = `<div class="charts-grid">${c1}${c2}${c3}${c4}${c5}</div>`;
 }
 
+/* ── shelf / stacks rendering ── */
+function spineEl(s) {
+  const w = s.wc ? Math.max(20, Math.round(20 + Math.sqrt(s.wc) * 0.5)) : 22;
+  const h = 160;
+  const fs = Math.max(7, Math.min(13, Math.round(w * 0.52)));
+  const bg = FC[s.f] || 'var(--accent)';
+  const callNum = s.dewey ? s.dewey : (s.w ? 'Wk ' + s.w : '');
+  return `<button class="spine" data-id="${s.id}" style="width:${w}px;height:${h}px;background:${bg}" title="${esc(s.t)}"><span class="spine-title" style="font-size:${fs}px">${esc(s.t)}</span>${callNum ? `<span class="call-num-tag">${esc(callNum)}</span>` : ''}</button>`;
+}
+
+function renderShelfView(r) {
+  const out = $('out');
+  const byRoom = { fiction: {}, nonfiction: {} };
+  for (const s of r) { const rm = s.room || 'fiction'; const sh = s.shelf || 'Other'; (byRoom[rm][sh] ??= []).push(s); }
+  const cur = byRoom[room];
+  const rt = `<div class="room-toggle"><button aria-pressed="${room === 'fiction'}" data-room="fiction">Fiction</button><button aria-pressed="${room === 'nonfiction'}" data-room="nonfiction">Nonfiction</button></div>`;
+  const html = Object.entries(cur).sort((a, b) => a[0].localeCompare(b[0])).map(([name, sp]) =>
+    `<div class="shelf-section"><div class="shelf-name">${esc(name)}</div><div class="shelf-row">${sp.map(spineEl).join('')}</div><div class="shelf-plank"></div></div>`
+  ).join('');
+  out.innerHTML = rt + (html || '<p class="empty">No stories in this room match the current filters.</p>');
+  out.querySelectorAll('.room-toggle button').forEach(btn => { btn.onclick = () => { room = btn.dataset.room; renderShelfView(r); }; });
+  out.querySelectorAll('.spine[data-id]').forEach(el => { el.onclick = () => openSpinePanel(stories.find(s => s.id === el.dataset.id)); });
+}
+
+function bookSpineEl(b) {
+  const w = Math.round(20 + (b.rating || 2.5) * 4);
+  const h = 160;
+  const fs = Math.max(7, Math.min(13, Math.round(w * 0.5)));
+  return `<button class="spine" data-bid="${b.id}" style="width:${w}px;height:${h}px;background:var(--spine-rap)" title="${esc(b.title)}"><span class="spine-title" style="font-size:${fs}px">${esc(b.title)}</span>${b.rating ? `<span class="call-num-tag">${'★'.repeat(Math.round(b.rating))}</span>` : ''}</button>`;
+}
+
+function renderBookSpines(r) {
+  const out = $('out');
+  const topRated = books.filter(b => b.rating >= 4).length;
+  const summary = `<p class="books-summary"><strong>${books.length}</strong> books read · <strong>${topRated}</strong> rated 4★ or above</p>`;
+  const byYear = {};
+  for (const b of r) { const yr = b.yr || 'Other'; (byYear[yr] ??= []).push(b); }
+  const shelves = Object.entries(byYear).sort((a, b) => b[0].localeCompare(a[0])).map(([yr, yb]) =>
+    `<div class="shelf-section"><div class="shelf-name">${esc(yr)}</div><div class="shelf-row">${yb.map(bookSpineEl).join('')}</div><div class="shelf-plank"></div></div>`
+  ).join('');
+  out.innerHTML = summary + shelves;
+  out.querySelectorAll('.spine[data-bid]').forEach(el => { el.onclick = () => openBookPanel(books.find(b => b.id === el.dataset.bid)); });
+}
+
+function ensurePanel() {
+  let p = $('spine-panel');
+  if (!p) { p = document.createElement('div'); p.id = 'spine-panel'; p.className = 'spine-panel'; p.setAttribute('hidden', ''); document.body.appendChild(p); }
+  return p;
+}
+
+function openSpinePanel(s) {
+  if (!s) return;
+  const panel = ensurePanel();
+  const cb = s.dewey ? `${s.dewey} · ${DEWEY_LABELS[s.dewey] || ''}` : (s.f || '');
+  const genres = (s.g || []).filter(g => g !== s.f);
+  panel.innerHTML = `<button class="spine-panel-close" aria-label="Close">×</button>${cb ? `<span class="call-badge">${esc(cb)}</span>` : ''}<h2>${esc(s.t)}</h2><p class="meta">Week ${esc(s.w || '')}${s.f ? ' · ' + esc(s.f) : ''}</p>${s.aw ? `<p class="award-line">${esc(s.aw)}</p>` : ''}${genres.length ? `<p class="meta">${genres.map(g => `<span class="tag">${esc(g)}</span>`).join(' ')}</p>` : ''}<div class="spine-actions">${s.url ? `<a href="${esc(s.url)}" target="_blank" rel="noopener">Read story</a>` : ''}<button class="copy-link-btn" data-u="${esc(location.href.split('#')[0])}#${s.id}">Copy link</button></div>`;
+  panel.removeAttribute('hidden');
+  document.querySelectorAll('.spine.pulled').forEach(el => el.classList.remove('pulled'));
+  const sp = document.querySelector(`.spine[data-id="${s.id}"]`); if (sp) sp.classList.add('pulled');
+  panel.querySelector('.spine-panel-close').onclick = closeSpinePanel;
+  panel.querySelector('.copy-link-btn').onclick = async e => { try { await navigator.clipboard.writeText(e.currentTarget.dataset.u); toast('Link copied — send it to someone'); } catch(err) { toast(e.currentTarget.dataset.u); } };
+}
+
+function openBookPanel(b) {
+  if (!b) return;
+  const panel = ensurePanel();
+  panel.innerHTML = `<button class="spine-panel-close" aria-label="Close">×</button><h2>${esc(b.title)}</h2><p class="meta">${esc(b.authors)}</p>${b.rating ? `<p class="meta">${stars(b.rating)}</p>` : ''}${b.lastRead ? `<p class="meta">Read ${esc(b.lastRead.slice(0, 7))}</p>` : ''}`;
+  panel.removeAttribute('hidden');
+  document.querySelectorAll('.spine.pulled').forEach(el => el.classList.remove('pulled'));
+  const sp = document.querySelector(`.spine[data-bid="${b.id}"]`); if (sp) sp.classList.add('pulled');
+  panel.querySelector('.spine-panel-close').onclick = closeSpinePanel;
+}
+
+function closeSpinePanel() {
+  const p = $('spine-panel'); if (p) p.setAttribute('hidden', '');
+  document.querySelectorAll('.spine.pulled').forEach(el => el.classList.remove('pulled'));
+}
+
+document.addEventListener('keydown', e => { if (e.key === 'Escape') closeSpinePanel(); });
+document.addEventListener('click', e => {
+  const panel = $('spine-panel');
+  if (panel && !panel.hidden && !panel.contains(e.target) && !e.target.closest('.spine')) closeSpinePanel();
+});
+
 /* ── database views ── */
-let tab = 'writing', view = 'gallery';
+let tab = 'writing', view = 'gallery', room = 'fiction';
 try { view = localStorage.getItem('view') || 'gallery'; } catch (e) {}
 const uniq = a => [...new Set(a.filter(Boolean))];
 const opts = (el, label, vals) => { el.innerHTML = `<option value="">${label}</option>` + vals.map(v => `<option>${esc(v)}</option>`).join(''); };
@@ -250,12 +335,8 @@ function render() {
   $('count').textContent = r.length + (r.length === 1 ? ' item' : ' items');
   if (!r.length) { out.innerHTML = '<p class="empty">Nothing matches. Clear the search or filters.</p>'; return; }
 
-  if (tab === 'bookshelf') {
-    out.innerHTML = '<div class="books-grid">' + r.map(bk =>
-      `<article class="book-card" id="${bk.id}"><div class="book-info"><strong class="book-title">${esc(bk.title)}</strong><span class="book-auth">${esc(bk.authors)}</span>${bk.rating ? `<span class="book-stars">${stars(bk.rating)}</span>` : ''}</div>${bk.lastRead ? `<span class="book-date">${bk.lastRead.slice(0, 4)}</span>` : ''}</article>`
-    ).join('') + '</div>';
-    return;
-  }
+  if (tab === 'bookshelf') { renderBookSpines(r); return; }
+  if (tab === 'stories' && view === 'shelf') { renderShelfView(r); return; }
 
   if (view === 'table') {
     if (tab === 'writing') out.innerHTML = `<table class="stack"><thead><tr><th>Title</th><th>Published</th><th></th></tr></thead><tbody>${r.map(p => `<tr id="${p.id}"><td class="ttl">${link(p.url, esc(p.t))}</td><td class="wk">${fmtD(p.d)}</td><td>${shareBtn(p.id, p.url)}</td></tr>`).join('')}</tbody></table>`;
@@ -275,14 +356,19 @@ function render() {
 function go() {
   const h = decodeURIComponent(location.hash.slice(1)) || 'writing';
   const t = h.startsWith('s-') ? 'stories' : h.startsWith('p-') ? 'writing' : h.startsWith('t-') ? 'tools' : h.startsWith('x-') ? 'projects' : h.startsWith('b-') ? 'bookshelf' : ['writing', 'stories', 'tools', 'projects', 'bookshelf'].includes(h) ? h : 'writing';
-  if (t !== tab || !$('f1').options.length) { tab = t; $('q').value = ''; setupFilters(); }
+  const tabChanged = t !== tab || !$('f1').options.length;
+  if (tabChanged) {
+    tab = t; $('q').value = ''; setupFilters();
+    view = tab === 'stories' ? 'shelf' : view === 'shelf' ? 'gallery' : view;
+    closeSpinePanel();
+  }
   document.querySelectorAll('nav a').forEach(a => a.toggleAttribute('aria-current', a.getAttribute('href') === '#' + tab));
   const viewToggle = $('vg').closest('.seg');
   viewToggle.style.display = tab === 'bookshelf' ? 'none' : '';
-  render();
+  setView(view);
   if (h.includes('-')) { const el = document.getElementById(h); if (el) el.scrollIntoView({ block: 'center' }); }
 }
-function setView(v) { view = v; $('vt').setAttribute('aria-pressed', v === 'table'); $('vg').setAttribute('aria-pressed', v === 'gallery'); try { localStorage.setItem('view', v); } catch (e) {} render(); }
+function setView(v) { view = v; $('vg').setAttribute('aria-pressed', v === 'gallery'); $('vs').setAttribute('aria-pressed', v === 'shelf'); $('vt').setAttribute('aria-pressed', v === 'table'); try { localStorage.setItem('view', v); } catch (e) {} render(); }
 let tt; function toast(m) { const t = $('toast'); t.textContent = m; t.classList.add('on'); clearTimeout(tt); tt = setTimeout(() => t.classList.remove('on'), 1800); }
 $('out').addEventListener('click', async e => {
   const b = e.target.closest('.sh'); if (!b) return;
@@ -290,7 +376,7 @@ $('out').addEventListener('click', async e => {
   try { await navigator.clipboard.writeText(url); toast('Link copied — send it to someone'); } catch (err) { toast(url); }
 });
 ['q', 'f1', 'f2'].forEach(id => $(id).addEventListener('input', render));
-$('vt').onclick = () => setView('table'); $('vg').onclick = () => setView('gallery');
+$('vg').onclick = () => setView('gallery'); $('vs').onclick = () => setView('shelf'); $('vt').onclick = () => setView('table');
 window.addEventListener('hashchange', go);
 setView(view); go();
 }

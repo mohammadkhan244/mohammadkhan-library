@@ -4,6 +4,7 @@ import { join } from 'path';
 import { getLibrary } from '../lib/notion';
 import { computeMetrics } from '../lib/metrics';
 import { benchmarks } from '../lib/benchmarks';
+import { classifyStory } from '../lib/dewey';
 
 export const revalidate = 3600;
 
@@ -27,7 +28,10 @@ export default async function Home() {
   });
   const bm = benchmarks(metrics);
 
-  const clientData = { ...data, metrics, books };
+  // Add Dewey classification to each story for the Stacks shelf view
+  const classifiedStories = data.stories.map(s => ({ ...s, ...classifyStory(s) }));
+
+  const clientData = { ...data, stories: classifiedStories, metrics, books, bm };
   const json = JSON.stringify(clientData).replace(/</g, '\\u003c');
 
   const fmtNum = n => n.toLocaleString();
@@ -50,11 +54,9 @@ export default async function Home() {
             <p className="lede">Engineer, filmmaker and writer from Columbus, Ohio. Fiction, essays, tools and projects. One story a week since 2020. No likes, no comments — if something here helped you, share it with someone it&apos;ll help too.</p>
           </div>
           <button id="theme-toggle" aria-label="Switch to light theme">
-            {/* Sun icon — shown in dark theme */}
             <svg id="icon-sun" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
               <circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/>
             </svg>
-            {/* Moon icon — shown in light theme */}
             <svg id="icon-moon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
               <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
             </svg>
@@ -124,6 +126,7 @@ export default async function Home() {
           <select id="f2" aria-label="Filter" />
           <div className="seg" role="group" aria-label="View">
             <button id="vg" aria-pressed="true">Gallery</button>
+            <button id="vs" aria-pressed="false">Shelf</button>
             <button id="vt" aria-pressed="false">Table</button>
           </div>
         </div>

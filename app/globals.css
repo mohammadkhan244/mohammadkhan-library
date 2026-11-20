@@ -134,6 +134,47 @@ footer{color:var(--muted);font:13px 'Josefin Sans',sans-serif;border-top:1px sol
 .book-date{font:13px 'Josefin Sans',sans-serif;color:var(--muted);white-space:nowrap;flex-shrink:0}
 .stars{letter-spacing:1px}
 
+/* ── shelf / stacks view ── */
+.books-summary{font-size:15px;color:var(--muted);margin-bottom:16px;line-height:1.6}
+.books-summary strong{color:var(--text)}
+.year-filter{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:20px}
+.year-filter button{font:500 13px 'Josefin Sans',sans-serif;letter-spacing:.04em;padding:4px 14px;border-radius:999px;border:1px solid var(--border);background:var(--bg);color:var(--muted);cursor:pointer;min-height:32px}
+.year-filter button[aria-pressed=true]{background:var(--text);color:var(--bg);border-color:var(--text)}
+.year-filter button:focus-visible{outline:2px solid var(--signal);outline-offset:2px}
+.room-toggle{display:flex;gap:8px;margin-bottom:20px}
+.room-toggle button{font:500 13px 'Josefin Sans',sans-serif;letter-spacing:.04em;text-transform:uppercase;padding:6px 18px;border-radius:999px;border:1px solid var(--border);background:var(--bg);color:var(--muted);cursor:pointer;min-height:36px}
+.room-toggle button[aria-pressed=true]{background:var(--text);color:var(--bg);border-color:var(--text)}
+.room-toggle button:focus-visible{outline:2px solid var(--signal);outline-offset:2px}
+.shelf-section{margin-bottom:28px}
+.shelf-name{font:500 11px 'Josefin Sans',sans-serif;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin-bottom:6px;padding-left:4px}
+.shelf-row{display:flex;align-items:flex-end;gap:2px;flex-wrap:wrap}
+.shelf-plank{height:8px;background:var(--shelf-wood);border-radius:2px;margin-top:2px;width:100%;flex-basis:100%}
+@media(max-width:600px){.shelf-row{flex-wrap:nowrap;overflow-x:auto;scroll-snap-type:x mandatory;padding-bottom:4px;-webkit-overflow-scrolling:touch}}
+
+/* ── spine element ── */
+.spine{all:unset;display:inline-flex;flex-direction:column;align-items:center;justify-content:space-between;border-radius:2px;cursor:pointer;padding:5px 3px 4px;transition:transform .15s;position:relative;flex-shrink:0;scroll-snap-align:start}
+.spine:hover,.spine:focus-visible{transform:translateY(-8px)}
+.spine.pulled{transform:translateY(-16px);outline:2px solid var(--signal);outline-offset:1px}
+@media(prefers-reduced-motion:reduce){.spine{transition:none}}
+.spine-title{writing-mode:vertical-rl;text-orientation:mixed;line-height:1.1;word-break:break-word;overflow:hidden;display:block;flex:1;font-family:'Lato',sans-serif;color:var(--call-label-bg)}
+.call-num-tag{font:7px/1.2 'Josefin Sans',sans-serif;letter-spacing:.02em;background:var(--call-label-bg);color:var(--call-label-text);padding:1px 3px;border-radius:1px;white-space:nowrap;max-width:calc(100% - 2px);overflow:hidden;text-overflow:ellipsis;flex-shrink:0;margin-top:3px;text-align:center}
+
+/* ── spine panel (desktop side panel + phone bottom sheet) ── */
+.spine-panel{position:fixed;z-index:30;background:var(--bg);overflow-y:auto}
+.spine-panel[hidden]{display:none}
+@media(min-width:601px){.spine-panel{top:0;right:0;height:100vh;width:min(360px,42vw);border-left:1px solid var(--border);padding:28px 24px}}
+@media(max-width:600px){.spine-panel{bottom:0;left:0;right:0;border-radius:16px 16px 0 0;border-top:1px solid var(--border);padding:20px 20px 32px;max-height:72vh}}
+.spine-panel-close{all:unset;cursor:pointer;float:right;font-size:22px;line-height:1;color:var(--muted);padding:0 2px;margin-left:12px}
+.spine-panel-close:hover{color:var(--text)}
+.call-badge{font:11px 'Josefin Sans',sans-serif;letter-spacing:.07em;text-transform:uppercase;background:var(--call-label-bg);color:var(--call-label-text);padding:3px 8px;border-radius:2px;display:inline-block;margin-bottom:14px;margin-top:4px}
+.spine-panel h2{font:600 20px/1.3 'Gilda Display',Georgia,serif;margin:0 0 8px}
+.spine-panel .meta{font:13px 'Josefin Sans',sans-serif;color:var(--muted);margin:0 0 6px;line-height:1.5}
+.spine-panel .award-line{font:13px 'Josefin Sans',sans-serif;color:var(--accent);margin:0 0 16px}
+.spine-actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:16px}
+.spine-actions a,.spine-actions button{font:500 13px 'Josefin Sans',sans-serif;letter-spacing:.03em;padding:8px 16px;border-radius:8px;border:1px solid var(--border);background:var(--bg);color:var(--text);cursor:pointer;text-decoration:none;display:inline-block;min-height:40px;white-space:nowrap}
+.spine-actions a:hover,.spine-actions button:hover{border-color:var(--accent);color:var(--accent)}
+.spine-actions a:focus-visible,.spine-actions button:focus-visible{outline:2px solid var(--signal);outline-offset:2px}
+
 /* ── responsive ── */
 @media(max-width:600px){
   .hero{grid-template-columns:1fr}
