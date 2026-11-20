@@ -146,7 +146,9 @@ footer{color:var(--muted);font:13px 'Josefin Sans',sans-serif;border-top:1px sol
 .room-toggle button[aria-pressed=true]{background:var(--text);color:var(--bg);border-color:var(--text)}
 .room-toggle button:focus-visible{outline:2px solid var(--signal);outline-offset:2px}
 .shelf-section{margin-bottom:28px}
-.shelf-name{font:500 11px 'Josefin Sans',sans-serif;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin-bottom:6px;padding-left:4px}
+.shelf-hd{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:6px;padding:0 4px;gap:16px}
+.shelf-name{font:600 13px 'Josefin Sans',sans-serif;letter-spacing:.06em;text-transform:uppercase;color:var(--text)}
+.shelf-stat{font:11px 'Josefin Sans',sans-serif;color:var(--muted);letter-spacing:.03em;white-space:nowrap}
 .shelf-row{display:flex;align-items:flex-end;gap:2px;flex-wrap:wrap}
 .shelf-plank{height:8px;background:var(--shelf-wood);border-radius:2px;margin-top:2px;width:100%;flex-basis:100%}
 @media(max-width:600px){.shelf-row{flex-wrap:nowrap;overflow-x:auto;scroll-snap-type:x mandatory;padding-bottom:4px;-webkit-overflow-scrolling:touch}}
@@ -157,7 +159,7 @@ footer{color:var(--muted);font:13px 'Josefin Sans',sans-serif;border-top:1px sol
 .spine.pulled{transform:translateY(-16px);outline:2px solid var(--signal);outline-offset:1px}
 @media(prefers-reduced-motion:reduce){.spine{transition:none}}
 .spine-title{writing-mode:vertical-rl;text-orientation:mixed;line-height:1.1;word-break:break-word;overflow:hidden;display:block;flex:1;font-family:'Lato',sans-serif;color:var(--call-label-bg)}
-.call-num-tag{font:7px/1.2 'Josefin Sans',sans-serif;letter-spacing:.02em;background:var(--call-label-bg);color:var(--call-label-text);padding:1px 3px;border-radius:1px;white-space:nowrap;max-width:calc(100% - 2px);overflow:hidden;text-overflow:ellipsis;flex-shrink:0;margin-top:3px;text-align:center}
+.call-num-tag{font:7px/1.3 'Josefin Sans',sans-serif;letter-spacing:.02em;background:var(--call-label-bg);color:var(--call-label-text);padding:2px 3px;border-radius:1px;white-space:normal;max-width:calc(100% - 2px);flex-shrink:0;margin-top:3px;text-align:center;word-break:break-all}
 
 /* ── spine panel (desktop side panel + phone bottom sheet) ── */
 .spine-panel{position:fixed;z-index:30;background:var(--bg);overflow-y:auto}
@@ -174,6 +176,113 @@ footer{color:var(--muted);font:13px 'Josefin Sans',sans-serif;border-top:1px sol
 .spine-actions a,.spine-actions button{font:500 13px 'Josefin Sans',sans-serif;letter-spacing:.03em;padding:8px 16px;border-radius:8px;border:1px solid var(--border);background:var(--bg);color:var(--text);cursor:pointer;text-decoration:none;display:inline-block;min-height:40px;white-space:nowrap}
 .spine-actions a:hover,.spine-actions button:hover{border-color:var(--accent);color:var(--accent)}
 .spine-actions a:focus-visible,.spine-actions button:focus-visible{outline:2px solid var(--signal);outline-offset:2px}
+
+/* ── Train of Thought ── */
+.train-chrome{display:flex;align-items:center;gap:16px;padding:0 max(5vw,16px);border-bottom:1px solid var(--border);background:var(--bg);position:sticky;top:0;z-index:10;min-height:52px}
+.train-home{text-decoration:none;display:flex;align-items:baseline;gap:8px;flex-shrink:0}
+.train-name{font:600 18px 'Gilda Display',Georgia,serif;color:var(--text)}
+.train-sub{font:13px 'Josefin Sans',sans-serif;color:var(--muted)}
+.train-nav{display:flex;gap:0;overflow-x:auto;flex:1}
+.train-nav a{flex:none;padding:16px 14px;color:var(--muted);text-decoration:none;font:500 13px 'Josefin Sans',sans-serif;letter-spacing:.03em;border-bottom:2px solid transparent;white-space:nowrap}
+.train-nav a[aria-current]{color:var(--text);border-color:var(--accent)}
+.train-nav a:hover{color:var(--text)}
+.train-theme-btn{all:unset;cursor:pointer;width:32px;height:32px;display:flex;align-items:center;justify-content:center;border-radius:6px;border:1px solid var(--border);color:var(--muted);flex-shrink:0}
+.train-theme-btn:hover{color:var(--text)}
+.train-wrap{max-width:1240px;margin:0 auto;padding:clamp(20px,3vw,40px) max(5vw,16px)}
+
+/* lobby */
+.train-lobby{display:flex;flex-direction:column;gap:28px}
+.depart-board{background:var(--depart-bg);color:var(--depart-text);border-radius:8px;padding:0;overflow:hidden;font-family:'Josefin Sans',monospace}
+.depart-hd{padding:14px 20px;border-bottom:1px solid var(--depart-border);display:flex;justify-content:space-between;align-items:baseline}
+.depart-title{font:700 13px 'Josefin Sans',sans-serif;letter-spacing:.12em;color:var(--depart-text)}
+.depart-sub{font:11px 'Josefin Sans',sans-serif;color:var(--depart-sub);letter-spacing:.05em}
+.depart-rows{display:flex;flex-direction:column}
+.depart-row{padding:10px 20px;border-bottom:1px solid var(--depart-border);cursor:pointer;font:14px/1.4 'Josefin Sans',monospace;letter-spacing:.06em;display:flex;gap:0;white-space:pre;overflow:hidden;color:var(--depart-text)}
+.depart-row:last-child{border-bottom:0}
+.depart-row:hover{background:var(--depart-hover)}
+.flap-ch{display:inline-block;min-width:.62em}
+.lobby-actions{display:flex;gap:12px;flex-wrap:wrap}
+.town-index{display:flex;flex-wrap:wrap;gap:8px}
+.town-chip{font:500 13px 'Josefin Sans',sans-serif;padding:7px 14px;border-radius:999px;border:1px solid var(--border);background:var(--bg);color:var(--muted);cursor:pointer;display:flex;gap:8px;align-items:center;min-height:36px}
+.town-chip:hover{border-color:var(--accent);color:var(--accent)}
+.town-chip:focus-visible{outline:2px solid var(--signal);outline-offset:2px}
+.tc-name{font-weight:500}
+.tc-count{font:11px 'Josefin Sans',sans-serif;color:var(--muted)}
+
+/* ride */
+.train-ride{display:flex;flex-direction:column;gap:0}
+.route-bar{display:flex;align-items:center;flex-wrap:wrap;gap:4px;padding:12px 0;border-bottom:1px solid var(--border);margin-bottom:24px;min-height:44px}
+.route-town{font:500 13px 'Josefin Sans',sans-serif;padding:4px 12px;border-radius:999px}
+.route-vis{background:var(--accent);color:var(--bg)}
+.route-cur{background:var(--bg);color:var(--accent);border:2px solid var(--accent)}
+.route-sep{font:13px 'Josefin Sans',sans-serif;color:var(--muted);padding:0 4px}
+.ride-body{display:grid;grid-template-columns:1fr min(360px,38vw);gap:32px}
+.ride-center{display:flex;flex-direction:column;gap:28px}
+
+/* stop card */
+.stop-label,.window-label{font:500 11px 'Josefin Sans',sans-serif;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin-bottom:10px}
+.stop-card{border:1px solid var(--border);border-radius:12px;padding:24px;background:var(--bg)}
+.stop-town{font:500 11px 'Josefin Sans',sans-serif;letter-spacing:.08em;text-transform:uppercase;color:var(--accent);margin-bottom:6px}
+.stop-title{font:600 clamp(22px,3vw,30px)/1.2 'Gilda Display',Georgia,serif;margin:0 0 8px}
+.stop-meta{font:13px 'Josefin Sans',sans-serif;color:var(--muted);margin:0 0 20px;line-height:1.5}
+.stop-actions{display:flex;gap:10px;flex-wrap:wrap}
+
+/* window row */
+.window-row{display:flex;gap:12px;overflow-x:auto;padding-bottom:4px}
+.window-card{flex:0 0 220px;border:1px solid var(--border);border-radius:10px;padding:14px;background:var(--bg);display:flex;flex-direction:column;gap:6px}
+.wc-town{font:11px 'Josefin Sans',sans-serif;letter-spacing:.06em;text-transform:uppercase;color:var(--accent)}
+.wc-title{font:500 15px/1.3 'Lato',sans-serif;display:block}
+.wc-meta{font:12px 'Josefin Sans',sans-serif;color:var(--muted);margin:0}
+.empty-window{color:var(--muted);font-size:14px}
+
+/* carriage panel */
+.carriage{border-left:1px solid var(--border);padding:20px 0 20px 24px;display:flex;flex-direction:column;gap:0}
+.carriage-hd{display:flex;align-items:center;justify-content:space-between;margin-bottom:16px}
+.carriage-hd span{font:600 15px 'Josefin Sans',sans-serif;text-transform:uppercase;letter-spacing:.06em;color:var(--text)}
+.carriage-close{all:unset;cursor:pointer;font-size:18px;color:var(--muted);display:none}
+.carriage-empty{font:13px 'Josefin Sans',sans-serif;color:var(--muted);line-height:1.6}
+.carriage-item{border:1px solid var(--border);border-radius:8px;padding:10px 12px;position:relative;margin-bottom:8px}
+.ci-town{font:10px 'Josefin Sans',sans-serif;text-transform:uppercase;letter-spacing:.06em;color:var(--accent);margin-bottom:3px}
+.ci-drop{all:unset;position:absolute;top:6px;right:8px;cursor:pointer;color:var(--muted);font-size:16px;line-height:1}
+.ci-drop:hover{color:var(--text)}
+.combine-wrap{border-top:1px solid var(--border);padding-top:20px;margin-top:16px}
+.combine-hd{font:600 13px 'Josefin Sans',sans-serif;text-transform:uppercase;letter-spacing:.08em;color:var(--muted);margin:0 0 14px}
+.combine-pair{display:flex;align-items:flex-start;gap:10px;margin-bottom:16px;flex-wrap:wrap}
+.combine-piece{flex:1 1 120px;padding:10px 12px;border:1px solid var(--border);border-radius:8px}
+.cp-town{display:block;font:10px 'Josefin Sans',sans-serif;text-transform:uppercase;letter-spacing:.06em;color:var(--accent);margin-bottom:4px}
+.combine-amp{font:600 20px 'Gilda Display',serif;color:var(--muted);align-self:center;padding-top:4px}
+.combine-q{font:16px/1.6 'Lato',sans-serif;color:var(--text);margin:0 0 16px}
+.q-signal{color:var(--signal)}
+.bridge-label{font:11px 'Josefin Sans',sans-serif;text-transform:uppercase;letter-spacing:.08em;color:var(--muted);margin-bottom:8px}
+.bridge-row{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:12px}
+.bridge-card{flex:1 1 160px;border:1px solid var(--border);border-radius:8px;padding:10px 12px}
+.bc-town{display:block;font:10px 'Josefin Sans',sans-serif;text-transform:uppercase;letter-spacing:.06em;color:var(--accent);margin-bottom:3px}
+.bc-link{font:12px 'Josefin Sans',sans-serif;color:var(--accent);text-decoration:none;display:block;margin-top:6px}
+
+/* ride footer */
+.ride-footer{display:flex;gap:12px;padding-top:20px;border-top:1px solid var(--border);margin-top:24px}
+
+/* buttons */
+.btn-primary{font:500 14px 'Josefin Sans',sans-serif;letter-spacing:.04em;padding:10px 22px;border-radius:8px;border:0;background:var(--text);color:var(--bg);cursor:pointer;text-decoration:none;display:inline-block;min-height:44px;white-space:nowrap}
+.btn-primary:hover{opacity:.85}
+.btn-primary:focus-visible{outline:2px solid var(--signal);outline-offset:2px}
+.btn-sec{font:500 14px 'Josefin Sans',sans-serif;letter-spacing:.04em;padding:10px 22px;border-radius:8px;border:1px solid var(--border);background:var(--bg);color:var(--text);cursor:pointer;min-height:44px;white-space:nowrap}
+.btn-sec:hover{border-color:var(--accent);color:var(--accent)}
+.btn-sec:disabled{opacity:.4;cursor:not-allowed}
+.btn-sec:focus-visible{outline:2px solid var(--signal);outline-offset:2px}
+.btn-ghost{font:500 13px 'Josefin Sans',sans-serif;letter-spacing:.03em;padding:8px 16px;border-radius:8px;border:1px solid var(--border);background:transparent;color:var(--muted);cursor:pointer;min-height:40px;white-space:nowrap}
+.btn-ghost:hover{color:var(--text);border-color:var(--muted)}
+.btn-ghost:focus-visible{outline:2px solid var(--signal);outline-offset:2px}
+.hop-btn{margin-top:auto;align-self:flex-start}
+
+/* phone layout for train */
+@media(max-width:700px){
+  .ride-body{grid-template-columns:1fr}
+  .carriage{border-left:0;border-top:1px solid var(--border);padding:20px 0 0;position:fixed;bottom:0;left:0;right:0;background:var(--bg);max-height:50vh;overflow-y:auto;padding:16px 20px 24px;border-radius:16px 16px 0 0;border:1px solid var(--border);transform:translateY(100%);transition:transform .25s;z-index:20}
+  .carriage.carriage-open{transform:translateY(0)}
+  .carriage-close{display:block}
+  @media(prefers-reduced-motion:reduce){.carriage{transition:none}}
+}
 
 /* ── responsive ── */
 @media(max-width:600px){

@@ -106,4 +106,11 @@
   --shelf-wood:        #71502f; /* Brown */
   --call-label-bg:     #f5ecc2; /* Sulphur Yellow */
   --call-label-text:   #111314; /* Black */
+
+  /* Departures board — always dark, both themes */
+  --depart-bg:         #111314; /* Black */
+  --depart-text:       #f5ecc2; /* Sulphur Yellow */
+  --depart-border:     #2a2e3a; /* Dark border */
+  --depart-sub:        #635a3a; /* Dark Olive */
+  --depart-hover:      #1a2030; /* Hover tint */
 }

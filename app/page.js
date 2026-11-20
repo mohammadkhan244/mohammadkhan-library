@@ -112,8 +112,9 @@ export default async function Home() {
       <nav>
         <div className="in">
           <a href="#writing">Newsletter</a>
-          <a href="#stories">Story database</a>
-          <a href="#tools">Tools &amp; products</a>
+          <a href="#stories">Stacks</a>
+          <a href="/train">Train of thought</a>
+          <a href="#tools">Tools</a>
           <a href="#projects">Projects</a>
           <a href="#bookshelf">Bookshelf</a>
         </div>

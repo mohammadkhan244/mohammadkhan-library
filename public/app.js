@@ -199,13 +199,16 @@ function renderCharts() {
 }
 
 /* ── shelf / stacks rendering ── */
-function spineEl(s) {
-  const w = s.wc ? Math.max(20, Math.round(20 + Math.sqrt(s.wc) * 0.5)) : 22;
-  const h = 160;
-  const fs = Math.max(7, Math.min(13, Math.round(w * 0.52)));
+function spineEl(s, idx) {
+  const wc = s.wc || 100;
+  const w = Math.max(20, Math.round(20 + Math.sqrt(wc) * 0.5));
+  const h = 150 + (idx % 3) * 8; // subtle height variation: 150, 158, 166
+  // Font size fits title vertically: writing-mode:vertical-rl, each char ≈ fontSize * 1.1 px height
+  const fs = Math.max(7, Math.min(13, Math.floor((h - 22) / (s.t.length * 1.1))));
   const bg = FC[s.f] || 'var(--accent)';
-  const callNum = s.dewey ? s.dewey : (s.w ? 'Wk ' + s.w : '');
-  return `<button class="spine" data-id="${s.id}" style="width:${w}px;height:${h}px;background:${bg}" title="${esc(s.t)}"><span class="spine-title" style="font-size:${fs}px">${esc(s.t)}</span>${callNum ? `<span class="call-num-tag">${esc(callNum)}</span>` : ''}</button>`;
+  const prefix = s.dewey || 'FIC';
+  const wkNum = s.w || '—';
+  return `<button class="spine" data-id="${s.id}" style="width:${w}px;height:${h}px;background:${bg}" title="${esc(s.t)}"><span class="spine-title" style="font-size:${fs}px">${esc(s.t)}</span><span class="call-num-tag">${esc(prefix)}<br>KHA<br>${esc(wkNum)}</span></button>`;
 }
 
 function renderShelfView(r) {
@@ -213,20 +216,30 @@ function renderShelfView(r) {
   const byRoom = { fiction: {}, nonfiction: {} };
   for (const s of r) { const rm = s.room || 'fiction'; const sh = s.shelf || 'Other'; (byRoom[rm][sh] ??= []).push(s); }
   const cur = byRoom[room];
-  const rt = `<div class="room-toggle"><button aria-pressed="${room === 'fiction'}" data-room="fiction">Fiction</button><button aria-pressed="${room === 'nonfiction'}" data-room="nonfiction">Nonfiction</button></div>`;
-  const html = Object.entries(cur).sort((a, b) => a[0].localeCompare(b[0])).map(([name, sp]) =>
-    `<div class="shelf-section"><div class="shelf-name">${esc(name)}</div><div class="shelf-row">${sp.map(spineEl).join('')}</div><div class="shelf-plank"></div></div>`
-  ).join('');
+  const rt = `<div class="room-toggle"><button aria-pressed="${room === 'fiction'}" data-room="fiction">Fiction room</button><button aria-pressed="${room === 'nonfiction'}" data-room="nonfiction">Nonfiction room</button></div>`;
+  let idx = 0;
+  const html = Object.entries(cur).sort((a, b) => a[0].localeCompare(b[0])).map(([name, sp]) => {
+    const count = sp.length;
+    const words = sp.reduce((s, x) => s + (x.wc || 0), 0);
+    const stat = count + (count === 1 ? ' story' : ' stories') + (words ? ' · ' + words.toLocaleString() + ' words' : '');
+    const spines = sp.map(s => spineEl(s, idx++)).join('');
+    return `<div class="shelf-section"><div class="shelf-hd"><span class="shelf-name">${esc(name)}</span><span class="shelf-stat">${esc(stat)}</span></div><div class="shelf-row">${spines}</div><div class="shelf-plank"></div></div>`;
+  }).join('');
   out.innerHTML = rt + (html || '<p class="empty">No stories in this room match the current filters.</p>');
   out.querySelectorAll('.room-toggle button').forEach(btn => { btn.onclick = () => { room = btn.dataset.room; renderShelfView(r); }; });
   out.querySelectorAll('.spine[data-id]').forEach(el => { el.onclick = () => openSpinePanel(stories.find(s => s.id === el.dataset.id)); });
 }
 
+const BOOK_PALETTE = ['var(--spine-short-story)','var(--spine-screenplay)','var(--spine-essay)','var(--spine-memoir)','var(--spine-rap)'];
+function bookColor(b) {
+  let h = 0; for (const c of (b.title + (b.authors||''))) h = (h*31 + c.charCodeAt(0)) % BOOK_PALETTE.length;
+  return BOOK_PALETTE[Math.abs(h)];
+}
 function bookSpineEl(b) {
   const w = Math.round(20 + (b.rating || 2.5) * 4);
-  const h = 160;
-  const fs = Math.max(7, Math.min(13, Math.round(w * 0.5)));
-  return `<button class="spine" data-bid="${b.id}" style="width:${w}px;height:${h}px;background:var(--spine-rap)" title="${esc(b.title)}"><span class="spine-title" style="font-size:${fs}px">${esc(b.title)}</span>${b.rating ? `<span class="call-num-tag">${'★'.repeat(Math.round(b.rating))}</span>` : ''}</button>`;
+  const h = 180;
+  const fs = Math.max(7, Math.min(13, Math.floor((h - 22) / (b.title.length * 1.1))));
+  return `<button class="spine" data-bid="${b.id}" style="width:${w}px;height:${h}px;background:${bookColor(b)}" title="${esc(b.title)}"><span class="spine-title" style="font-size:${fs}px">${esc(b.title)}</span>${b.rating ? `<span class="call-num-tag">${'★'.repeat(Math.round(b.rating))}</span>` : ''}</button>`;
 }
 
 function renderBookSpines(r) {
@@ -251,9 +264,11 @@ function ensurePanel() {
 function openSpinePanel(s) {
   if (!s) return;
   const panel = ensurePanel();
-  const cb = s.dewey ? `${s.dewey} · ${DEWEY_LABELS[s.dewey] || ''}` : (s.f || '');
+  const prefix = s.dewey || 'FIC';
+  const cb = `${prefix} KHA ${s.w || '—'}`;
   const genres = (s.g || []).filter(g => g !== s.f);
-  panel.innerHTML = `<button class="spine-panel-close" aria-label="Close">×</button>${cb ? `<span class="call-badge">${esc(cb)}</span>` : ''}<h2>${esc(s.t)}</h2><p class="meta">Week ${esc(s.w || '')}${s.f ? ' · ' + esc(s.f) : ''}</p>${s.aw ? `<p class="award-line">${esc(s.aw)}</p>` : ''}${genres.length ? `<p class="meta">${genres.map(g => `<span class="tag">${esc(g)}</span>`).join(' ')}</p>` : ''}<div class="spine-actions">${s.url ? `<a href="${esc(s.url)}" target="_blank" rel="noopener">Read story</a>` : ''}<button class="copy-link-btn" data-u="${esc(location.href.split('#')[0])}#${s.id}">Copy link</button></div>`;
+  const wcLine = s.wc ? esc(s.f || '') + ' · ' + s.wc.toLocaleString() + ' words · ~' + Math.round(s.wc/238) + ' min read' : esc(s.f || '');
+  panel.innerHTML = `<button class="spine-panel-close" aria-label="Close">×</button><span class="call-badge">${esc(cb)}</span><h2>${esc(s.t)}</h2><p class="meta">${wcLine}</p>${s.aw ? `<p class="award-line">${esc(s.aw)}</p>` : ''}${genres.length ? `<p class="meta">${genres.map(g => `<span class="tag">${esc(g)}</span>`).join(' ')}</p>` : ''}<div class="spine-actions">${s.url ? `<a href="${esc(s.url)}" target="_blank" rel="noopener">Read</a>` : ''}<a href="${esc('/train?board=' + s.id)}">Board here</a><button class="copy-link-btn" data-u="${esc(location.href.split('#')[0])}#${s.id}">Copy link</button></div>`;
   panel.removeAttribute('hidden');
   document.querySelectorAll('.spine.pulled').forEach(el => el.classList.remove('pulled'));
   const sp = document.querySelector(`.spine[data-id="${s.id}"]`); if (sp) sp.classList.add('pulled');

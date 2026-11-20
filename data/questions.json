@@ -1,0 +1,183 @@
+{
+  "_note": "DRAFT — Mohammad will rewrite these. One '?' in --signal per spec.",
+  "sci-fi|philosophy": [
+    "What does it mean to be you if everything that makes you you can be copied?",
+    "If your memories are artificial, are you still the person you remember being?"
+  ],
+  "sci-fi|memory": [
+    "What would you bring back if you could retrieve any memory from someone who died?",
+    "If you could relive one moment perfectly, would you choose one you remember clearly or one you barely remember?"
+  ],
+  "sci-fi|horror": [
+    "What's the difference between the unknown and the unknowable?",
+    "If you survived something impossible, would you tell anyone?"
+  ],
+  "sci-fi|making": [
+    "What's the most honest thing you've ever made?",
+    "Is building something that outlasts you more about love or ego?"
+  ],
+  "sci-fi|work": [
+    "Would you do your work differently if no one could ever see it?",
+    "What does it mean to build something useful versus something important?"
+  ],
+  "sci-fi|technology": [
+    "What technology are you afraid to fully understand?",
+    "At what point does a tool start to use you?"
+  ],
+  "sci-fi|fable": [
+    "Which rules are still protecting you from something you can't name?",
+    "What story do you keep telling yourself that only works if the ending stays unwritten?"
+  ],
+  "sci-fi|realism": [
+    "What would you do differently if you knew no one was watching?",
+    "What do you refuse to let be ordinary?"
+  ],
+  "sci-fi|love": [
+    "What would you lose if you removed the fear from love?",
+    "Is it possible to love something you don't understand?"
+  ],
+  "memory|philosophy": [
+    "Is a memory that changes every time you recall it still the same memory?",
+    "What would you give up to keep one memory perfectly intact?"
+  ],
+  "memory|horror": [
+    "What's the memory you've never told anyone?",
+    "What do you do when you can't stop remembering something you'd rather forget?"
+  ],
+  "memory|making": [
+    "What would it mean to make something that outlives your memory of making it?",
+    "What piece of work taught you something about yourself you didn't want to know?"
+  ],
+  "memory|work": [
+    "If your career ended tomorrow, what would you remember most clearly?",
+    "What was the first time you realised work meant something beyond money?"
+  ],
+  "memory|technology": [
+    "If your phone died and took all your photos, what would you lose forever?",
+    "What would you remember differently if you couldn't search for it?"
+  ],
+  "memory|fable": [
+    "What story did your family tell you about yourself that you've had to unlearn?",
+    "Which myth about where you're from do you still half-believe?"
+  ],
+  "memory|realism": [
+    "What do you remember about someone that they've probably forgotten?",
+    "What ordinary moment did you only realise mattered much later?"
+  ],
+  "memory|love": [
+    "What's the memory of a person you hold most carefully?",
+    "Is there a memory you share with someone who now remembers it completely differently?"
+  ],
+  "horror|philosophy": [
+    "What are you afraid to look at directly?",
+    "Is it possible to be brave if you're never really afraid?"
+  ],
+  "horror|making": [
+    "What's the worst that could happen if your most honest work reached the wrong audience?",
+    "Have you ever made something you weren't ready to share?"
+  ],
+  "horror|work": [
+    "What are you doing out of fear that you mistake for ambition?",
+    "What would happen to your work if the pressure to perform disappeared?"
+  ],
+  "horror|technology": [
+    "What algorithm knows something about you that you haven't admitted to yourself?",
+    "What would it mean if the system you rely on was designed against you?"
+  ],
+  "horror|fable": [
+    "What old story still has power over you?",
+    "What do you believe now that you once thought was just superstition?"
+  ],
+  "horror|realism": [
+    "What do you avoid looking at directly in your everyday life?",
+    "What do you pretend is fine that isn't?"
+  ],
+  "horror|love": [
+    "What's the most vulnerable thing you've ever done for someone?",
+    "What would you be willing to lose to protect someone you love?"
+  ],
+  "philosophy|making": [
+    "What's the difference between making something and making something matter?",
+    "How do you know when something you've made is done?"
+  ],
+  "philosophy|work": [
+    "What would your work be if no one could pay you for it?",
+    "At what point does productivity become an avoidance strategy?"
+  ],
+  "philosophy|technology": [
+    "What would you stop using if you had to explain how it worked?",
+    "Is a tool that changes how you think still just a tool?"
+  ],
+  "philosophy|fable": [
+    "What truth are you using a story to avoid saying directly?",
+    "What do you believe that you've only ever expressed through metaphor?"
+  ],
+  "philosophy|realism": [
+    "What do you believe that you've never had to defend?",
+    "What truth is easier to live with than to say out loud?"
+  ],
+  "philosophy|love": [
+    "Is loving someone the same as understanding them?",
+    "What would you have to give up to love someone the way they need to be loved?"
+  ],
+  "making|work": [
+    "What's the most important project you've ever abandoned?",
+    "When does craft become an excuse not to ship?"
+  ],
+  "making|technology": [
+    "What would you build if the technology to build it already existed?",
+    "What tool changed how you thought before you realised it was happening?"
+  ],
+  "making|fable": [
+    "What's the story you keep telling yourself about why now isn't the right time?",
+    "Which story about creativity did you inherit without choosing it?"
+  ],
+  "making|realism": [
+    "What would you have to sacrifice to do your best work?",
+    "What would your creative life look like if you stopped performing it?"
+  ],
+  "making|love": [
+    "What have you made for someone that they've never known was for them?",
+    "What's the difference between making something beautiful and making something kind?"
+  ],
+  "work|technology": [
+    "What would your work look like if the tools you use disappeared?",
+    "Is the work you do with technology more or less honest than the work you do without it?"
+  ],
+  "work|fable": [
+    "What story about success are you still following that you got from someone else?",
+    "What would you do if the version of success you're chasing turned out to be someone else's story?"
+  ],
+  "work|realism": [
+    "What work are you avoiding by staying busy?",
+    "What would you do differently if no one was grading your effort?"
+  ],
+  "work|love": [
+    "What do you work toward when you're not working toward anything specific?",
+    "What would you stop doing if you only made things for people you loved?"
+  ],
+  "technology|fable": [
+    "What story does technology tell about progress that you believe even when you're skeptical?",
+    "What do we keep building that we know won't save us?"
+  ],
+  "technology|realism": [
+    "What is technology making you forget how to do?",
+    "What convenience have you traded for something you can't name?"
+  ],
+  "technology|love": [
+    "Has technology made it easier or harder to stay close to people you love?",
+    "What do you know about someone from their online presence that they've never told you in person?"
+  ],
+  "fable|realism": [
+    "What would happen to your most useful story if it turned out to be untrue?",
+    "Which part of your ordinary life is secretly a myth you're maintaining?"
+  ],
+  "fable|love": [
+    "What story did you tell yourself about love that you've had to revise?",
+    "Which love story taught you the most — the one that worked or the one that didn't?"
+  ],
+  "realism|love": [
+    "What would you do differently in a relationship if you knew the ending?",
+    "What's the most real thing you've ever said to someone you love?"
+  ]
+}
