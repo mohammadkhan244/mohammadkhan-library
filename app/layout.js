@@ -1,8 +1,8 @@
 import './globals.css';
 
 export const metadata = {
-  title: 'Mohammad Khan · Fictioneering',
-  description: 'Fiction, essays and tools for thinking about the future. One story a week since 2020.',
+  title: 'Mohammad Khan · Library',
+  description: 'Fiction, essays, tools and projects. One story a week since 2020.',
 };
 
 export default function RootLayout({ children }) {
