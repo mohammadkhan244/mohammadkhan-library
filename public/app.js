@@ -31,18 +31,36 @@ const fmtD = d => new Date(d + 'T12:00').toLocaleDateString(undefined, { month: 
 
 /* ── build tracker ── */
 const made = [
-  ...stories.map(s => ({ k: 'Story', d: s.d, t: (s.w ? 'Week ' + s.w + ': ' : '') + s.t, id: s.id, url: s.url })),
+  ...stories.map(s => ({ k: 'Story', d: s.d, t: (s.w ? 'Week ' + s.w + ': ' : '') + s.t, id: s.id, url: s.url, w: s.w })),
   ...posts.map(p => ({ k: 'Newsletter', d: p.d, t: p.t, id: p.id, url: p.url })),
   ...tools.map(t => ({ k: 'Product', d: t.d, t: t.t, id: t.id, url: t.url })),
   ...projects.map(p => ({ k: 'Project', d: p.d, t: p.t, id: p.id, url: '#' + p.id })),
 ];
 const wk = d => { const x = new Date(d + 'T12:00'), j = new Date(x.getFullYear(), 0, 1, 12); return [x.getFullYear(), Math.min(52, Math.floor((x - j) / 864e5 / 7))]; };
 const mon = d => { const x = new Date(d + 'T12:00'); x.setDate(x.getDate() - ((x.getDay() + 6) % 7)); return x.toISOString().slice(0, 10); };
+const WEEK1_MS = new Date('2020-02-17T12:00:00').getTime();
+const wkNumToDate = n => new Date(WEEK1_MS + (n - 1) * 7 * 86400000).toISOString().slice(0, 10);
 let kind = '', selCell = '';
 function tracker() {
   const items = made.filter(m => !kind || m.k === kind), by = {}, yrs = {};
-  for (const m of items) { const [y, w] = wk(m.d); (by[y + '-' + w] ??= []).push(m); yrs[y] = (yrs[y] || 0) + 1; }
-  const ws = [...new Set(items.map(m => mon(m.d)))].sort(); let best = 0, run = 0, prev = 0;
+  const coverDates = new Set();
+  for (const m of items) {
+    const [y, w] = wk(m.d);
+    (by[y + '-' + w] ??= []).push(m);
+    yrs[y] = (yrs[y] || 0) + 1;
+    coverDates.add(mon(m.d));
+    if (m.w) {
+      const rng = m.w.match(/^(\d+)-(\d+)$/);
+      if (rng) {
+        for (let n = +rng[1]; n <= +rng[2]; n++) {
+          const d2 = wkNumToDate(n), k2 = wk(d2).join('-');
+          if (k2 !== [y, w].join('-')) (by[k2] ??= []).push(m);
+          coverDates.add(mon(d2));
+        }
+      }
+    }
+  }
+  const ws = [...coverDates].sort(); let best = 0, run = 0, prev = 0;
   for (const w of ws) { const t = new Date(w).getTime(); run = prev && t - prev < 8 * 864e5 ? run + 1 : 1; best = Math.max(best, run); prev = t; }
   const now = new Date().getFullYear(), first = Math.min(now, ...items.map(m => +m.d.slice(0, 4))), Y = [];
   for (let y = now; y >= first; y--) Y.push(y);
