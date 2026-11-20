@@ -1,6 +1,20 @@
 {
 const D = JSON.parse(document.getElementById('data').textContent);
-const FC = { 'Short Story': '#3a6ff7', Essay: '#e0569b', Poem: '#9aa0ad', Memoir: '#b5835a', Screenplay: '#8b5cf6', Rap: '#f08a24', StagePlay: '#d4a72c', Song: '#e5484d', Anthology: '#8a6b4e' };
+
+// Spine colours — reference CSS variables from theme.css (no hex in JS).
+const FC = {
+  'Short Story':     'var(--spine-short-story)',
+  'Screenplay':      'var(--spine-screenplay)',
+  'Poem':            'var(--spine-poem)',
+  'Rap':             'var(--spine-rap)',
+  'Essay':           'var(--spine-essay)',
+  'Memoir':          'var(--spine-memoir)',
+  'Newsletter Post': 'var(--spine-post)',
+  'StagePlay':       'var(--spine-rap)',
+  'Song':            'var(--spine-rap)',
+  'Anthology':       'var(--spine-rap)',
+};
+
 const slug = s => s.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '').slice(0, 48);
 const esc = s => String(s).replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
 const $ = id => document.getElementById(id);
@@ -24,58 +38,85 @@ const stars = r => {
     '★'.repeat(full) + (half ? '½' : '') + '<span style="opacity:.3">' + '★'.repeat(empty) + '</span></span>';
 };
 
-const TINT = s => { let h = 0; for (const c of s) h = (h * 31 + c.charCodeAt(0)) % 360; return `light-dark(hsl(${h} 70% 93%),hsl(${h} 30% 22%))`; };
-const tag = s => s ? `<span class="tag" style="--t:${TINT(s)}">${esc(s)}</span>` : '';
+const TINT = s => { let h = 0; for (const c of s) h = (h * 31 + c.charCodeAt(0)) % 360; return `hsl(${h} 35% 55%)`; };
+const tag = s => s ? `<span class="tag" style="--t:color-mix(in srgb,${esc(FC[s] || 'var(--accent)')} 20%,var(--bg))">${esc(s)}</span>` : '';
 const thumb = (x, label, cls = '') => `<div class="th ${cls}" style="--fc:${FC[x.f] || TINT(x.t)}"><span>${esc(label)}</span>${x.img ? `<img loading="lazy" alt="" src="${esc(x.img)}" onerror="this.remove()">` : ''}</div>`;
 const fmtD = d => new Date(d + 'T12:00').toLocaleDateString(undefined, { month: 'short', day: 'numeric', year: 'numeric' });
 
+/* ── theme toggle ── */
+(function () {
+  const btn = $('theme-toggle');
+  const sun  = $('icon-sun');
+  const moon = $('icon-moon');
+  if (!btn) return;
+
+  function applyTheme(t) {
+    document.documentElement.setAttribute('data-theme', t);
+    try { localStorage.setItem('theme', t); } catch (e) {}
+    const isDark = t === 'dark';
+    sun.style.display  = isDark ? '' : 'none';
+    moon.style.display = isDark ? 'none' : '';
+    btn.setAttribute('aria-label', isDark ? 'Switch to light theme' : 'Switch to dark theme');
+  }
+
+  const current = document.documentElement.getAttribute('data-theme') ||
+    (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+  applyTheme(current);
+
+  btn.addEventListener('click', () => {
+    const next = document.documentElement.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
+    applyTheme(next);
+  });
+})();
+
 /* ── build tracker ── */
 const made = [
-  ...stories.map(s => ({ k: 'Story', d: s.d, t: (s.w ? 'Week ' + s.w + ': ' : '') + s.t, id: s.id, url: s.url, w: s.w })),
-  ...posts.map(p => ({ k: 'Newsletter', d: p.d, t: p.t, id: p.id, url: p.url })),
-  ...tools.map(t => ({ k: 'Product', d: t.d, t: t.t, id: t.id, url: t.url })),
-  ...projects.map(p => ({ k: 'Project', d: p.d, t: p.t, id: p.id, url: '#' + p.id })),
+  ...stories.map(s => ({ k: 'Story',      d: s.d, t: (s.w ? 'Week ' + s.w + ': ' : '') + s.t, id: s.id, url: s.url })),
+  ...posts.map(p =>   ({ k: 'Newsletter',  d: p.d, t: p.t, id: p.id, url: p.url })),
+  ...tools.map(t =>   ({ k: 'Tool',        d: t.d, t: t.t, id: t.id, url: t.url })),
+  ...projects.map(p => ({ k: 'Project',   d: p.d, t: p.t, id: p.id, url: '#' + p.id })),
 ];
 const wk = d => { const x = new Date(d + 'T12:00'), j = new Date(x.getFullYear(), 0, 1, 12); return [x.getFullYear(), Math.min(52, Math.floor((x - j) / 864e5 / 7))]; };
 const mon = d => { const x = new Date(d + 'T12:00'); x.setDate(x.getDate() - ((x.getDay() + 6) % 7)); return x.toISOString().slice(0, 10); };
-const WEEK1_MS = new Date('2020-02-17T12:00:00').getTime();
-const wkNumToDate = n => new Date(WEEK1_MS + (n - 1) * 7 * 86400000).toISOString().slice(0, 10);
 let kind = '', selCell = '';
+
 function tracker() {
   const items = made.filter(m => !kind || m.k === kind), by = {}, yrs = {};
-  const coverDates = new Set();
-  for (const m of items) {
-    const [y, w] = wk(m.d);
-    (by[y + '-' + w] ??= []).push(m);
-    yrs[y] = (yrs[y] || 0) + 1;
-    coverDates.add(mon(m.d));
-    if (m.w) {
-      const rng = m.w.match(/^(\d+)-(\d+)$/);
-      if (rng) {
-        for (let n = +rng[1]; n <= +rng[2]; n++) {
-          const d2 = wkNumToDate(n), k2 = wk(d2).join('-');
-          if (k2 !== [y, w].join('-')) (by[k2] ??= []).push(m);
-          coverDates.add(mon(d2));
-        }
-      }
-    }
-  }
-  const ws = [...coverDates].sort(); let best = 0, run = 0, prev = 0;
+  for (const m of items) { const [y, w] = wk(m.d); (by[y + '-' + w] ??= []).push(m); yrs[y] = (yrs[y] || 0) + 1; }
+  const ws = [...new Set(items.map(m => mon(m.d)))].sort(); let best = 0, run = 0, prev = 0;
   for (const w of ws) { const t = new Date(w).getTime(); run = prev && t - prev < 8 * 864e5 ? run + 1 : 1; best = Math.max(best, run); prev = t; }
   const now = new Date().getFullYear(), first = Math.min(now, ...items.map(m => +m.d.slice(0, 4))), Y = [];
   for (let y = now; y >= first; y--) Y.push(y);
-  $('stats').innerHTML = `<div><b>${items.length}</b><span>things created</span></div><div><b>${ws.length}</b><span>weeks with new work</span></div><div><b>${best}</b><span>week longest streak</span></div><div><b>${yrs[now] || 0}</b><span>made in ${now}</span></div>`;
-  const lvl = n => !n ? '' : n >= 5 ? 'var(--acc)' : `color-mix(in srgb,var(--acc) ${[0, 30, 55, 80, 80][n]}%,var(--soft))`;
-  $('grid').innerHTML = Y.map(y => `<div class="yr"><span>${y}</span><div class="cells">${Array.from({ length: 53 }, (_, w) => { const a = by[y + '-' + w] || []; return `<button data-c="${y}-${w}" aria-pressed="${selCell === y + '-' + w}" aria-label="${y} week ${w + 1}: ${a.length} made" title="${a.length ? a.length + ' made' : ''}" style="--c:${lvl(a.length)}"></button>`; }).join('')}</div><span>${yrs[y] || 0}</span></div>`).join('');
+
+  $('stats').innerHTML = `<div><b>${items.length}</b><span>things made</span></div><div><b>${ws.length}</b><span>weeks with something new</span></div><div><b>${best}</b><span>longest run of weeks in a row</span></div><div><b>${yrs[now] || 0}</b><span>made in ${now}</span></div>`;
+
+  const lvl = n => `var(--heat-${Math.min(n, 4)})`;
+
+  $('grid').innerHTML = Y.map(y =>
+    `<div class="yr"><span>${y}</span><div class="cells">${Array.from({ length: 53 }, (_, w) => {
+      const a = by[y + '-' + w] || [];
+      return `<button data-c="${y}-${w}" aria-pressed="${selCell === y + '-' + w}" aria-label="${y} week ${w + 1}: ${a.length} made" title="${a.length ? a.length + ' made' : ''}" style="--c:${lvl(a.length)}"></button>`;
+    }).join('')}</div><span>${yrs[y] || 0}</span></div>`
+  ).join('');
+
   const det = $('det'), a = by[selCell] || []; det.hidden = !selCell;
   if (selCell) {
     const [y, w] = selCell.split('-'); const j = new Date(+y, 0, 1 + w * 7);
-    det.innerHTML = `<strong>Week of ${j.toLocaleDateString(undefined, { month: 'short', day: 'numeric', year: 'numeric' })}</strong>${a.length ? `<ul>${a.map(m => `<li><span class="k">${m.k}</span><a href="${esc(m.url || '#' + m.id)}">${esc(m.t)}</a></li>`).join('')}</ul>` : '<p style="margin:6px 0 0;color:var(--mute)">Nothing published this week.</p>'}`;
+    det.innerHTML = `<strong>Week of ${j.toLocaleDateString(undefined, { month: 'short', day: 'numeric', year: 'numeric' })}</strong>${a.length ? `<ul>${a.map(m => `<li><span class="k">${m.k}</span><a href="${esc(m.url || '#' + m.id)}">${esc(m.t)}</a></li>`).join('')}</ul>` : '<p style="margin:6px 0 0;color:var(--muted)">Nothing published this week.</p>'}`;
   }
 }
+
 $('grid').addEventListener('click', e => { const b = e.target.closest('button'); if (!b) return; selCell = selCell === b.dataset.c ? '' : b.dataset.c; tracker(); });
 $('chips').addEventListener('click', e => { const b = e.target.closest('button'); if (!b) return; kind = b.dataset.k; $('chips').querySelectorAll('button').forEach(x => x.setAttribute('aria-pressed', x === b)); selCell = ''; tracker(); });
 tracker();
+
+// Scroll the grid so the current week column is visible
+(function scrollToCurrentWeek() {
+  const today = new Date().toISOString().slice(0, 10);
+  const [cy, cw] = wk(today);
+  const btn = document.querySelector(`.cells button[data-c="${cy}-${cw}"]`);
+  if (btn) btn.scrollIntoView({ inline: 'end', block: 'nearest' });
+})();
 
 /* ── Tracker / Charts toggle ── */
 function showTrackerView(which) {
@@ -99,11 +140,12 @@ function barChart(title, rows, fmtVal, takeaway) {
   const max = Math.max(...rows.map(r => r.val));
   const bars = rows.map(r => {
     const pct = max ? Math.round(r.val / max * 100) : 0;
-    const col = FC[r.label] || 'var(--acc)';
+    const col = FC[r.label] || 'var(--accent)';
     return `<div class="bar-row"><span class="bar-lbl">${esc(r.label)}</span><div class="bar-trk"><div class="bar-fill" style="width:${pct}%;background:${col}"></div><span class="bar-num">${esc(fmtVal(r.val))}</span></div></div>`;
   }).join('');
   return `<div class="chart"><h4>${esc(title)}</h4><div class="bars">${bars}</div><p class="chart-note">${takeaway}</p></div>`;
 }
+
 function renderCharts() {
   const cv = $('charts-view');
   const ss = stories.filter(s => s.f);
@@ -138,9 +180,11 @@ function renderCharts() {
   const sumByYr = {}, cntByYr = {};
   ss.forEach(s => { if (s.wc > 0) { const y = s.d.slice(0, 4); sumByYr[y] = (sumByYr[y] || 0) + s.wc; cntByYr[y] = (cntByYr[y] || 0) + 1; } });
   const avgYrRows = Object.entries(sumByYr).sort((a, b) => a[0].localeCompare(b[0])).map(([y, tot]) => ({ label: y, val: Math.round(tot / cntByYr[y]) }));
-  const topAvgYr = avgYrRows.reduce((best, r) => !best || r.val > best.val ? r : best, null);
-  const c4 = barChart('Average story length per year', avgYrRows, n => loc(n) + ' wds',
-    topAvgYr ? `Stories in ${topAvgYr.label} averaged ${loc(topAvgYr.val)} words, the longest average in any year.` : '');
+  const firstYr = avgYrRows[0], lastYr = avgYrRows[avgYrRows.length - 1];
+  const lengthTakeaway = firstYr && lastYr && firstYr.label !== lastYr.label
+    ? `Year ${firstYr.label} averaged ${loc(firstYr.val)} words. ${lastYr.label}: ${loc(lastYr.val)} — ${firstYr.val > lastYr.val ? 'shorter, sharper, still weekly.' : 'longer, richer, still weekly.'}`
+    : '';
+  const c4 = barChart('Average story length per year', avgYrRows, n => loc(n) + ' wds', lengthTakeaway);
 
   /* 5. stories by genre (top 10) */
   const byGenre = {};
@@ -183,8 +227,7 @@ function rows() {
   if (tab === 'stories') return stories.filter(s => m(s) && (!a || s.f === a) && (!b || (b === '__fav' ? s.fav : b === '__aw' ? s.aw : s.g.includes(b))));
   if (tab === 'projects') {
     return projects.filter(p => {
-      const mt = !q || p.t.toLowerCase().includes(q);
-      if (!mt) return false;
+      if (!(!q || p.t.toLowerCase().includes(q))) return false;
       if (a && p.cat !== a) return false;
       if (b === 'Ongoing' && !p.ongoing) return false;
       if (b === 'Completed' && p.ongoing) return false;
@@ -217,15 +260,16 @@ function render() {
   if (view === 'table') {
     if (tab === 'writing') out.innerHTML = `<table class="stack"><thead><tr><th>Title</th><th>Published</th><th></th></tr></thead><tbody>${r.map(p => `<tr id="${p.id}"><td class="ttl">${link(p.url, esc(p.t))}</td><td class="wk">${fmtD(p.d)}</td><td>${shareBtn(p.id, p.url)}</td></tr>`).join('')}</tbody></table>`;
     if (tab === 'stories') out.innerHTML = `<table class="stack"><thead><tr><th>Week</th><th>Title</th><th>Form</th><th>Genre</th><th></th></tr></thead><tbody>${r.map(s => `<tr id="${s.id}"><td class="wk">${esc(s.w)}</td><td class="ttl">${s.fav ? '<span class="star" title="Personal favorite">★</span> ' : ''}${link(s.url, esc(s.t))}${s.aw ? `<span class="award">${esc(s.aw)}</span>` : ''}</td><td>${tag(s.f)}</td><td>${s.g.filter(g => g !== s.f).map(tag).join('')}</td><td>${shareBtn(s.id, s.url)}</td></tr>`).join('')}</tbody></table>`;
-    if (tab === 'projects') out.innerHTML = `<table class="stack"><thead><tr><th>Project</th><th>When</th><th>Area</th><th>Links</th><th></th></tr></thead><tbody>${r.map(p => `<tr id="${p.id}"><td class="ttl">${esc(p.t)}<span class="award" style="color:var(--mute)">${esc(p.one)}</span></td><td class="wk">${span(p)}</td><td>${tag(p.cat)}</td><td>${p.links.map(([l, u]) => `<a href="${esc(u)}">${esc(l)}</a>`).join('<br>')}</td><td>${shareBtn(p.id)}</td></tr>`).join('')}</tbody></table>`;
-    if (tab === 'tools') out.innerHTML = `<table class="stack"><thead><tr><th>Name</th><th>Type</th><th>Stage</th><th></th></tr></thead><tbody>${r.map(t => `<tr id="${t.id}"><td class="ttl">${link(t.url, esc(t.t))}${t.one ? `<span class="award" style="color:var(--mute)">${esc(t.one)}</span>` : ''}</td><td>${tag(t.ty)}</td><td>${tag(t.st)}</td><td>${shareBtn(t.id, t.url)}</td></tr>`).join('')}</tbody></table>`;
+    if (tab === 'projects') out.innerHTML = `<table class="stack"><thead><tr><th>Project</th><th>When</th><th>Area</th><th>Links</th><th></th></tr></thead><tbody>${r.map(p => `<tr id="${p.id}"><td class="ttl">${esc(p.t)}<span class="award" style="color:var(--muted)">${esc(p.one)}</span></td><td class="wk">${span(p)}</td><td>${tag(p.cat)}</td><td>${p.links.map(([l, u]) => `<a href="${esc(u)}">${esc(l)}</a>`).join('<br>')}</td><td>${shareBtn(p.id)}</td></tr>`).join('')}</tbody></table>`;
+    if (tab === 'tools') out.innerHTML = `<table class="stack"><thead><tr><th>Name</th><th>Type</th><th>Stage</th><th></th></tr></thead><tbody>${r.map(t => `<tr id="${t.id}"><td class="ttl">${link(t.url, esc(t.t))}${t.one ? `<span class="award" style="color:var(--muted)">${esc(t.one)}</span>` : ''}</td><td>${tag(t.ty)}</td><td>${tag(t.st)}</td><td>${shareBtn(t.id, t.url)}</td></tr>`).join('')}</tbody></table>`;
     return;
   }
+
   out.innerHTML = '<div class="grid">' + r.map(x => {
     if (tab === 'writing') return `<article class="card" id="${x.id}">${link(x.url, thumb(x, ''))}<span class="wk">${fmtD(x.d)}</span><h3>${link(x.url, esc(x.t))}</h3><div class="foot">${link(x.url, 'Read')}${shareBtn(x.id, x.url)}</div></article>`;
     if (tab === 'stories') return `<article class="card" id="${x.id}">${link(x.url, thumb(x, x.w))}<span class="wk">Week ${esc(x.w)}${x.fav ? ' <span class="star">★</span>' : ''}</span><h3>${link(x.url, esc(x.t))}</h3>${x.aw ? `<span class="award">${esc(x.aw)}</span>` : ''}<div>${tag(x.f)}${x.g.filter(g => g !== x.f).map(tag).join('')}</div><div class="foot">${link(x.url, 'Read')}${shareBtn(x.id, x.url)}</div></article>`;
-    if (tab === 'projects') return `<article class="card" id="${x.id}"><div class="th" style="--fc:${TINT(x.cat)}"><img loading="lazy" alt="" src="${esc(x.img)}" onerror="this.remove()"></div><span class="wk">${span(x)}</span><h3>${esc(x.t)}</h3><p style="margin:0;color:var(--mute)">${esc(x.one)}</p><div>${tag(x.cat)}</div><div class="foot"><span>${x.links.map(([l, u]) => `<a href="${esc(u)}">${esc(l)}</a>`).join(' · ')}</span>${shareBtn(x.id)}</div></article>`;
-    return `<article class="card" id="${x.id}"><h3>${link(x.url, esc(x.t))}</h3>${x.one ? `<p style="margin:0;color:var(--mute)">${esc(x.one)}</p>` : ''}<div>${tag(x.ty)}${tag(x.st)}</div><div class="foot"><span></span>${shareBtn(x.id, x.url)}</div></article>`;
+    if (tab === 'projects') return `<article class="card" id="${x.id}"><div class="th" style="--fc:${TINT(x.cat)}"><img loading="lazy" alt="" src="${esc(x.img)}" onerror="this.remove()"></div><span class="wk">${span(x)}</span><h3>${esc(x.t)}</h3><p style="margin:0;color:var(--muted)">${esc(x.one)}</p><div>${tag(x.cat)}</div><div class="foot"><span>${x.links.map(([l, u]) => `<a href="${esc(u)}">${esc(l)}</a>`).join(' · ')}</span>${shareBtn(x.id)}</div></article>`;
+    return `<article class="card" id="${x.id}"><h3>${link(x.url, esc(x.t))}</h3>${x.one ? `<p style="margin:0;color:var(--muted)">${esc(x.one)}</p>` : ''}<div>${tag(x.ty)}${tag(x.st)}</div><div class="foot"><span></span>${shareBtn(x.id, x.url)}</div></article>`;
   }).join('') + '</div>';
 }
 function go() {

@@ -1,0 +1,109 @@
+/* ─────────────────────────────────────────────────────────────
+   SANZO WADA COLOUR SYSTEM
+   All hex values live here and ONLY here.
+   Every name is annotated with its Wada colour name + combination.
+   ───────────────────────────────────────────────────────────── */
+
+/* ── THEME A: Violet Night (DARK) ─────────────────────────────
+   Default when prefers-color-scheme: dark.
+   Combination #52 (Black + Sulphur Yellow) + #343 extended palette. */
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg:       #111314; /* Black · Wada #52 with Black */
+    --surface:  #111314; /* Black */
+    --text:     #f5ecc2; /* Sulphur Yellow · Wada #52 */
+    --muted:    #b6bfc1; /* Neutral Gray */
+    --border:   #40456a; /* Violet Blue */
+    --accent:   #b5b1d8; /* Grayish Lavender A */
+    --heat-0:   #051230; /* Deep Indigo */
+    --heat-1:   #40456a; /* Violet Blue */
+    --heat-2:   #4f4086; /* Violet */
+    --heat-3:   #66629c; /* Dark Soft Violet */
+    --heat-4:   #b5b1d8; /* Grayish Lavender A */
+    --signal:   #f48067; /* Grenadine Pink · Wada #112 with Black */
+    --comparison: var(--accent);
+    --card-bg:  #111314; /* Black — dark cards stay on-bg */
+    --card-text: #f5ecc2; /* Sulphur Yellow */
+  }
+}
+
+/* ── THEME B: Paper (LIGHT) ───────────────────────────────────
+   Default when prefers-color-scheme: light.
+   Combination #296 (Slate + Ivory Buff) + #151 extended palette. */
+@media (prefers-color-scheme: light) {
+  :root {
+    --bg:       #f5ecc2; /* Sulphur Yellow · Wada #52 */
+    --surface:  #f5ecc2; /* Sulphur Yellow */
+    --text:     #111314; /* Black · Wada #52 */
+    --muted:    #34454c; /* Slate · Wada #296 */
+    --border:   #c2ae93; /* Ecru · Wada #302 */
+    --accent:   #064f6e; /* Vandar Poel's Blue · Wada #151 */
+    --heat-0:   #ebd3a2; /* Ivory Buff */
+    --heat-1:   #a5c8d1; /* Light Glaucous Blue */
+    --heat-2:   #5a82b3; /* Olympic Blue */
+    --heat-3:   #064f6e; /* Vandar Poel's Blue · Wada #151 */
+    --heat-4:   #12354e; /* Dark Tyrian Blue */
+    --signal:   #a62c37; /* Carmine Red · Wada #104 with Sulphur Yellow */
+    --comparison: var(--muted);
+    --card-bg:  #111314; /* Black — dark cards on light bg use inverse */
+    --card-text: #f5ecc2; /* Sulphur Yellow */
+  }
+}
+
+/* ── FORCE OVERRIDES (manual toggle saved in localStorage) ── */
+[data-theme=dark] {
+  --bg:       #111314;
+  --surface:  #111314;
+  --text:     #f5ecc2;
+  --muted:    #b6bfc1;
+  --border:   #40456a;
+  --accent:   #b5b1d8;
+  --heat-0:   #051230;
+  --heat-1:   #40456a;
+  --heat-2:   #4f4086;
+  --heat-3:   #66629c;
+  --heat-4:   #b5b1d8;
+  --signal:   #f48067;
+  --comparison: var(--accent);
+  --card-bg:  #111314;
+  --card-text: #f5ecc2;
+}
+[data-theme=light] {
+  --bg:       #f5ecc2;
+  --surface:  #f5ecc2;
+  --text:     #111314;
+  --muted:    #34454c;
+  --border:   #c2ae93;
+  --accent:   #064f6e;
+  --heat-0:   #ebd3a2;
+  --heat-1:   #a5c8d1;
+  --heat-2:   #5a82b3;
+  --heat-3:   #064f6e;
+  --heat-4:   #12354e;
+  --signal:   #a62c37;
+  --comparison: var(--muted);
+  --card-bg:  #111314;
+  --card-text: #f5ecc2;
+}
+
+/* ── SHARED — spine + shelf colours (never change with theme) ──
+   Like real books: spines keep their colour regardless of room lighting.
+   Fiction (#343): short story, screenplay, poem, rap/other.
+   Nonfiction (#296): essay, memoir, newsletter post. */
+:root {
+  /* Fiction spines */
+  --spine-short-story: #064f6e; /* Vandar Poel's Blue · Wada #343 */
+  --spine-screenplay:  #ae5224; /* Burnt Sienna (warm brown-orange) */
+  --spine-poem:        #ebd3a2; /* Ivory Buff */
+  --spine-rap:         #635a3a; /* Dark Olive */
+
+  /* Nonfiction spines */
+  --spine-essay:       #34454c; /* Slate · Wada #296 */
+  --spine-memoir:      #71502f; /* Brown */
+  --spine-post:        #d8a37b; /* Buff Orange */
+
+  /* Shelf + labels */
+  --shelf-wood:        #71502f; /* Brown */
+  --call-label-bg:     #f5ecc2; /* Sulphur Yellow */
+  --call-label-text:   #111314; /* Black */
+}
