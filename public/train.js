@@ -57,54 +57,154 @@ function getChangeLineOptions(n) {
 }
 
 // ── split-flap departures board ──
-const FLAP = ' ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789-:.,\'';
-const BOARD_ROWS = 6;
-let boardInterval = null;
+const FLAP = ' ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789-:.,\'!?';
+const DEST_LEN = 18;
+const LINE_LEN = 10;
 
-function makeFlapRow(title, town) {
-  const pad = 32, tpad = 12;
-  const tSlot = title.toUpperCase().slice(0, pad).padEnd(pad, ' ');
-  const nSlot = town.toUpperCase().slice(0, tpad).padEnd(tpad, ' ');
-  const chars = [...tSlot, ...nSlot];
-  const spans = chars.map((c, i) => `<span class="flap-ch" data-i="${i}">${esc(c)}</span>`).join('');
-  return `<div class="depart-row">${spans}</div>`;
+let boardRows = [];
+let flipTimeout = null;
+
+function truncDest(t) {
+  const u = t.toUpperCase();
+  return u.length > DEST_LEN ? u.slice(0, DEST_LEN - 3) + '...' : u;
 }
 
-function animateRow(rowEl, newTitle, newTown, reduced) {
-  const pad = 32, tpad = 12;
-  const target = [...(newTitle.toUpperCase().slice(0, pad).padEnd(pad, ' ')), ...(newTown.toUpperCase().slice(0, tpad).padEnd(tpad, ' '))];
-  const spans = rowEl.querySelectorAll('.flap-ch');
+function makeFlapChars(text, maxLen) {
+  const str = String(text).toUpperCase();
+  const padded = str.length > maxLen ? str.slice(0, maxLen) : str.padEnd(maxLen, ' ');
+  return [...padded].map(c => `<span class="flap-ch">${esc(c)}</span>`).join('');
+}
+
+function animateFlapEl(el, text, maxLen, reduced) {
+  if (!el) return;
+  const str = String(text).toUpperCase();
+  const target = str.length > maxLen ? str.slice(0, maxLen) : str.padEnd(maxLen, ' ');
+  const spans = el.querySelectorAll('.flap-ch');
   spans.forEach((sp, i) => {
-    if (reduced) { sp.textContent = target[i]; return; }
-    let f = 0, frames = 4 + Math.floor(Math.random() * 5);
+    const ch = target[i] || ' ';
+    if (reduced) { sp.textContent = ch; return; }
+    const ms = 350 + Math.random() * 250; // 350–600ms
+    const frames = Math.round(ms / 50);
+    let f = 0;
     const iv = setInterval(() => {
       if (f++ < frames) sp.textContent = FLAP[Math.floor(Math.random() * FLAP.length)];
-      else { sp.textContent = target[i]; clearInterval(iv); }
+      else { sp.textContent = ch; clearInterval(iv); }
     }, 50);
   });
 }
 
+function statusForRow(story, rowIdx) {
+  if (rowIdx === 0) return { cls: 'dr-status--boarding', text: 'BOARDING' };
+  const cutoff = new Date();
+  cutoff.setDate(cutoff.getDate() - 14);
+  if (story.d >= cutoff.toISOString().slice(0, 10)) return { cls: 'dr-status--new', text: 'NEW' };
+  return { cls: '', text: 'ON TIME' };
+}
+
+function fakeTime(offsetMins) {
+  return new Date(Date.now() + offsetMins * 60000)
+    .toLocaleTimeString('en-US', {
+      hour: '2-digit', minute: '2-digit', hour12: false,
+      timeZone: 'America/Chicago',
+    });
+}
+
 function buildBoard() {
   const board = $('depart-rows'); if (!board) return;
-  const newest = [...stories].sort((a, b) => b.d.localeCompare(a.d)).slice(0, 10);
-  let rowStories = [...newest];
-  while (rowStories.length < BOARD_ROWS) rowStories = [...rowStories, ...newest];
-  rowStories = rowStories.slice(0, BOARD_ROWS);
+  if (flipTimeout) { clearTimeout(flipTimeout); flipTimeout = null; }
 
-  board.innerHTML = rowStories.map(s => makeFlapRow(s.t, townById(s.towns[0])?.name || '')).join('');
+  // 2 newest + 4 random from distinct towns
+  const sorted = [...stories].sort((a, b) => b.d.localeCompare(a.d));
+  const newest = sorted.slice(0, 2);
+  const usedIds = new Set(newest.map(s => s.id));
+  const usedTowns = new Set(newest.flatMap(s => s.towns));
+  const pool4 = [];
+
+  for (const t of towns) {
+    if (pool4.length >= 4) break;
+    if (usedTowns.has(t.id)) continue;
+    const cands = stories.filter(s => !usedIds.has(s.id) && s.towns.includes(t.id));
+    if (!cands.length) continue;
+    const pick = pickRandom(cands);
+    pool4.push(pick);
+    usedIds.add(pick.id);
+    pick.towns.forEach(tid => usedTowns.add(tid));
+  }
+  while (pool4.length < 4) {
+    const rem = stories.filter(s => !usedIds.has(s.id));
+    if (!rem.length) break;
+    const pick = pickRandom(rem);
+    pool4.push(pick);
+    usedIds.add(pick.id);
+  }
+
+  boardRows = [...newest, ...pool4].slice(0, 6);
+
+  board.innerHTML = boardRows.map((s, i) => {
+    const st = statusForRow(s, i);
+    return `<button class="depart-row" aria-label="${esc('Board: ' + s.t)}">` +
+      `<span class="dr-time">${fakeTime(5 + i * 7)}</span>` +
+      `<span class="dr-dest">${makeFlapChars(truncDest(s.t), DEST_LEN)}</span>` +
+      `<span class="dr-line">${makeFlapChars((townById(s.towns[0])?.name || '').toUpperCase(), LINE_LEN)}</span>` +
+      `<span class="dr-status${st.cls ? ' ' + st.cls : ''}">${st.text}</span>` +
+      `<span class="dr-board">BOARD →</span>` +
+    `</button>`;
+  }).join('');
+
   board.querySelectorAll('.depart-row').forEach((row, i) => {
-    row.onclick = () => board_(rowStories[i]);
+    row.onclick = () => board_(boardRows[i]);
   });
 
-  if (boardInterval) clearInterval(boardInterval);
-  const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-  boardInterval = setInterval(() => {
-    board.querySelectorAll('.depart-row').forEach(row => {
-      const next = pickRandom(stories);
-      row.onclick = () => board_(next);
-      animateRow(row, next.t, townById(next.towns[0])?.name || '', reduced);
-    });
-  }, 3000);
+  startFlipLoop();
+}
+
+function startFlipLoop() {
+  if (flipTimeout) clearTimeout(flipTimeout);
+  let idx = 0;
+  function next() {
+    flipTimeout = setTimeout(() => {
+      const board = $('depart-rows'); if (!board) return;
+      const rows = board.querySelectorAll('.depart-row');
+      if (!rows.length) return;
+
+      const ri = idx % rows.length;
+      const story = pickRandom(stories);
+      boardRows[ri] = story;
+
+      const row = rows[ri];
+      row.setAttribute('aria-label', 'Board: ' + story.t);
+      row.onclick = () => board_(story);
+
+      const st = statusForRow(story, ri);
+      const statusEl = row.querySelector('.dr-status');
+      if (statusEl) {
+        statusEl.className = 'dr-status' + (st.cls ? ' ' + st.cls : '');
+        statusEl.textContent = st.text;
+      }
+
+      const reduced = window.matchMedia('(prefers-reduced-motion:reduce)').matches;
+      animateFlapEl(row.querySelector('.dr-dest'), truncDest(story.t), DEST_LEN, reduced);
+      animateFlapEl(row.querySelector('.dr-line'), (townById(story.towns[0])?.name || '').toUpperCase(), LINE_LEN, reduced);
+
+      idx++;
+      next();
+    }, 7000 + Math.random() * 2000);
+  }
+  next();
+}
+
+// ── live clock (America/Chicago) ──
+function startClock() {
+  const el = $('depart-clock'); if (!el) return;
+  function tick() {
+    el.textContent = new Intl.DateTimeFormat('en-US', {
+      hour: '2-digit', minute: '2-digit', hour12: false,
+      timeZone: 'America/Chicago',
+    }).format(new Date());
+  }
+  tick();
+  const msToNextMinute = 60000 - (Date.now() % 60000);
+  setTimeout(() => { tick(); setInterval(tick, 60000); }, msToNextMinute);
 }
 
 // ── boarding ──
@@ -119,7 +219,7 @@ function board_(story) {
   renderRoute();
   renderStop();
   renderNextActions();
-  if (boardInterval) { clearInterval(boardInterval); boardInterval = null; }
+  if (flipTimeout) { clearTimeout(flipTimeout); flipTimeout = null; }
 }
 
 function boardTown(townId) {
@@ -135,6 +235,7 @@ function showLobby() {
   $('train-lobby').hidden = false;
   $('train-ride').hidden = true;
   buildBoard();
+  startClock();
 }
 
 function showRide() {

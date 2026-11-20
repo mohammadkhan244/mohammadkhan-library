@@ -62,10 +62,18 @@ export default async function TrainPage() {
 
         {/* ── Lobby ── */}
         <div className="train-lobby" id="train-lobby">
+          <p className="lobby-intro">Pick a train. Each one takes you through my writing, stop by stop.</p>
           <div className="depart-board" id="depart-board" aria-live="polite">
             <div className="depart-hd">
               <span className="depart-title">DEPARTURES</span>
-              <span className="depart-sub">Board a piece to start your ride</span>
+              <span className="depart-clock" id="depart-clock" aria-live="off">--:--</span>
+            </div>
+            <div className="depart-col-hd" aria-hidden="true">
+              <span className="dc-time">TIME</span>
+              <span className="dc-dest">DESTINATION</span>
+              <span className="dc-line">LINE</span>
+              <span className="dc-status">STATUS</span>
+              <span></span>
             </div>
             <div className="depart-rows" id="depart-rows" />
           </div>

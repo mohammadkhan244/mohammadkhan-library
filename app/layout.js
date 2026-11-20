@@ -6,6 +6,11 @@ export const metadata = {
   description: 'Fiction, essays, tools and projects. One story a week since 2020.',
 };
 
+export const viewport = {
+  width: 'device-width',
+  initialScale: 1,
+};
+
 export default function RootLayout({ children }) {
   return (
     <html lang="en" suppressHydrationWarning>
