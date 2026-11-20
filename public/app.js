@@ -198,17 +198,46 @@ function renderCharts() {
   cv.innerHTML = `<div class="charts-grid">${c1}${c2}${c3}${c4}${c5}</div>`;
 }
 
+// Pre-computed WCAG text colors for each spine bg (see lib/contrast.js for ratios).
+// --call-label-bg (light) or --call-label-text (dark) — whichever gives higher contrast.
+const SPINE_TEXT_COLOR = {
+  'var(--spine-short-story)': 'var(--call-label-bg)',   // dark blue:    8.4:1 light wins
+  'var(--spine-screenplay)':  'var(--call-label-bg)',   // burnt sienna: 4.4:1 light wins
+  'var(--spine-poem)':        'var(--call-label-text)', // ivory:       11.8:1 dark wins
+  'var(--spine-rap)':         'var(--call-label-bg)',   // olive:        5.5:1 light wins
+  'var(--spine-essay)':       'var(--call-label-bg)',   // slate:        high  light wins
+  'var(--spine-memoir)':      'var(--call-label-bg)',   // brown:        5.8:1 light wins
+  'var(--spine-post)':        'var(--call-label-text)', // buff orange:  7.7:1 dark wins
+};
+
+// canvas measureText for exact vertical text fitting.
+// In writing-mode:vertical-rl, each Latin char's height in the column ≈ its horizontal advance.
+let _spineCanvas;
+function fitSpineText(title, baseH) {
+  if (!_spineCanvas) _spineCanvas = document.createElement('canvas');
+  const ctx = _spineCanvas.getContext('2d');
+  const avail = baseH - 22; // minus padding + call-num-tag
+  for (let fs = 13; fs >= 7; fs--) {
+    ctx.font = `600 ${fs}px Lato, sans-serif`;
+    const totalH = [...title].reduce((sum, ch) => sum + ctx.measureText(ch).width, 0) * 1.05;
+    if (totalH <= avail) return { fs, h: baseH };
+  }
+  // 7px doesn't fit — extend spine height to accommodate
+  ctx.font = '600 7px Lato, sans-serif';
+  const totalH7 = [...title].reduce((sum, ch) => sum + ctx.measureText(ch).width, 0) * 1.05;
+  return { fs: 7, h: Math.ceil(totalH7) + 22 };
+}
+
 /* ── shelf / stacks rendering ── */
 function spineEl(s, idx) {
   const wc = s.wc || 100;
-  const w = Math.max(20, Math.round(20 + Math.sqrt(wc) * 0.5));
-  const h = 150 + (idx % 3) * 8; // subtle height variation: 150, 158, 166
-  // Font size fits title vertically: writing-mode:vertical-rl, each char ≈ fontSize * 1.1 px height
-  const fs = Math.max(7, Math.min(13, Math.floor((h - 22) / (s.t.length * 1.1))));
+  const w = Math.max(30, Math.round(20 + Math.sqrt(wc) * 0.5));
+  const baseH = 150 + (idx % 3) * 8;
+  const { fs, h } = fitSpineText(s.t, baseH);
   const bg = FC[s.f] || 'var(--accent)';
+  const fg = SPINE_TEXT_COLOR[bg] || 'var(--call-label-bg)';
   const prefix = s.dewey || 'FIC';
-  const wkNum = s.w || '—';
-  return `<button class="spine" data-id="${s.id}" style="width:${w}px;height:${h}px;background:${bg}" title="${esc(s.t)}"><span class="spine-title" style="font-size:${fs}px">${esc(s.t)}</span><span class="call-num-tag">${esc(prefix)}<br>KHA<br>${esc(wkNum)}</span></button>`;
+  return `<button class="spine" data-id="${s.id}" style="width:${w}px;height:${h}px;background:${bg}" title="${esc(s.t)}"><span class="spine-title" style="font-size:${fs}px;color:${fg}">${esc(s.t)}</span><span class="call-num-tag">${esc(prefix)}<br>KHA<br>${esc(s.w||'—')}</span></button>`;
 }
 
 function renderShelfView(r) {
@@ -236,10 +265,11 @@ function bookColor(b) {
   return BOOK_PALETTE[Math.abs(h)];
 }
 function bookSpineEl(b) {
-  const w = Math.round(20 + (b.rating || 2.5) * 4);
-  const h = 180;
-  const fs = Math.max(7, Math.min(13, Math.floor((h - 22) / (b.title.length * 1.1))));
-  return `<button class="spine" data-bid="${b.id}" style="width:${w}px;height:${h}px;background:${bookColor(b)}" title="${esc(b.title)}"><span class="spine-title" style="font-size:${fs}px">${esc(b.title)}</span>${b.rating ? `<span class="call-num-tag">${'★'.repeat(Math.round(b.rating))}</span>` : ''}</button>`;
+  const w = Math.max(30, Math.round(20 + (b.rating || 2.5) * 4));
+  const bg = bookColor(b);
+  const fg = SPINE_TEXT_COLOR[bg] || 'var(--call-label-bg)';
+  const { fs, h } = fitSpineText(b.title, 180);
+  return `<button class="spine" data-bid="${b.id}" style="width:${w}px;height:${h}px;background:${bg}" title="${esc(b.title)}"><span class="spine-title" style="font-size:${fs}px;color:${fg}">${esc(b.title)}</span>${b.rating ? `<span class="call-num-tag" style="color:${fg}">${'★'.repeat(Math.round(b.rating))}</span>` : ''}</button>`;
 }
 
 function renderBookSpines(r) {
