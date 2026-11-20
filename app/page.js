@@ -37,14 +37,14 @@ export default async function Home() {
         {metrics.weeksPublished > 0 && (
           <section className="m-stats" aria-label="Library by the numbers">
             {[
-              { val: fmtNum(metrics.weeksPublished), note: bm.weeksPublished },
-              { val: fmtNum(metrics.longestRun), note: bm.longestRun },
-              { val: fmtNum(metrics.words), note: bm.words },
-              { val: fmtNum(metrics.stories), note: bm.stories },
-              { val: fmtNum(metrics.avgWords), note: bm.avgWords },
-              { val: fmtNum(metrics.booksRead), note: bm.booksRead },
-            ].map(({ val, note }) => (
-              <div key={val} className="m-stat">
+              { key: 'wp', raw: metrics.weeksPublished, val: fmtNum(metrics.weeksPublished), note: bm.weeksPublished },
+              { key: 'lr', raw: metrics.longestRun, val: fmtNum(metrics.longestRun), note: bm.longestRun },
+              { key: 'wc', raw: metrics.words, val: fmtNum(metrics.words), note: bm.words },
+              { key: 'sc', raw: metrics.stories, val: fmtNum(metrics.stories), note: bm.stories },
+              { key: 'aw', raw: metrics.avgWords, val: fmtNum(metrics.avgWords), note: bm.avgWords },
+              { key: 'br', raw: metrics.booksRead, val: fmtNum(metrics.booksRead), note: bm.booksRead },
+            ].filter(({ raw }) => raw > 0).map(({ key, val, note }) => (
+              <div key={key} className="m-stat">
                 <b>{val}</b>
                 <small>{note}</small>
               </div>
