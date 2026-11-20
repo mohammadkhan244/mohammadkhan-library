@@ -107,6 +107,14 @@
   --call-label-bg:     #f5ecc2; /* Sulphur Yellow */
   --call-label-text:   #111314; /* Black */
 
+  /* Town accent colours — fixed, never change with theme */
+  --town-sci-fi:     #064f6e; /* Vandar Poel's Blue */
+  --town-realism:    #ae5224; /* Burnt Sienna */
+  --town-philosophy: #4f4086; /* Violet */
+  --town-horror:     #a62c37; /* Carmine Red */
+  --town-making:     #635a3a; /* Dark Olive */
+  --town-fable:      #71502f; /* Brown */
+
   /* Departures board — always dark, both themes */
   --depart-bg:         #111314; /* Black */
   --depart-text:       #f5ecc2; /* Sulphur Yellow */

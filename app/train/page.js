@@ -85,17 +85,20 @@ export default async function TrainPage() {
         {/* ── Ride ── */}
         <div className="train-ride" id="train-ride" hidden>
           <div className="route-strip-wrap">
-            <div className="route-strip" id="route-bar" role="navigation" aria-label="Route" />
+            <p className="route-label" id="route-label">Your route</p>
+            <div className="route-strip" id="route-bar" role="navigation" aria-label="Route stops" />
           </div>
 
-          <div className="stop-wrap">
-            <div id="current-stop" />
-          </div>
-
-          <div className="next-actions" id="next-actions" />
-
-          <div className="ride-foot">
-            <button className="btn-ghost" id="back-to-lobby">← Lobby</button>
+          <div className="ride-layout">
+            <div className="ride-main">
+              <div id="current-stop" />
+              <div id="out-window" />
+              <div className="next-dep-wrap" id="next-dep-wrap">
+                <p className="section-label">Next departures</p>
+                <div className="next-departures" id="next-departures" />
+              </div>
+            </div>
+            <aside className="carriage-panel" id="carriage-panel" aria-label="Your carriage" />
           </div>
         </div>
       </div>

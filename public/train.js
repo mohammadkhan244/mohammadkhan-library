@@ -214,11 +214,8 @@ function board_(story) {
   curTown = story.towns[0];
   route = [curTown];
   carriage = [];
-  updateCarriageBar();
   showRide();
-  renderRoute();
-  renderStop();
-  renderNextActions();
+  renderAll();
   if (flipTimeout) { clearTimeout(flipTimeout); flipTimeout = null; }
 }
 
@@ -243,26 +240,50 @@ function showRide() {
   $('train-ride').hidden = false;
 }
 
-$('back-to-lobby').onclick = showLobby;
 
-// ── route strip — dots on a line ──
+// ── town accent colour ──
+function townColor(id) {
+  return ({ 'sci-fi':'#064f6e','realism':'#ae5224','philosophy':'#4f4086','horror':'#a62c37','making':'#635a3a','fable':'#71502f' })[id] || 'var(--accent)';
+}
+
+// ── route strip — visited + ghost upcoming ──
 function renderRoute() {
-  const bar = $('route-bar'); if (!bar) return;
+  const bar = $('route-bar');
+  const lbl = $('route-label');
+  if (!bar) return;
+  if (lbl) lbl.textContent = `Your route · ${route.length} ${route.length === 1 ? 'stop' : 'stops'}`;
+
+  const adj = getAdjacentTowns().filter(tid => !route.includes(tid)).slice(0, 3);
   const parts = [];
+
   route.forEach((tid, i) => {
     const isCur = i === route.length - 1;
     const t = townById(tid);
     const name = esc(t?.name || tid);
+    if (i > 0) parts.push('<span class="rd-track" aria-hidden="true"></span>');
     parts.push(
-      `<div class="rd-seg" ${isCur ? 'data-cur' : ''} data-town="${esc(tid)}">` +
-        `<button class="rd-dot ${isCur ? '' : 'rd-past'}" aria-label="Jump back to ${name}" ${isCur ? 'disabled' : ''}></button>` +
+      `<div class="rd-seg ${isCur ? 'rd-cur' : 'rd-past'}" data-town="${esc(tid)}">` +
+        `<button class="rd-dot" aria-label="${isCur ? 'Current stop: ' + name : 'Back to ' + name}" ${isCur ? 'disabled' : ''}></button>` +
         `<span class="rd-name">${name}</span>` +
       `</div>`
     );
-    if (!isCur) parts.push('<span class="rd-track" aria-hidden="true"></span>');
   });
+
+  adj.forEach(tid => {
+    const t = townById(tid);
+    const name = esc(t?.name || tid);
+    parts.push('<span class="rd-track rd-future" aria-hidden="true"></span>');
+    parts.push(
+      `<div class="rd-seg rd-future" data-town="${esc(tid)}">` +
+        `<button class="rd-dot" aria-label="Go to ${name}"></button>` +
+        `<span class="rd-name">${name}</span>` +
+      `</div>`
+    );
+  });
+
   bar.innerHTML = parts.join('');
-  bar.querySelectorAll('.rd-past').forEach(btn => {
+
+  bar.querySelectorAll('.rd-past button').forEach(btn => {
     btn.onclick = () => {
       const tid = btn.closest('[data-town]').dataset.town;
       const idx = route.indexOf(tid);
@@ -271,50 +292,182 @@ function renderRoute() {
       curTown = tid;
       const ss = storiesInTown(tid);
       if (ss.length) curStory = pickRandom(ss);
-      renderRoute(); renderStop(); renderNextActions();
+      renderAll();
     };
+  });
+
+  bar.querySelectorAll('.rd-future button').forEach(btn => {
+    btn.onclick = () => moveToTown(btn.closest('[data-town]').dataset.town);
   });
 }
 
-// ── current stop card ──
+// ── current stop card — always dark ──
 function renderStop() {
   const el = $('current-stop'); if (!el || !curStory) return;
   const s = curStory;
   const inCarriage = carriage.some(c => c.id === s.id);
   const townName = esc(townById(curTown)?.name || curTown);
-  const pickupLabel = inCarriage ? '✓ In your carriage' : 'Pick up';
+  const weekStr = s.w ? `Week ${String(s.w).padStart(3, '0')}` : '';
+  const metaParts = [weekStr, esc(s.f || ''), s.wc ? esc(fmtWc(s.wc)) : ''].filter(Boolean);
   el.innerHTML = `
     <div class="stop-card">
-      <div class="stop-town">${townName}</div>
+      <div class="stop-card-hd">
+        <span class="stop-town">Now stopped at · ${townName}</span>
+        <span class="stop-card-meta">${metaParts.join(' · ')}</span>
+      </div>
       <h2 class="stop-title">${esc(s.t)}</h2>
-      <p class="stop-meta">${esc(s.f || '')}${s.wc ? ' · ' + esc(fmtWc(s.wc)) : ''}${s.aw ? ' · <em>' + esc(s.aw) + '</em>' : ''}</p>
+      ${s.aw ? `<p class="stop-desc">${esc(s.aw)}</p>` : ''}
       <div class="stop-actions">
-        ${s.url ? `<a class="btn-primary" href="${esc(s.url)}" target="_blank" rel="noopener">Read</a>` : ''}
-        <button class="pickup-btn" data-id="${esc(s.id)}" ${inCarriage ? 'data-picked' : ''}>${esc(pickupLabel)}</button>
+        ${s.url ? `<a class="btn-read" href="${esc(s.url)}" target="_blank" rel="noopener">Read the story</a>` : ''}
+        <button class="pickup-btn" data-id="${esc(s.id)}" ${inCarriage ? 'data-picked' : ''}>${inCarriage ? '✓ In your carriage' : 'Pick up · add to carriage'}</button>
       </div>
     </div>`;
   el.querySelector('.pickup-btn').onclick = () => toggleCarriage(s);
 }
 
-// ── next-stop actions (primary + 2 change-line options) ──
-function renderNextActions() {
-  const el = $('next-actions'); if (!el) return;
-  const autoNext = getAutoNextTown();
-  const autoTown = townById(autoNext);
-  const changelines = getChangeLineOptions(2);
-  el.innerHTML = `
-    <button class="btn-next-stop" id="btn-next-stop">Next stop →</button>
-    ${changelines.map(t =>
-      `<button class="btn-change-line" data-town="${esc(t.id)}">Change line · ${esc(t.name)}</button>`
-    ).join('')}`;
+// ── out the window — stories in adjacent towns ──
+function renderOutWindow() {
+  const el = $('out-window'); if (!el) return;
+  const adj = getAdjacentTowns();
+  if (!adj.length) { el.innerHTML = ''; return; }
 
-  $('btn-next-stop').onclick = () => {
-    const tid = getAutoNextTown();
-    moveToTown(tid);
-  };
-  el.querySelectorAll('.btn-change-line').forEach(btn => {
-    btn.onclick = () => moveToTown(btn.dataset.town);
+  const autoNext = getAutoNextTown();
+  const nextTown = townById(autoNext);
+  const curTownName = esc(townById(curTown)?.name || curTown);
+
+  const cards = [];
+  const usedTowns = new Set();
+  for (const tid of adj) {
+    if (cards.length >= 4) break;
+    if (usedTowns.has(tid)) continue;
+    const bridges = storiesInBothTowns(curTown, tid);
+    if (!bridges.length) continue;
+    const s = pickRandom(bridges);
+    cards.push({ s, town: townById(tid) });
+    usedTowns.add(tid);
+  }
+  if (!cards.length) { el.innerHTML = ''; return; }
+
+  el.innerHTML = `
+    <p class="ow-label">Out the window · between ${curTownName} and ${esc(nextTown?.name || autoNext)}</p>
+    <div class="ow-cards">
+      ${cards.map(({ s, town }) => {
+        const col = townColor(town?.id || s.towns[0]);
+        const weekStr = s.w ? `Week ${String(s.w).padStart(3, '0')} · ` : '';
+        return `<button class="ow-card" data-sid="${esc(s.id)}" data-tid="${esc(town?.id || s.towns[0])}">
+          <div class="ow-town-bar" style="background:${col}"></div>
+          <span class="ow-meta">${weekStr}${esc(s.f || '')}</span>
+          <span class="ow-title">${esc(s.t)}</span>
+          <span class="ow-hop">Hop off here →</span>
+        </button>`;
+      }).join('')}
+    </div>`;
+
+  el.querySelectorAll('.ow-card').forEach(card => {
+    card.onclick = () => {
+      const sid = card.dataset.sid, tid = card.dataset.tid;
+      const story = stories.find(x => x.id === sid);
+      if (!story || !tid) return;
+      if (!route.includes(tid)) route.push(tid);
+      curTown = tid;
+      curStory = story;
+      renderAll();
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    };
   });
+}
+
+// ── next departures — 4 clickable stop options ──
+function renderNextDepartures() {
+  const el = $('next-departures'); if (!el) return;
+  const autoNext = getAutoNextTown();
+  const changelines = getChangeLineOptions(3);
+
+  const opts = [];
+  const addOpt = (tid) => {
+    if (opts.length >= 4) return;
+    const town = townById(tid); if (!town) return;
+    const pool = storiesInBothTowns(curTown, tid).length
+      ? storiesInBothTowns(curTown, tid) : storiesInTown(tid);
+    const s = pickRandom(pool); if (!s) return;
+    opts.push({ s, town });
+  };
+  addOpt(autoNext);
+  changelines.forEach(t => addOpt(t.id));
+
+  el.innerHTML = opts.map(({ s, town }) => {
+    const title = s.t.length > 28 ? s.t.slice(0, 26) + '…' : s.t;
+    return `<button class="nd-card" data-town="${esc(town.id)}">
+      <span class="nd-title">${esc(title)}</span>
+      <span class="nd-town">${esc(town.name)}</span>
+    </button>`;
+  }).join('');
+
+  el.querySelectorAll('.nd-card').forEach(card => {
+    card.onclick = () => moveToTown(card.dataset.town);
+  });
+}
+
+// ── carriage panel (desktop sidebar) ──
+function updateCarriagePanel() {
+  const panel = $('carriage-panel'); if (!panel) return;
+  const count = carriage.length;
+
+  const itemsHtml = carriage.map(s => {
+    const town = townById(s.towns[0]);
+    const title = s.t.length > 32 ? s.t.slice(0, 30) + '…' : s.t;
+    return `<div class="cp-item">
+      <div class="cp-info">
+        <span class="cp-town">${esc(town?.name || s.towns[0])} · ${esc(s.f || '')}</span>
+        <span class="cp-item-title">${esc(title)}</span>
+      </div>
+      <button class="cp-rm" data-id="${esc(s.id)}" aria-label="Remove ${esc(s.t)}">×</button>
+    </div>`;
+  }).join('');
+
+  let bridgeHtml = '';
+  if (count >= 2) {
+    const a = carriage[0], b = carriage[1];
+    const ta = a.towns[0], tb = b.towns[0];
+    const qs = questions[questionKey(ta, tb)] || [];
+    const q = (qs.length ? pickRandom(qs) : 'What connects these two pieces?').replace(/\?$/, '<span class="q-signal">?</span>');
+    const bridge = storiesInBothTowns(ta, tb).find(s => s.id !== a.id && s.id !== b.id);
+    bridgeHtml = `<div class="cp-bridge">
+      <p class="cp-where">Where they meet</p>
+      <p class="cp-q">${q}</p>
+      ${bridge ? `<p class="cp-src">Bridges: ${bridge.w ? 'Week ' + bridge.w + ' · ' : ''}<a href="${esc(bridge.url || '#')}" target="_blank" rel="noopener">${esc(bridge.t)}</a></p>` : ''}
+    </div>`;
+  }
+
+  panel.innerHTML = `
+    <div class="cp-hd">
+      <span class="cp-title">Your carriage</span>
+      <span class="cp-seats">${count} of 3 seats</span>
+    </div>
+    ${count === 0 ? '<p class="cp-empty">Pick up stories as you go. Up to 3 pieces travel with you.</p>' : ''}
+    ${count > 0 ? `<div class="cp-items">${itemsHtml}</div>` : ''}
+    ${count >= 2 ? `<button class="btn-combine" id="panel-combine">Combine these two</button>` : ''}
+    ${bridgeHtml}
+    <button class="btn-copy-ride" id="copy-ride">Copy link to this ride</button>`;
+
+  panel.querySelectorAll('.cp-rm').forEach(btn => {
+    btn.onclick = () => {
+      const s = carriage.find(c => c.id === btn.dataset.id);
+      if (s) toggleCarriage(s);
+    };
+  });
+  const combineBtn = $('panel-combine');
+  if (combineBtn) combineBtn.onclick = () => renderCombineSheet(0);
+}
+
+// ── render all ride components ──
+function renderAll() {
+  renderRoute();
+  renderStop();
+  renderOutWindow();
+  renderNextDepartures();
+  updateCarriagePanel();
+  updateCarriageBar();
 }
 
 function moveToTown(tid) {
@@ -325,7 +478,7 @@ function moveToTown(tid) {
   if (!route.includes(tid)) route.push(tid);
   curTown = tid;
   curStory = pickRandom(pool);
-  renderRoute(); renderStop(); renderNextActions();
+  renderAll();
   window.scrollTo({ top: 0, behavior: 'smooth' });
 }
 
@@ -338,6 +491,7 @@ function toggleCarriage(s) {
     if (carriage.length >= 3) return;
     carriage.push(s);
   }
+  updateCarriagePanel();
   updateCarriageBar();
   renderStop();
 }
@@ -419,7 +573,7 @@ function restoreFromURL() {
       carriage = c ? c.split(',').map(id => stories.find(x => x.id === id)).filter(Boolean) : [];
       updateCarriageBar();
       showRide();
-      renderRoute(); renderStop(); renderNextActions();
+      renderAll();
       return true;
     }
   }

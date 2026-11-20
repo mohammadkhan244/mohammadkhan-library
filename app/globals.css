@@ -189,7 +189,8 @@ footer{color:var(--muted);font:13px 'Josefin Sans',sans-serif;border-top:1px sol
 .train-nav a:hover{color:var(--text)}
 .train-theme-btn{all:unset;cursor:pointer;width:32px;height:32px;display:flex;align-items:center;justify-content:center;border-radius:6px;border:1px solid var(--border);color:var(--muted);flex-shrink:0}
 .train-theme-btn:hover{color:var(--text)}
-.train-wrap{max-width:720px;margin:0 auto;padding:clamp(20px,3vw,40px) max(5vw,16px) 100px}
+.train-wrap{max-width:1000px;margin:0 auto;padding:clamp(20px,3vw,40px) max(5vw,16px) 100px}
+.train-lobby{max-width:680px}
 
 /* lobby */
 .train-lobby{display:flex;flex-direction:column;gap:28px}
@@ -227,42 +228,102 @@ footer{color:var(--muted);font:13px 'Josefin Sans',sans-serif;border-top:1px sol
 /* ride */
 .train-ride{display:flex;flex-direction:column;gap:0}
 
-/* route strip — dots on a line */
-.route-strip-wrap{overflow-x:auto;border-bottom:1px solid var(--border);margin-bottom:28px;-webkit-overflow-scrolling:touch}
-.route-strip{display:flex;align-items:flex-start;gap:0;padding:20px 4px 32px;min-width:max-content}
-.rd-seg{position:relative;display:flex;flex-direction:column;align-items:center;width:60px;cursor:pointer}
-.rd-seg[data-cur]{cursor:default}
+/* route strip */
+.route-label{font:500 11px 'Josefin Sans',sans-serif;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);margin:0 0 6px}
+.route-strip-wrap{overflow-x:auto;border-bottom:1px solid var(--border);padding:16px 0 20px;margin-bottom:28px;-webkit-overflow-scrolling:touch}
+.route-strip{display:flex;align-items:flex-start;gap:0;min-width:max-content}
+.rd-seg{position:relative;display:flex;flex-direction:column;align-items:center;width:64px}
 .rd-dot{all:unset;display:block;width:10px;height:10px;border-radius:50%;background:var(--accent);cursor:pointer;position:relative;z-index:1}
-.rd-seg[data-cur] .rd-dot{width:14px;height:14px;outline:3px solid var(--accent);outline-offset:3px;cursor:default}
+.rd-dot:focus-visible{outline:2px solid var(--signal);outline-offset:3px}
+.rd-seg.rd-cur .rd-dot{width:14px;height:14px;outline:3px solid var(--accent);outline-offset:3px;cursor:default}
+.rd-seg.rd-future .rd-dot{background:transparent;border:2px solid var(--border);cursor:pointer;width:10px;height:10px;outline:none}
+.rd-seg.rd-future .rd-dot:hover{border-color:var(--accent)}
 .rd-name{font:10px/1.3 'Josefin Sans',sans-serif;letter-spacing:.03em;color:var(--muted);text-align:center;margin-top:8px;white-space:nowrap}
-.rd-seg[data-cur] .rd-name{color:var(--accent);font-weight:600}
-.rd-track{flex:0 0 40px;height:2px;background:var(--border);align-self:flex-start;margin-top:4px}
+.rd-seg.rd-cur .rd-name{color:var(--accent);font-weight:600}
+.rd-seg.rd-future .rd-name{opacity:.55}
+.rd-track{flex:0 0 40px;height:2px;background:var(--accent);align-self:flex-start;margin-top:4px}
+.rd-track.rd-future{background:var(--border)}
 
-/* stop card */
-.stop-wrap{margin-bottom:4px}
-.stop-card{border:1px solid var(--border);border-radius:12px;padding:clamp(16px,3vw,24px);background:var(--bg)}
-.stop-town{font:500 11px 'Josefin Sans',sans-serif;letter-spacing:.08em;text-transform:uppercase;color:var(--accent);margin-bottom:6px}
-.stop-title{font:600 clamp(20px,3vw,28px)/1.2 'Gilda Display',Georgia,serif;margin:0 0 8px}
-.stop-meta{font:13px 'Josefin Sans',sans-serif;color:var(--muted);margin:0 0 20px;line-height:1.5}
+/* ride 2-col layout */
+.ride-layout{display:grid;grid-template-columns:1fr 272px;gap:28px;align-items:start}
+.ride-main{display:flex;flex-direction:column;gap:0;min-width:0}
+
+/* stop card — always dark */
+.stop-card{background:#161b28;border:1px solid #2a3050;border-radius:12px;padding:clamp(18px,3vw,28px)}
+.stop-card-hd{display:flex;justify-content:space-between;align-items:baseline;gap:12px;margin-bottom:14px;flex-wrap:wrap}
+.stop-town{font:500 11px 'Josefin Sans',sans-serif;letter-spacing:.08em;text-transform:uppercase;color:#9e9acb}
+.stop-card-meta{font:12px 'Josefin Sans',sans-serif;color:rgba(245,236,194,.38);letter-spacing:.03em;white-space:nowrap}
+.stop-title{font:600 clamp(22px,3vw,32px)/1.2 'Gilda Display',Georgia,serif;margin:0 0 10px;color:#f5ecc2}
+.stop-desc{font:15px/1.6 'Lato',sans-serif;color:rgba(245,236,194,.6);margin:0 0 20px}
 .stop-actions{display:flex;gap:10px;flex-wrap:wrap;align-items:center}
-.pickup-btn{all:unset;cursor:pointer;font:500 14px 'Josefin Sans',sans-serif;letter-spacing:.03em;padding:10px 18px;border-radius:8px;border:1px solid var(--border);color:var(--text);min-height:44px;white-space:nowrap}
-.pickup-btn:hover{border-color:var(--accent);color:var(--accent)}
-.pickup-btn[data-picked]{color:var(--accent);border-color:var(--accent);background:color-mix(in srgb,var(--accent) 10%,var(--bg))}
+.btn-read{all:unset;cursor:pointer;display:inline-flex;align-items:center;box-sizing:border-box;font:500 14px 'Josefin Sans',sans-serif;letter-spacing:.03em;padding:10px 20px;border-radius:8px;background:rgba(245,236,194,.1);color:#f5ecc2;border:1px solid rgba(245,236,194,.22);min-height:44px;white-space:nowrap;text-decoration:none}
+.btn-read:hover{background:rgba(245,236,194,.18)}
+.btn-read:focus-visible{outline:2px solid var(--signal);outline-offset:2px}
+.pickup-btn{all:unset;cursor:pointer;box-sizing:border-box;font:500 14px 'Josefin Sans',sans-serif;letter-spacing:.03em;padding:10px 18px;border-radius:8px;border:1px solid rgba(245,236,194,.18);color:rgba(245,236,194,.65);min-height:44px;white-space:nowrap}
+.pickup-btn:hover{border-color:rgba(245,236,194,.45);color:#f5ecc2}
+.pickup-btn[data-picked]{color:#b5b1d8;border-color:rgba(181,177,216,.5);background:rgba(181,177,216,.1)}
 .pickup-btn:focus-visible{outline:2px solid var(--signal);outline-offset:2px}
 
-/* next-stop actions */
-.next-actions{display:flex;flex-direction:column;gap:10px;padding:24px 0}
-.btn-next-stop{all:unset;display:block;width:100%;text-align:center;background:var(--accent);color:var(--bg);font:600 15px 'Josefin Sans',sans-serif;letter-spacing:.06em;padding:16px 24px;border-radius:12px;cursor:pointer;min-height:56px;box-sizing:border-box}
-.btn-next-stop:hover{opacity:.9}
-.btn-next-stop:focus-visible{outline:2px solid var(--signal);outline-offset:3px}
-.btn-change-line{all:unset;display:block;width:100%;text-align:center;background:var(--bg);color:var(--muted);font:500 14px 'Josefin Sans',sans-serif;padding:12px 24px;border-radius:10px;border:1px solid var(--border);cursor:pointer;min-height:44px;box-sizing:border-box}
-.btn-change-line:hover{color:var(--text);border-color:var(--accent)}
-.btn-change-line:focus-visible{outline:2px solid var(--signal);outline-offset:2px}
+/* out the window */
+.out-window{margin:24px 0 0}
+.ow-label{font:500 11px 'Josefin Sans',sans-serif;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);margin:0 0 10px}
+.ow-cards{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}
+.ow-card{all:unset;display:flex;flex-direction:column;gap:4px;border:1px solid var(--border);border-radius:8px;padding:12px;cursor:pointer;box-sizing:border-box;background:var(--bg)}
+.ow-card:hover{border-color:var(--accent);background:color-mix(in srgb,var(--accent) 5%,var(--bg))}
+.ow-card:focus-visible{outline:2px solid var(--signal);outline-offset:2px}
+.ow-town-bar{height:3px;border-radius:2px;background:var(--tc,var(--accent));margin-bottom:6px;flex-shrink:0}
+.ow-meta{font:11px 'Josefin Sans',sans-serif;color:var(--muted);letter-spacing:.03em}
+.ow-title{font:600 13px/1.3 'Gilda Display',Georgia,serif;color:var(--text);margin:3px 0 auto}
+.ow-hop{font:500 11px 'Josefin Sans',sans-serif;color:var(--accent);margin-top:8px;letter-spacing:.03em}
 
-/* ride foot */
-.ride-foot{padding-top:16px;border-top:1px solid var(--border);margin-top:8px}
+/* next departures */
+.next-dep-wrap{display:flex;flex-direction:column;gap:10px;margin-top:28px}
+.section-label{font:500 11px 'Josefin Sans',sans-serif;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);margin:0}
+.next-departures{display:flex;border:1px solid var(--border);border-radius:8px;overflow:hidden}
+.nd-card{all:unset;display:flex;flex-direction:column;gap:3px;flex:1;padding:12px 14px;cursor:pointer;border-right:1px solid var(--border);box-sizing:border-box;min-height:52px;min-width:0}
+.nd-card:last-child{border-right:0}
+.nd-card:hover{background:color-mix(in srgb,var(--accent) 6%,var(--bg))}
+.nd-card:focus-visible{outline:2px solid var(--signal);outline-offset:-2px}
+.nd-title{font:500 13px/1.3 'Lato',sans-serif;color:var(--text);overflow:hidden;white-space:nowrap;text-overflow:ellipsis}
+.nd-town{font:500 11px 'Josefin Sans',sans-serif;letter-spacing:.04em;color:var(--accent);margin-top:auto;padding-top:4px}
 
-/* carriage bar — fixed bottom */
+/* carriage panel */
+.carriage-panel{border:1px solid var(--border);border-radius:12px;padding:20px;background:color-mix(in srgb,var(--accent) 4%,var(--bg));position:sticky;top:72px}
+.cp-hd{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:16px}
+.cp-title{font:600 20px/1 'Gilda Display',Georgia,serif;color:var(--text)}
+.cp-seats{font:500 11px 'Josefin Sans',sans-serif;letter-spacing:.04em;color:var(--muted)}
+.cp-empty{font:14px/1.6 'Lato',sans-serif;color:var(--muted);margin:0 0 16px}
+.cp-items{display:flex;flex-direction:column;gap:8px;margin-bottom:14px}
+.cp-item{border:1px solid var(--border);border-radius:8px;padding:10px 12px;background:var(--bg);display:flex;justify-content:space-between;align-items:flex-start;gap:8px}
+.cp-info{display:flex;flex-direction:column;gap:2px;min-width:0}
+.cp-town{font:10px 'Josefin Sans',sans-serif;text-transform:uppercase;letter-spacing:.06em;color:var(--accent)}
+.cp-item-title{font:500 13px/1.3 'Lato',sans-serif;color:var(--text);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.cp-rm{all:unset;cursor:pointer;font-size:17px;line-height:1;color:var(--muted);flex-shrink:0;padding:0 2px}
+.cp-rm:hover{color:var(--text)}
+.btn-combine{all:unset;display:block;width:100%;text-align:center;background:var(--accent);color:var(--bg);font:600 13px 'Josefin Sans',sans-serif;letter-spacing:.05em;padding:12px;border-radius:8px;cursor:pointer;box-sizing:border-box;min-height:44px}
+.btn-combine:hover{opacity:.88}
+.btn-combine:focus-visible{outline:2px solid var(--signal);outline-offset:2px}
+.cp-bridge{margin-top:18px;border-top:1px solid var(--border);padding-top:14px}
+.cp-where{font:500 10px 'Josefin Sans',sans-serif;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin:0 0 8px}
+.cp-q{font:600 16px/1.4 'Gilda Display',Georgia,serif;color:var(--text);margin:0 0 8px}
+.cp-src{font:12px 'Josefin Sans',sans-serif;color:var(--muted);margin:0 0 12px}
+.cp-src a{color:var(--accent);text-decoration:none}
+.cp-src a:hover{text-decoration:underline}
+.btn-copy-ride{all:unset;cursor:pointer;font:500 12px 'Josefin Sans',sans-serif;color:var(--accent);letter-spacing:.03em;margin-top:12px;display:block}
+.btn-copy-ride:hover{text-decoration:underline}
+.btn-copy-ride:focus-visible{outline:2px solid var(--signal);outline-offset:2px}
+
+/* ride responsive */
+@media(max-width:800px){
+  .ride-layout{grid-template-columns:1fr}
+  .carriage-panel{position:static}
+  .ow-cards{grid-template-columns:repeat(2,1fr)}
+}
+@media(min-width:601px){
+  .carriage-bar{display:none!important}
+}
+
+/* carriage bar — fixed bottom (mobile only) */
 .carriage-bar{position:fixed;bottom:0;left:0;right:0;z-index:30;background:var(--bg);border-top:1px solid var(--border);display:flex;align-items:center;gap:10px;padding:10px max(5vw,16px) max(10px,env(safe-area-inset-bottom,10px));overflow-x:auto;-webkit-overflow-scrolling:touch}
 .cb-chips{display:flex;gap:8px;flex:1;overflow-x:auto}
 .cb-chip{all:unset;display:inline-flex;align-items:center;gap:5px;background:color-mix(in srgb,var(--accent) 12%,var(--bg));color:var(--accent);border:1px solid var(--accent);border-radius:999px;padding:5px 10px;font:13px 'Josefin Sans',sans-serif;cursor:pointer;white-space:nowrap;flex-shrink:0;animation:chip-in .2s ease-out}
@@ -314,6 +375,12 @@ footer{color:var(--muted);font:13px 'Josefin Sans',sans-serif;border-top:1px sol
   .train-tabs a[aria-current]{color:var(--accent);border-bottom-color:var(--accent)}
   .carriage-bar{bottom:calc(52px + env(safe-area-inset-bottom,0px))}
   .train-wrap{padding-bottom:140px}
+  /* ride mobile */
+  .carriage-panel{display:none}
+  .ow-cards{grid-template-columns:repeat(2,1fr)}
+  .next-departures{flex-wrap:wrap}
+  .nd-card{flex:1 1 calc(50% - 1px);border-bottom:1px solid var(--border)}
+  .nd-card:last-child,.nd-card:nth-child(2){border-right:0}
   /* board mobile: hide TIME, 5 rows, BOARD → always visible */
   .depart-col-hd,.depart-row{grid-template-columns:minmax(0,1fr) 13ch 10ch 9ch}
   .dc-time,.dr-time{display:none}
