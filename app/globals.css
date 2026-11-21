@@ -223,6 +223,31 @@ footer{color:var(--muted);font:13px 'Josefin Sans',sans-serif;border-top:1px sol
 .flap-ch{display:inline-block;min-width:.6em;text-align:center;background:#051230;padding:1px 1px;margin:0 1px;position:relative;line-height:1.5}
 .flap-ch::after{content:'';position:absolute;left:0;right:0;top:50%;height:1px;background:rgba(0,0,0,.55);pointer-events:none}
 
+/* just-departed line */
+#depart-just-left{min-height:1.4em;font:12px 'Josefin Sans',sans-serif;color:var(--muted);letter-spacing:.03em}
+#depart-just-left a{color:var(--accent);text-decoration:none}
+#depart-just-left a:hover{text-decoration:underline}
+
+/* lobby meta row */
+.depart-lobby-meta{display:flex;gap:12px;align-items:center}
+
+/* reduced-motion entry highlight */
+.dr-new-entry{animation:dr-highlight 250ms ease-out forwards}
+@keyframes dr-highlight{from{background:rgba(253,197,126,.18)}to{background:transparent}}
+@media(prefers-reduced-motion:reduce){.dr-new-entry{animation:none;background:rgba(253,197,126,.1);transition:background 250ms}}
+
+/* timetable list */
+#depart-timetable{border:1px solid #40456a;border-radius:8px;overflow:hidden;background:#111314}
+#depart-timetable-inner{display:flex;flex-direction:column}
+.tt-row{all:unset;box-sizing:border-box;width:100%;display:grid;grid-template-columns:6ch minmax(0,1fr) 17ch 10ch 9ch;align-items:center;min-height:40px;padding:6px 20px;gap:12px;border-bottom:1px solid #1e2435;cursor:pointer;color:#fdc57e;font:500 11px 'Josefin Sans',monospace;letter-spacing:.06em;font-variant-numeric:tabular-nums}
+.tt-row:last-child{border-bottom:0}
+.tt-row:hover{background:#1a2030}
+.tt-row:focus-visible{outline:2px solid var(--signal);outline-offset:-2px}
+.tt-past{opacity:.4}
+.tt-status{text-align:right;white-space:nowrap}
+.tt-board{text-align:right;white-space:nowrap;opacity:0;transition:opacity .15s}
+.tt-row:hover .tt-board,.tt-row:focus-visible .tt-board{opacity:1}
+
 .lobby-actions{display:flex;gap:12px;flex-wrap:wrap}
 
 /* ride */
@@ -386,6 +411,10 @@ footer{color:var(--muted);font:13px 'Josefin Sans',sans-serif;border-top:1px sol
   .dc-time,.dr-time{display:none}
   .depart-row:last-child{display:none!important}
   .dr-board{opacity:1}
+  /* timetable list mobile */
+  .tt-row{grid-template-columns:minmax(0,1fr) 13ch 10ch 9ch}
+  .tt-row .tt-time{display:none}
+  .tt-board{opacity:1}
 }
 
 /* ── responsive ── */
