@@ -258,9 +258,131 @@ function buildBoard(dateStr, targetTime) {
   startDepartureLoop();
 }
 
-// startDepartureLoop() — full implementation in Commit 2
-// defined here so buildBoard() doesn't throw on first load
-function startDepartureLoop() { /* Commit 2 */ }
+// ── departure loop + pause logic ──
+let boardPaused = false;
+let touchIdleTimer = null;
+let departureLoopActive = false;
+let justDeparted = null;
+
+function pauseBoard() { boardPaused = true; }
+function unpauseBoard() {
+  boardPaused = false;
+  if (!departureLoopActive) startDepartureLoop();
+}
+
+function attachBoardPauseListeners() {
+  const boardEl = $('depart-board'); if (!boardEl) return;
+
+  boardEl.addEventListener('pointerenter', pauseBoard);
+  boardEl.addEventListener('pointerleave', unpauseBoard);
+
+  boardEl.addEventListener('focusin', e => {
+    if (e.target.closest('.depart-row')) pauseBoard();
+  });
+  boardEl.addEventListener('focusout', e => {
+    if (!boardEl.contains(e.relatedTarget)) unpauseBoard();
+  });
+
+  function touchOrScroll() {
+    boardPaused = true;
+    clearTimeout(touchIdleTimer);
+    touchIdleTimer = setTimeout(unpauseBoard, 5000);
+  }
+  boardEl.addEventListener('touchstart', touchOrScroll, { passive: true });
+  boardEl.addEventListener('scroll', touchOrScroll, { passive: true });
+
+  document.addEventListener('visibilitychange', () => {
+    if (document.hidden) pauseBoard(); else unpauseBoard();
+  });
+}
+
+function doDeparture() {
+  const board = $('depart-rows');
+  const boardEl = $('depart-board');
+  if (!board || !boardEl) return;
+
+  // Never move a row being pressed
+  if (board.querySelector('.depart-row:active')) return;
+
+  const topRow = board.querySelector('.depart-row');
+  if (!topRow) return;
+
+  const reduced = window.matchMedia('(prefers-reduced-motion:reduce)').matches;
+
+  // Advance timetable pointer and pick next entry
+  const nextPointer = (timetablePointer + 6) % todayTimetable.length;
+  const nextEntry = todayTimetable[nextPointer];
+  if (!nextEntry) return;
+
+  // Record just-departed before modifying boardRows
+  justDeparted = { story: boardRows[0], entry: todayTimetable[timetablePointer] };
+  timetablePointer = (timetablePointer + 1) % todayTimetable.length;
+
+  if (reduced) {
+    // Instant swap: remove top, append new, update statuses, 250ms highlight
+    boardRows.shift();
+    boardRows.push(nextEntry.story);
+    topRow.remove();
+    const newRow = buildRowEl(nextEntry, 5, false);
+    newRow.classList.add('dr-new-entry');
+    board.appendChild(newRow);
+    updateBoardStatuses();
+    renderJustDeparted();
+    newRow.addEventListener('animationend', () => newRow.classList.remove('dr-new-entry'), { once: true });
+    return;
+  }
+
+  // Full animation: flip top to blank → wait → slide → flip new in
+  animateFlapEl(topRow.querySelector('.dr-dest'), '', DEST_LEN, false);
+  animateFlapEl(topRow.querySelector('.dr-line'), '', LINE_LEN, false);
+
+  setTimeout(() => {
+    // Build new row with blank flap content
+    const newRow = buildRowEl(nextEntry, 5, true);
+    board.appendChild(newRow);
+
+    // Freeze board height so the 7th row is clipped during slide
+    const frozenH = boardEl.offsetHeight;
+    boardEl.style.height = frozenH + 'px';
+
+    const rowH = topRow.getBoundingClientRect().height || 44;
+
+    board.style.transition = 'transform 250ms ease';
+    board.style.transform = `translateY(-${rowH}px)`;
+
+    setTimeout(() => {
+      board.style.transition = '';
+      board.style.transform = '';
+      boardEl.style.height = '';
+      topRow.remove();
+      boardRows.shift();
+      boardRows.push(nextEntry.story);
+      updateBoardStatuses();
+      renderJustDeparted();
+
+      // Flip new content into the bottom row
+      animateFlapEl(newRow.querySelector('.dr-dest'), truncDest(nextEntry.story.t), DEST_LEN, false);
+      animateFlapEl(newRow.querySelector('.dr-line'), (townById(nextEntry.story.towns[0])?.name || '').toUpperCase(), LINE_LEN, false);
+    }, 260);
+  }, 650);
+}
+
+// renderJustDeparted() — full implementation in Commit 3
+function renderJustDeparted() { /* Commit 3 */ }
+
+function startDepartureLoop() {
+  if (departureLoopActive) return;
+  departureLoopActive = true;
+  attachBoardPauseListeners();
+  schedule();
+  function schedule() {
+    if (!departureLoopActive) return;
+    departTimer = setTimeout(() => {
+      if (!boardPaused && !document.hidden) doDeparture();
+      schedule();
+    }, 10000 + Math.random() * 2000);
+  }
+}
 
 // ── live clock (America/Chicago) ──
 function startClock() {
@@ -288,8 +410,10 @@ function board_(story) {
   stopDepartureLoop();
 }
 
-// stopDepartureLoop() — full implementation in Commit 2
-function stopDepartureLoop() { /* Commit 2 */ }
+function stopDepartureLoop() {
+  departureLoopActive = false;
+  if (departTimer) { clearTimeout(departTimer); departTimer = null; }
+}
 
 function boardTown(townId) {
   const ss = storiesInTown(townId);
