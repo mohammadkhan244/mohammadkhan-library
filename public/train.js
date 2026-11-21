@@ -61,8 +61,10 @@ const FLAP = ' ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789-:.,\'!?';
 const DEST_LEN = 18;
 const LINE_LEN = 10;
 
-let boardRows = [];
-let flipTimeout = null;
+let boardRows = [];        // current 6 story objects shown on board
+let todayTimetable = [];   // Array<{ story, time, isNew }> for the day
+let timetablePointer = 0;  // index of the first visible row in todayTimetable
+let departTimer = null;    // setTimeout handle for next departure
 
 function truncDest(t) {
   const u = t.toUpperCase();
@@ -83,7 +85,7 @@ function animateFlapEl(el, text, maxLen, reduced) {
   spans.forEach((sp, i) => {
     const ch = target[i] || ' ';
     if (reduced) { sp.textContent = ch; return; }
-    const ms = 350 + Math.random() * 250; // 350–600ms
+    const ms = 350 + Math.random() * 250;
     const frames = Math.round(ms / 50);
     let f = 0;
     const iv = setInterval(() => {
@@ -93,105 +95,172 @@ function animateFlapEl(el, text, maxLen, reduced) {
   });
 }
 
-function statusForRow(story, rowIdx) {
+// ── timetable engine ──
+function mulberry32(seed) {
+  return function() {
+    seed |= 0; seed = seed + 0x6D2B79F5 | 0;
+    let t = Math.imul(seed ^ seed >>> 15, 1 | seed);
+    t = t + Math.imul(t ^ t >>> 7, 61 | t) ^ t;
+    return ((t ^ t >>> 14) >>> 0) / 4294967296;
+  };
+}
+
+function chicagoDate() {
+  return new Intl.DateTimeFormat('en-CA', { timeZone: 'America/Chicago' }).format(new Date());
+}
+
+function chicagoTimeStr() {
+  return new Intl.DateTimeFormat('en-US', {
+    hour: '2-digit', minute: '2-digit', hour12: false, timeZone: 'America/Chicago',
+  }).format(new Date());
+}
+
+function dateToSeed(str) {
+  return str.split('-').reduce((a, n) => a * 1000 + parseInt(n, 10), 0);
+}
+
+function buildTimetable(dateStr) {
+  const rand = mulberry32(dateToSeed(dateStr));
+  function seededShuffle(arr) {
+    const a = [...arr];
+    for (let i = a.length - 1; i > 0; i--) {
+      const j = Math.floor(rand() * (i + 1));
+      [a[i], a[j]] = [a[j], a[i]];
+    }
+    return a;
+  }
+
+  // 14-day cutoff relative to the requested date
+  const [y, mo, d] = dateStr.split('-').map(Number);
+  const ref = new Date(Date.UTC(y, mo - 1, d));
+  ref.setUTCDate(ref.getUTCDate() - 14);
+  const cutoff = ref.toISOString().slice(0, 10);
+
+  const newStories = seededShuffle(stories.filter(s => s.d >= cutoff));
+  const oldStories = seededShuffle(stories.filter(s => s.d < cutoff));
+
+  const pool = [];
+  const usedIds = new Set();
+  const usedTowns = new Set();
+
+  // Fill with new stories first (spread across towns)
+  for (const s of newStories) {
+    if (pool.length >= 24) break;
+    if (usedIds.has(s.id)) continue;
+    pool.push({ story: s, isNew: true });
+    usedIds.add(s.id);
+    s.towns.forEach(t => usedTowns.add(t));
+  }
+
+  // Fill remaining slots with old stories, preferring distinct towns
+  for (const s of oldStories) {
+    if (pool.length >= 24) break;
+    if (usedIds.has(s.id)) continue;
+    if (s.towns.some(t => usedTowns.has(t)) && pool.length < 20) continue;
+    pool.push({ story: s, isNew: false });
+    usedIds.add(s.id);
+    s.towns.forEach(t => usedTowns.add(t));
+  }
+
+  // Pad to 24 if needed (allow town repeats)
+  for (const s of oldStories) {
+    if (pool.length >= 24) break;
+    if (usedIds.has(s.id)) continue;
+    pool.push({ story: s, isNew: false });
+    usedIds.add(s.id);
+  }
+
+  // Assign real clock times from 06:00
+  let mins = 6 * 60;
+  return pool.slice(0, 24).map(entry => {
+    const h = Math.floor(mins / 60) % 24;
+    const m = mins % 60;
+    const time = String(h).padStart(2, '0') + ':' + String(m).padStart(2, '0');
+    mins += 5 + Math.floor(rand() * 8); // 5–12 min gap
+    return { ...entry, time };
+  });
+}
+
+function statusForEntry(entry, rowIdx) {
   if (rowIdx === 0) return { cls: 'dr-status--boarding', text: 'BOARDING' };
-  const cutoff = new Date();
-  cutoff.setDate(cutoff.getDate() - 14);
-  if (story.d >= cutoff.toISOString().slice(0, 10)) return { cls: 'dr-status--new', text: 'NEW' };
+  if (entry.isNew) return { cls: 'dr-status--new', text: 'NEW' };
   return { cls: '', text: 'ON TIME' };
 }
 
-function fakeTime(offsetMins) {
-  return new Date(Date.now() + offsetMins * 60000)
-    .toLocaleTimeString('en-US', {
-      hour: '2-digit', minute: '2-digit', hour12: false,
-      timeZone: 'America/Chicago',
-    });
+function buildRowEl(entry, rowIdx, blankContent) {
+  const btn = document.createElement('button');
+  btn.className = 'depart-row';
+  btn.setAttribute('aria-label', esc('Board: ' + entry.story.t));
+  const st = statusForEntry(entry, rowIdx);
+  const dest = blankContent ? makeFlapChars('', DEST_LEN) : makeFlapChars(truncDest(entry.story.t), DEST_LEN);
+  const line = blankContent ? makeFlapChars('', LINE_LEN) : makeFlapChars((townById(entry.story.towns[0])?.name || '').toUpperCase(), LINE_LEN);
+  btn.innerHTML =
+    `<span class="dr-time">${esc(entry.time)}</span>` +
+    `<span class="dr-dest">${dest}</span>` +
+    `<span class="dr-line">${line}</span>` +
+    `<span class="dr-status${st.cls ? ' ' + st.cls : ''}">${st.text}</span>` +
+    `<span class="dr-board">BOARD →</span>`;
+  btn.onclick = () => board_(entry.story);
+  return btn;
 }
 
-function buildBoard() {
+function updateBoardStatuses() {
   const board = $('depart-rows'); if (!board) return;
-  if (flipTimeout) { clearTimeout(flipTimeout); flipTimeout = null; }
-
-  // 2 newest + 4 random from distinct towns
-  const sorted = [...stories].sort((a, b) => b.d.localeCompare(a.d));
-  const newest = sorted.slice(0, 2);
-  const usedIds = new Set(newest.map(s => s.id));
-  const usedTowns = new Set(newest.flatMap(s => s.towns));
-  const pool4 = [];
-
-  for (const t of towns) {
-    if (pool4.length >= 4) break;
-    if (usedTowns.has(t.id)) continue;
-    const cands = stories.filter(s => !usedIds.has(s.id) && s.towns.includes(t.id));
-    if (!cands.length) continue;
-    const pick = pickRandom(cands);
-    pool4.push(pick);
-    usedIds.add(pick.id);
-    pick.towns.forEach(tid => usedTowns.add(tid));
-  }
-  while (pool4.length < 4) {
-    const rem = stories.filter(s => !usedIds.has(s.id));
-    if (!rem.length) break;
-    const pick = pickRandom(rem);
-    pool4.push(pick);
-    usedIds.add(pick.id);
-  }
-
-  boardRows = [...newest, ...pool4].slice(0, 6);
-
-  board.innerHTML = boardRows.map((s, i) => {
-    const st = statusForRow(s, i);
-    return `<button class="depart-row" aria-label="${esc('Board: ' + s.t)}">` +
-      `<span class="dr-time">${fakeTime(5 + i * 7)}</span>` +
-      `<span class="dr-dest">${makeFlapChars(truncDest(s.t), DEST_LEN)}</span>` +
-      `<span class="dr-line">${makeFlapChars((townById(s.towns[0])?.name || '').toUpperCase(), LINE_LEN)}</span>` +
-      `<span class="dr-status${st.cls ? ' ' + st.cls : ''}">${st.text}</span>` +
-      `<span class="dr-board">BOARD →</span>` +
-    `</button>`;
-  }).join('');
-
   board.querySelectorAll('.depart-row').forEach((row, i) => {
-    row.onclick = () => board_(boardRows[i]);
+    const entry = { story: boardRows[i], isNew: todayTimetable[timetablePointer + i]?.isNew || false };
+    const st = statusForEntry(entry, i);
+    const statusEl = row.querySelector('.dr-status');
+    if (statusEl) {
+      statusEl.className = 'dr-status' + (st.cls ? ' ' + st.cls : '');
+      statusEl.textContent = st.text;
+    }
   });
-
-  startFlipLoop();
 }
 
-function startFlipLoop() {
-  if (flipTimeout) clearTimeout(flipTimeout);
-  let idx = 0;
-  function next() {
-    flipTimeout = setTimeout(() => {
-      const board = $('depart-rows'); if (!board) return;
-      const rows = board.querySelectorAll('.depart-row');
-      if (!rows.length) return;
+function buildBoard(dateStr, targetTime) {
+  const board = $('depart-rows'); if (!board) return;
 
-      const ri = idx % rows.length;
-      const story = pickRandom(stories);
-      boardRows[ri] = story;
+  const date = dateStr || chicagoDate();
+  todayTimetable = buildTimetable(date);
 
-      const row = rows[ri];
-      row.setAttribute('aria-label', 'Board: ' + story.t);
-      row.onclick = () => board_(story);
-
-      const st = statusForRow(story, ri);
-      const statusEl = row.querySelector('.dr-status');
-      if (statusEl) {
-        statusEl.className = 'dr-status' + (st.cls ? ' ' + st.cls : '');
-        statusEl.textContent = st.text;
-      }
-
-      const reduced = window.matchMedia('(prefers-reduced-motion:reduce)').matches;
-      animateFlapEl(row.querySelector('.dr-dest'), truncDest(story.t), DEST_LEN, reduced);
-      animateFlapEl(row.querySelector('.dr-line'), (townById(story.towns[0])?.name || '').toUpperCase(), LINE_LEN, reduced);
-
-      idx++;
-      next();
-    }, 7000 + Math.random() * 2000);
+  if (targetTime) {
+    // For ?d=&t= links: find that entry and board it immediately
+    const entry = todayTimetable.find(e => e.time === targetTime);
+    if (entry) { board_(entry.story); return; }
   }
-  next();
+
+  // Find next 6 entries after current Chicago time
+  const now = chicagoTimeStr();
+  let startIdx = todayTimetable.findIndex(e => e.time >= now);
+  if (startIdx < 0) startIdx = 0; // past last — wrap to start
+
+  timetablePointer = startIdx;
+  boardRows = todayTimetable.slice(startIdx, startIdx + 6).map(e => e.story);
+
+  // Pad with entries from start if fewer than 6 remain
+  if (boardRows.length < 6) {
+    const need = 6 - boardRows.length;
+    boardRows = boardRows.concat(todayTimetable.slice(0, need).map(e => e.story));
+  }
+
+  board.innerHTML = '';
+  todayTimetable.slice(startIdx, startIdx + 6).forEach((entry, i) => {
+    if (boardRows[i]) board.appendChild(buildRowEl(entry, i, false));
+  });
+  // fill any padded rows
+  if (board.children.length < 6) {
+    const need = 6 - board.children.length;
+    todayTimetable.slice(0, need).forEach((entry, i) => {
+      board.appendChild(buildRowEl(entry, board.children.length, false));
+    });
+  }
+
+  startDepartureLoop();
 }
+
+// startDepartureLoop() — full implementation in Commit 2
+// defined here so buildBoard() doesn't throw on first load
+function startDepartureLoop() { /* Commit 2 */ }
 
 // ── live clock (America/Chicago) ──
 function startClock() {
@@ -216,8 +285,11 @@ function board_(story) {
   carriage = [];
   showRide();
   renderAll();
-  if (flipTimeout) { clearTimeout(flipTimeout); flipTimeout = null; }
+  stopDepartureLoop();
 }
+
+// stopDepartureLoop() — full implementation in Commit 2
+function stopDepartureLoop() { /* Commit 2 */ }
 
 function boardTown(townId) {
   const ss = storiesInTown(townId);
