@@ -5,10 +5,55 @@ import questions from '../../data/questions.json';
 
 export const revalidate = 3600;
 
-export const metadata = {
-  title: 'Train of Thought · Mohammad Khan',
-  description: 'A reading journey through subjects. Board a train, ride between towns, pick up pieces along the way.',
-};
+export async function generateMetadata({ searchParams }) {
+  const sp = await searchParams;
+  const r   = sp?.r || '';
+  const s   = sp?.s || '';
+  const c   = sp?.c || '';
+  const car = sp?.car || '';
+
+  const base = {
+    description:
+      'A reading journey through subjects. Board a train, ride between towns, pick up pieces along the way.',
+    twitter: { card: 'summary_large_image' },
+  };
+
+  if (!r) {
+    return {
+      ...base,
+      title: 'Train of Thought · Mohammad Khan',
+      openGraph: {
+        title: 'Train of Thought · Mohammad Khan',
+        description: base.description,
+        images: [{ url: '/og/ride', width: 1200, height: 630 }],
+      },
+    };
+  }
+
+  const towns = r.split(',').filter(Boolean);
+  const firstName = TOWNS.find((t) => t.id === towns[0])?.name || towns[0] || 'Sci-Fi';
+  const lastName  = TOWNS.find((t) => t.id === towns[towns.length - 1])?.name || towns[towns.length - 1] || 'Philosophy';
+  const title = `A ride from ${firstName} to ${lastName} · Train of Thought`;
+  const desc  = `A train journey through Mohammad Khan's writing, from ${firstName} to ${lastName}.`;
+
+  const params = new URLSearchParams({ r });
+  if (s)   params.set('s', s);
+  if (c)   params.set('c', c);
+  if (car) params.set('car', car);
+
+  return {
+    ...base,
+    title,
+    description: desc,
+    openGraph: {
+      title: `A ride from ${firstName} to ${lastName}`,
+      description: desc,
+      images: [{ url: `/og/ride?${params}`, width: 1200, height: 630 }],
+      type: 'website',
+    },
+    twitter: { card: 'summary_large_image', title: `A ride from ${firstName} to ${lastName}` },
+  };
+}
 
 const esc = s => String(s).replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
 

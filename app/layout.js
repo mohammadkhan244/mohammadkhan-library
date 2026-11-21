@@ -2,8 +2,10 @@ import './theme.css';
 import './globals.css';
 
 export const metadata = {
+  metadataBase: new URL('https://mohammadkhan-library.vercel.app'),
   title: 'Mohammad Khan · Library',
   description: 'Fiction, essays, tools and projects. One story a week since 2020.',
+  twitter: { card: 'summary_large_image' },
 };
 
 export const viewport = {
