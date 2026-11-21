@@ -11,6 +11,14 @@ export async function generateMetadata({ searchParams }) {
   const s   = sp?.s || '';
   const c   = sp?.c || '';
   const car = sp?.car || '';
+  // departure link: ?d=YYYY-MM-DD&t=HH:MM — treat as lobby (no ride OG)
+  if (!r && sp?.d && sp?.t) {
+    return {
+      title: `Train of Thought · ${sp.t} departure · Mohammad Khan`,
+      description: 'A reading journey through subjects. Board a train, ride between towns, pick up pieces along the way.',
+      twitter: { card: 'summary_large_image' },
+    };
+  }
 
   const base = {
     description:
@@ -121,6 +129,13 @@ export default async function TrainPage() {
               <span></span>
             </div>
             <div className="depart-rows" id="depart-rows" />
+          </div>
+          <div id="depart-just-left" aria-live="polite" />
+          <div className="depart-lobby-meta">
+            <button id="depart-timetable-btn" className="btn-ghost">Today&apos;s timetable</button>
+          </div>
+          <div id="depart-timetable" hidden>
+            <div id="depart-timetable-inner" />
           </div>
           <div className="lobby-actions">
             <button className="btn-primary" id="board-random">Board a random train →</button>

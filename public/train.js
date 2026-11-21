@@ -367,8 +367,56 @@ function doDeparture() {
   }, 650);
 }
 
-// renderJustDeparted() — full implementation in Commit 3
-function renderJustDeparted() { /* Commit 3 */ }
+function renderJustDeparted() {
+  const el = $('depart-just-left'); if (!el || !justDeparted) return;
+  const s = justDeparted.story;
+  const t = justDeparted.entry?.time || '';
+  const dateStr = chicagoDate();
+  const href = t ? `/train?d=${dateStr}&t=${encodeURIComponent(t)}` : '#';
+  el.innerHTML = `Just departed: <a class="jd-link" href="${esc(href)}">${esc(s.t)}</a> · catch it anyway →`;
+  el.querySelector('.jd-link').addEventListener('click', e => {
+    e.preventDefault();
+    board_(s);
+  });
+}
+
+// ── timetable list toggle ──
+let timetableBuilt = false;
+function initTimetableToggle() {
+  const btn = $('depart-timetable-btn');
+  const panel = $('depart-timetable');
+  if (!btn || !panel) return;
+  btn.addEventListener('click', () => {
+    const isHidden = panel.hidden;
+    panel.hidden = !isHidden;
+    btn.textContent = isHidden ? 'Hide timetable' : 'Today\'s timetable';
+    if (isHidden && !timetableBuilt) {
+      buildTimetableList();
+      timetableBuilt = true;
+    }
+  });
+}
+
+function buildTimetableList() {
+  const inner = $('depart-timetable-inner'); if (!inner) return;
+  if (!todayTimetable.length) return;
+  const now = chicagoTimeStr();
+  inner.innerHTML = '';
+  todayTimetable.forEach(entry => {
+    const past = entry.time < now;
+    const statusText = past ? 'Departed' : entry.isNew ? 'NEW' : 'ON TIME';
+    const btn = document.createElement('button');
+    btn.className = 'tt-row' + (past ? ' tt-past' : '');
+    btn.innerHTML =
+      `<span class="tt-time">${esc(entry.time)}</span>` +
+      `<span class="tt-dest">${esc(truncDest(entry.story.t))}</span>` +
+      `<span class="tt-line">${esc((townById(entry.story.towns[0])?.name || '').toUpperCase())}</span>` +
+      `<span class="tt-status">${statusText}</span>` +
+      `<span class="tt-board">BOARD →</span>`;
+    btn.onclick = () => board_(entry.story);
+    inner.appendChild(btn);
+  });
+}
 
 function startDepartureLoop() {
   if (departureLoopActive) return;
@@ -427,8 +475,10 @@ $('board-random').onclick = () => boardTown(pickRandom(towns).id);
 function showLobby() {
   $('train-lobby').hidden = false;
   $('train-ride').hidden = true;
+  timetableBuilt = false;
   buildBoard();
   startClock();
+  initTimetableToggle();
 }
 
 function showRide() {
@@ -759,6 +809,15 @@ function encodeState() {
 
 function restoreFromURL() {
   const p = new URLSearchParams(location.search);
+
+  // Shareable departure link: ?d=YYYY-MM-DD&t=HH:MM
+  const d = p.get('d'), t = p.get('t');
+  if (d && t) {
+    const tt = buildTimetable(d);
+    const entry = tt.find(e => e.time === t);
+    if (entry) { board_(entry.story); return true; }
+  }
+
   const r = p.get('r'), sid = p.get('s') || p.get('board'), c = p.get('c');
   if (sid) {
     const s = stories.find(x => x.id === sid);
