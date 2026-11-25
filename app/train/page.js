@@ -145,7 +145,13 @@ export default async function TrainPage() {
         {/* ── Ride ── */}
         <div className="train-ride" id="train-ride" hidden>
           <div className="route-strip-wrap">
-            <p className="route-label" id="route-label">Your route</p>
+            <div className="route-hd">
+              <p className="route-label" id="route-label">Your route</p>
+              <button className="btn-share-ride" id="share-ride" aria-label="Share this ride" hidden>
+                <svg width="13" height="13" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M1 5.5A1.5 1.5 0 0 1 2.5 4h11A1.5 1.5 0 0 1 15 5.5v5A1.5 1.5 0 0 1 13.5 12h-11A1.5 1.5 0 0 1 1 10.5v-5z" stroke="currentColor" strokeWidth="1.5"/><path d="M5.5 4v8" stroke="currentColor" strokeWidth="1.2" strokeDasharray="1.5 1.5"/></svg>
+                <span className="btn-label">Share ride</span>
+              </button>
+            </div>
             <div className="route-strip" id="route-bar" role="navigation" aria-label="Route stops" />
           </div>
 
@@ -173,6 +179,22 @@ export default async function TrainPage() {
       <div className="combine-sheet" id="combine-sheet" hidden>
         <div className="combine-inner" id="combine-inner" />
       </div>
+
+      {/* ── Share sheet ── */}
+      <div className="share-sheet" id="share-sheet" hidden>
+        <div className="share-inner">
+          <div className="share-hd">
+            <span className="share-title">Your ride</span>
+            <button className="share-close" id="close-share" aria-label="Close">×</button>
+          </div>
+          <img id="share-ticket" className="share-ticket" alt="Ticket preview" src="" />
+          <div className="share-btns">
+            <button id="sheet-share" className="btn-primary" hidden>Share</button>
+            <button id="sheet-copy" className="btn-sec">Copy link</button>
+          </div>
+        </div>
+      </div>
+      <div aria-live="polite" aria-atomic="true" id="share-announce" className="sr-only" />
 
       {/* ── Mobile bottom tabs ── */}
       <nav className="train-tabs" aria-label="Sections">

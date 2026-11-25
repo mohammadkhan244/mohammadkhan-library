@@ -498,6 +498,8 @@ function renderRoute() {
   const lbl = $('route-label');
   if (!bar) return;
   if (lbl) lbl.textContent = `Your route · ${route.length} ${route.length === 1 ? 'stop' : 'stops'}`;
+  const shareBtn = $('share-ride');
+  if (shareBtn) shareBtn.hidden = route.length < 1;
 
   const adj = getAdjacentTowns().filter(tid => !route.includes(tid)).slice(0, 3);
   const parts = [];
@@ -840,10 +842,92 @@ function restoreFromURL() {
   return false;
 }
 
-document.addEventListener('click', async e => {
-  const btn = e.target.closest('#copy-ride'); if (!btn) return;
-  const url = location.origin + encodeState();
-  try { await navigator.clipboard.writeText(url); } catch(err) {}
+function shareTitle() {
+  const first = townById(route[0])?.name || '';
+  const last  = townById(route[route.length - 1])?.name || '';
+  return first ? `A ride from ${first} to ${last || first}` : "A ride through Mohammad Khan’s Library";
+}
+
+function shareText() {
+  if (carriage.length >= 2) {
+    const ta = carriage[0].towns[0], tb = carriage[1].towns[0];
+    const qs = questions[questionKey(ta, tb)] || [];
+    if (qs.length) return pickRandom(qs);
+  }
+  return "A ride through Mohammad Khan’s Library";
+}
+
+function feedbackBtn(btn, label) {
+  if (!btn) return;
+  const target = btn.querySelector('.btn-label') || btn;
+  const orig = target.dataset.origLabel || target.textContent.trim();
+  target.dataset.origLabel = orig;
+  target.textContent = label;
+  btn.disabled = true;
+  setTimeout(() => { target.textContent = orig; btn.disabled = false; delete target.dataset.origLabel; }, 2000);
+}
+
+function ariaAnnounce(msg) {
+  const el = $('share-announce'); if (!el) return;
+  el.textContent = '';
+  requestAnimationFrame(() => { el.textContent = msg; });
+}
+
+async function doCopy(url, btn) {
+  try {
+    await navigator.clipboard.writeText(url);
+    feedbackBtn(btn, '✓ Link copied');
+    ariaAnnounce('Link copied to clipboard');
+  } catch(err) {
+    const inp = Object.assign(document.createElement('input'), { type: 'text', value: url, readOnly: true });
+    Object.assign(inp.style, { position: 'fixed', top: '-200px', left: '0', opacity: '0' });
+    document.body.appendChild(inp);
+    inp.select();
+    try { document.execCommand('copy'); feedbackBtn(btn, '✓ Link copied'); ariaAnnounce('Link copied to clipboard'); } catch(e) {}
+    setTimeout(() => inp.remove(), 2000);
+  }
+}
+
+function openShareSheet(callerBtn) {
+  const sheet = $('share-sheet'); if (!sheet) return;
+  const url   = location.origin + encodeState();
+  const stateQs = encodeState().split('?')[1] || '';
+  const img = $('share-ticket');
+  if (img) img.src = '/og/ride?' + stateQs;
+
+  const shareBtn = $('sheet-share');
+  const copyBtn  = $('sheet-copy');
+  if (shareBtn) shareBtn.hidden = typeof navigator.share !== 'function';
+
+  if (shareBtn) shareBtn.onclick = async () => {
+    try {
+      await navigator.share({ title: shareTitle(), text: shareText(), url });
+      feedbackBtn(callerBtn, '✓ Shared');
+      ariaAnnounce('Ride shared');
+      sheet.hidden = true;
+    } catch(e) {}
+  };
+
+  if (copyBtn) copyBtn.onclick = async () => {
+    await doCopy(url, copyBtn);
+    if (callerBtn) feedbackBtn(callerBtn, '✓ Link copied');
+    setTimeout(() => { sheet.hidden = true; }, 900);
+  };
+
+  const closeBtn = $('close-share');
+  if (closeBtn) closeBtn.onclick = () => { sheet.hidden = true; };
+  sheet.onclick = e => { if (e.target === sheet) sheet.hidden = true; };
+  sheet.hidden = false;
+}
+
+document.addEventListener('keydown', e => {
+  if (e.key === 'Escape') { const s = $('share-sheet'); if (s && !s.hidden) s.hidden = true; }
+});
+
+document.addEventListener('click', e => {
+  if (e.target.closest('#share-ride') || e.target.closest('#copy-ride')) {
+    openShareSheet(e.target.closest('#share-ride') || e.target.closest('#copy-ride'));
+  }
 });
 
 // ── init ──
