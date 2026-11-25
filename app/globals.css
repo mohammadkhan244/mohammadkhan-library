@@ -448,3 +448,360 @@ footer{color:var(--muted);font:13px 'Josefin Sans',sans-serif;border-top:1px sol
   .stack td::before{content:attr(data-l);float:inline-start;width:6em;margin-inline-start:-6.5em;color:var(--muted);font-size:13px}
   .stack td:empty{display:none}
 }
+
+/* ═══════════════════════════════════════════════════════════════
+   READING NOOK  /nook
+   Always Violet Night — scoped to [data-nook], both themes.
+   ═══════════════════════════════════════════════════════════════ */
+
+/* Force Violet Night variables regardless of data-theme on <html> */
+[data-nook]{
+  --bg:      #0d1829;
+  --surface: #0d1829;
+  --text:    #f5ecc2;
+  --muted:   #b5b1d8;
+  --border:  #40456a;
+  --accent:  #b5b1d8;
+  --signal:  #f48067;
+  --heat-0:  #051230;
+  --heat-1:  #40456a;
+  --heat-2:  #4f4086;
+  --heat-3:  #66629c;
+  --heat-4:  #b5b1d8;
+  --card-bg: #111314;
+  --card-text:#f5ecc2;
+  background: #0d1829;
+  min-height: 100vh;
+  color: #f5ecc2;
+  display: flex;
+  flex-direction: column;
+}
+/* Also paint body background so overscroll areas match */
+body:has([data-nook]){background:#0d1829}
+
+/* ── Chrome header ── */
+.nook-chrome{
+  display:flex;align-items:center;gap:16px;
+  padding:0 max(4vw,16px);min-height:52px;
+  border-bottom:1px solid #40456a;
+  background:#0d1829;
+  position:sticky;top:0;z-index:10;flex-shrink:0;
+}
+.nook-home{display:flex;align-items:baseline;gap:8px;text-decoration:none;flex-shrink:0}
+.nook-home-name{font:600 17px 'Gilda Display',Georgia,serif;color:#f5ecc2}
+.nook-home-sub{font:13px 'Josefin Sans',sans-serif;color:#b5b1d8}
+.nook-timer-display{flex:1;font:600 13px/1 'Josefin Sans',monospace;letter-spacing:.06em;font-variant-numeric:tabular-nums;color:#fdc57e;text-align:center}
+.nook-chrome-right{display:flex;gap:8px;align-items:center;margin-left:auto}
+.nook-theme-btn{all:unset;cursor:pointer;width:32px;height:32px;display:flex;align-items:center;justify-content:center;border-radius:6px;border:1px solid #40456a;color:#b5b1d8;flex-shrink:0}
+.nook-theme-btn:hover{color:#f5ecc2;border-color:#b5b1d8}
+.nook-theme-btn:focus-visible{outline:2px solid #f48067;outline-offset:2px}
+
+/* ── Three-column scene ── */
+.nook-scene{
+  display:grid;
+  grid-template-columns:220px minmax(0,1fr) 200px;
+  flex:1;
+  min-height:0;
+}
+
+/* ── Left: arched window ── */
+.nook-window-col{
+  position:sticky;top:52px;
+  height:calc(100vh - 52px);
+  display:flex;align-items:stretch;
+  padding:28px 16px 28px 20px;
+  box-sizing:border-box;
+}
+.nook-arch-frame{
+  width:100%;
+  background:var(--vandyke-brown,#4b3317);
+  border-radius:999px 999px 0 0;
+  padding:10px 10px 0;
+  display:flex;flex-direction:column;flex:1;
+}
+.nook-window-glass{
+  flex:1;
+  background:#051230;
+  border-radius:calc(999px - 10px) calc(999px - 10px) 0 0;
+  position:relative;overflow:hidden;
+}
+
+/* Crescent moon */
+.nook-moon{
+  position:absolute;top:14%;right:22%;
+  width:34px;height:34px;
+  border-radius:50%;
+  background:#c2ae93;
+  box-shadow:9px -6px 0 3px #051230;
+}
+
+/* Rain */
+.nook-rain-layer{position:absolute;inset:0;overflow:hidden}
+.rs{
+  position:absolute;width:1px;top:-60px;
+  animation:rain-fall linear infinite;
+}
+@keyframes rain-fall{0%{transform:translateY(0)}100%{transform:translateY(calc(100vh + 60px))}}
+@media(prefers-reduced-motion:reduce){.rs{animation:none;top:0;bottom:0;opacity:.2!important}}
+
+/* ── Centre: lamp + reading column ── */
+.nook-read-col{
+  display:flex;flex-direction:column;align-items:center;
+  padding:clamp(24px,3vw,48px) clamp(16px,3vw,40px);
+  overflow-y:auto;
+}
+
+/* Lamp */
+.nook-lamp{
+  display:flex;flex-direction:column;align-items:center;
+  margin-bottom:28px;user-select:none;
+}
+.nook-lamp-shade{
+  width:72px;height:28px;
+  background:#ae5224;
+  clip-path:polygon(12% 0%,88% 0%,100% 100%,0% 100%);
+  position:relative;display:flex;align-items:center;justify-content:center;
+}
+.nook-lamp-bulb{
+  width:14px;height:14px;border-radius:50%;
+  background:#fdc57e;position:absolute;bottom:-4px;
+  box-shadow:0 0 16px 8px rgba(253,197,126,.18),0 0 32px 16px rgba(253,197,126,.08);
+  animation:bulb-flicker 5s ease-in-out infinite;
+}
+@keyframes bulb-flicker{
+  0%,88%,100%{opacity:1}
+  89%{opacity:.62}
+  91%{opacity:.9}
+  93%{opacity:.5}
+  95%{opacity:.88}
+}
+@media(prefers-reduced-motion:reduce){.nook-lamp-bulb{animation:none}}
+.nook-lamp-neck{width:2px;height:48px;background:#ae5224}
+.nook-lamp-base{width:52px;height:7px;background:#ae5224;border-radius:4px}
+
+/* Book / reading column */
+.nook-book{max-width:560px;width:100%}
+.nook-call-line{
+  display:flex;flex-wrap:wrap;gap:6px;align-items:center;
+  margin-bottom:14px;
+}
+.nook-call-badge{
+  font:600 11px 'Josefin Sans',sans-serif;letter-spacing:.1em;text-transform:uppercase;
+  background:#f5ecc2;color:#111314;padding:3px 7px;border-radius:2px;
+}
+.nook-call-sep{color:#b5b1d8;font-size:12px}
+.nook-call-format,.nook-call-wc{font:13px 'Josefin Sans',sans-serif;color:#b5b1d8;letter-spacing:.03em}
+
+.nook-title{
+  font:600 clamp(28px,4vw,38px)/1.1 'Gilda Display',Georgia,serif;
+  color:#f5ecc2;margin:0 0 20px;text-wrap:balance;
+}
+.nook-excerpt{font:19px/1.7 'Gilda Display',Georgia,serif;color:#ebd3a2;margin:0 0 28px}
+.nook-excerpt p{margin:0}
+.nook-excerpt--empty{font:16px/1.6 'Lato',sans-serif;color:#b5b1d8}
+
+.nook-actions{display:flex;flex-wrap:wrap;gap:10px;align-items:center}
+.nook-btn-read{
+  all:unset;cursor:pointer;box-sizing:border-box;
+  font:500 14px 'Josefin Sans',sans-serif;letter-spacing:.03em;
+  padding:10px 22px;border-radius:8px;
+  background:#ae5224;color:#f5ecc2;
+  min-height:44px;white-space:nowrap;text-decoration:none;
+  display:inline-flex;align-items:center;
+}
+.nook-btn-read:hover{background:#c2602b}
+.nook-btn-read:focus-visible{outline:2px solid #f48067;outline-offset:2px}
+.nook-btn-sec{
+  all:unset;cursor:pointer;box-sizing:border-box;
+  font:500 14px 'Josefin Sans',sans-serif;letter-spacing:.03em;
+  padding:10px 20px;border-radius:8px;border:1px solid #40456a;
+  color:#b5b1d8;min-height:44px;white-space:nowrap;
+}
+.nook-btn-sec:hover{border-color:#b5b1d8;color:#f5ecc2}
+.nook-btn-sec:focus-visible{outline:2px solid #f48067;outline-offset:2px}
+.nook-btn-ghost{
+  all:unset;cursor:pointer;box-sizing:border-box;
+  font:500 13px 'Josefin Sans',sans-serif;letter-spacing:.03em;
+  padding:8px 16px;border-radius:8px;border:1px solid #2a3050;
+  color:#66629c;min-height:40px;white-space:nowrap;
+}
+.nook-btn-ghost:hover{color:#b5b1d8;border-color:#40456a}
+.nook-btn-ghost:focus-visible{outline:2px solid #f48067;outline-offset:2px}
+
+/* Loading state while pulling another book */
+.nook-book.loading .nook-title{opacity:.35}
+.nook-book.loading .nook-excerpt{opacity:.35}
+
+/* ── Right: dim shelf ── */
+.nook-shelf-col{
+  position:sticky;top:52px;
+  height:calc(100vh - 52px);
+  overflow-y:auto;
+  padding:20px 12px 20px 8px;
+  box-sizing:border-box;
+  scrollbar-width:none;
+}
+.nook-shelf-col::-webkit-scrollbar{display:none}
+.nook-shelf-section{margin-bottom:12px}
+.nook-shelf-row{
+  display:flex;align-items:flex-end;gap:2px;
+  opacity:.35;
+}
+.nook-spine-dim{
+  flex-shrink:0;width:22px;
+  border-radius:1px;overflow:hidden;
+  display:flex;align-items:center;justify-content:center;
+}
+.nook-spine-title{
+  writing-mode:vertical-rl;text-orientation:mixed;
+  font:600 8px/1.1 'Lato',sans-serif;
+  overflow:hidden;white-space:nowrap;
+  padding:4px 2px;max-height:100%;
+  opacity:.7;
+}
+.nook-shelf-plank{height:6px;background:#4b3317;border-radius:2px;margin-top:2px;width:100%}
+
+/* ── Mobile: window banner + full-width reading ── */
+@media(max-width:700px){
+  .nook-scene{
+    grid-template-columns:1fr;
+    grid-template-rows:auto 1fr;
+  }
+  .nook-window-col{
+    position:static;height:140px;
+    padding:0;
+    grid-row:1;
+  }
+  .nook-arch-frame{
+    border-radius:0;padding:0;
+    height:100%;
+  }
+  .nook-window-glass{
+    border-radius:0;
+    height:100%;
+  }
+  .nook-moon{top:20%;right:12%}
+  .nook-shelf-col{display:none}
+  .nook-read-col{
+    grid-row:2;
+    padding:clamp(20px,4vw,32px) clamp(16px,5vw,32px) 100px;
+  }
+  .nook-lamp{margin-bottom:20px}
+  .nook-lamp-neck{height:32px}
+}
+
+/* ── Radio card ───────────────────────────────────────────────────────────── */
+.radio-wrap{
+  width:100%;max-width:560px;margin-top:36px;
+  border:1px solid #40456a;border-radius:10px;overflow:hidden;
+  background:#0a1422;
+}
+
+/* Player area — hidden until a source is active */
+.radio-player-area{
+  display:flex;flex-wrap:wrap;gap:0;
+  background:#050d1a;
+  border-bottom:1px solid #40456a;
+  min-height:200px;
+}
+.radio-player-slot{
+  flex:1 1 200px;min-width:200px;min-height:200px;
+  overflow:hidden;
+}
+.radio-player-slot iframe{width:100%!important;height:100%!important;display:block}
+
+/* Slim bar */
+.radio-bar{
+  display:flex;align-items:center;gap:8px;
+  padding:0 12px;min-height:44px;
+  border-bottom:1px solid transparent;
+}
+.radio-bar-toggle{
+  all:unset;cursor:pointer;display:flex;align-items:center;gap:7px;
+  font:500 13px 'Josefin Sans',sans-serif;letter-spacing:.03em;
+  color:#b5b1d8;min-height:44px;flex:1;
+}
+.radio-bar-toggle:hover{color:#f5ecc2}
+.radio-bar-toggle:focus-visible{outline:2px solid #f48067;outline-offset:2px;border-radius:4px}
+.radio-icon{flex-shrink:0;opacity:.7}
+.radio-bar-label{white-space:nowrap}
+.radio-bar-now{
+  flex:1;font:12px 'Josefin Sans',sans-serif;color:#66629c;
+  overflow:hidden;text-overflow:ellipsis;white-space:nowrap;
+  padding-left:4px;
+}
+.radio-bar-skip{
+  all:unset;cursor:pointer;font:14px 'Josefin Sans',sans-serif;
+  color:#66629c;min-height:36px;min-width:36px;text-align:center;
+  border-radius:4px;flex-shrink:0;
+}
+.radio-bar-skip:hover{color:#b5b1d8}
+.radio-bar-skip:focus-visible{outline:2px solid #f48067;outline-offset:2px}
+.radio-bar-caret{
+  font:500 16px 'Josefin Sans',sans-serif;color:#40456a;
+  flex-shrink:0;user-select:none;line-height:1;
+}
+
+/* Full controls panel */
+.radio-controls{padding:14px 16px;display:flex;flex-direction:column;gap:14px}
+
+/* When expanded: show bar border */
+.radio-wrap:has(.radio-controls:not([hidden])) .radio-bar{border-bottom-color:#40456a}
+
+/* Section */
+.radio-section{display:flex;flex-direction:column;gap:10px}
+.radio-divider{height:1px;background:#2a3050}
+.radio-row{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+.radio-lbl{font:600 11px 'Josefin Sans',sans-serif;letter-spacing:.1em;text-transform:uppercase;color:#66629c;flex-shrink:0}
+
+/* Ambience seg control */
+.radio-seg{display:flex;border:1px solid #40456a;border-radius:6px;overflow:hidden;flex-shrink:0}
+.radio-seg-btn{
+  all:unset;cursor:pointer;
+  font:500 12px 'Josefin Sans',sans-serif;letter-spacing:.03em;
+  padding:0 12px;min-height:32px;color:#66629c;
+  border-right:1px solid #40456a;box-sizing:border-box;
+}
+.radio-seg-btn:last-child{border-right:0}
+.radio-seg-btn[aria-pressed=true]{background:#b5b1d8;color:#0a1422}
+.radio-seg-btn:focus-visible{outline:2px solid #f48067;outline-offset:-2px}
+.radio-skip-btn{
+  all:unset;cursor:pointer;
+  font:500 12px 'Josefin Sans',sans-serif;letter-spacing:.03em;
+  color:#66629c;border:1px solid #40456a;border-radius:6px;
+  padding:0 10px;min-height:32px;white-space:nowrap;
+}
+.radio-skip-btn:hover{color:#b5b1d8;border-color:#66629c}
+.radio-skip-btn:focus-visible{outline:2px solid #f48067;outline-offset:2px}
+
+/* Track name */
+.radio-track-name{font:12px/1.4 'Josefin Sans',sans-serif;color:#66629c;margin:0;min-height:1em}
+.radio-track-name:empty{display:none}
+
+/* Volume row */
+.radio-vol-row{display:flex;align-items:center;gap:10px}
+.radio-vol-lbl{font:11px 'Josefin Sans',sans-serif;letter-spacing:.06em;text-transform:uppercase;color:#40456a;flex-shrink:0;white-space:nowrap}
+.radio-vol{
+  flex:1;accent-color:#b5b1d8;height:3px;
+  -webkit-appearance:none;appearance:none;background:#2a3050;border-radius:2px;
+  min-height:16px;cursor:pointer;
+}
+.radio-vol::-webkit-slider-thumb{-webkit-appearance:none;width:14px;height:14px;border-radius:50%;background:#b5b1d8;cursor:pointer}
+.radio-vol:focus-visible{outline:2px solid #f48067;outline-offset:4px}
+
+/* Music cars */
+.radio-cars{display:flex;flex-wrap:wrap;gap:6px}
+.radio-car-btn{
+  all:unset;cursor:pointer;box-sizing:border-box;
+  font:500 12px 'Josefin Sans',sans-serif;letter-spacing:.04em;
+  border:1px solid #40456a;border-radius:999px;
+  padding:0 14px;min-height:32px;color:#66629c;white-space:nowrap;
+}
+.radio-car-btn:hover{border-color:#66629c;color:#b5b1d8}
+.radio-car-btn[aria-pressed=true]{background:#b5b1d8;border-color:#b5b1d8;color:#0a1422}
+.radio-car-btn:focus-visible{outline:2px solid #f48067;outline-offset:2px}
+
+/* Keep the tab bar Violet Night coloured on the nook page */
+[data-nook] .train-tabs{background:#0d1829;border-top-color:#40456a}
+[data-nook] .train-tabs a{color:#66629c}
+[data-nook] .train-tabs a[aria-current]{color:#b5b1d8;border-bottom-color:#b5b1d8}

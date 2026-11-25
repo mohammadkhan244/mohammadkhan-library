@@ -101,6 +101,7 @@ export default async function TrainPage() {
         <nav className="train-nav">
           <a href="/#stories">Stacks</a>
           <a href="/train" aria-current="page">Train</a>
+          <a href="/nook">Nook</a>
           <a href="/#tracker">Tracker</a>
           <a href="/#bookshelf">Books</a>
         </nav>
@@ -200,6 +201,7 @@ export default async function TrainPage() {
       <nav className="train-tabs" aria-label="Sections">
         <a href="/#stories">Stacks</a>
         <a href="/train" aria-current="page">Train</a>
+        <a href="/nook">Nook</a>
         <a href="/#tracker">Tracker</a>
         <a href="/#bookshelf">Books</a>
       </nav>

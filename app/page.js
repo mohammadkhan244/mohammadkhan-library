@@ -114,6 +114,7 @@ export default async function Home() {
           <a href="#writing">Newsletter</a>
           <a href="#stories">Stacks</a>
           <a href="/train">Train of thought</a>
+          <a href="/nook">Nook</a>
           <a href="#tools">Tools</a>
           <a href="#projects">Projects</a>
           <a href="#bookshelf">Bookshelf</a>

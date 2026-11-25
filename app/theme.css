@@ -115,6 +115,9 @@
   --town-making:     #635a3a; /* Dark Olive */
   --town-fable:      #71502f; /* Brown */
 
+  /* Nook — always Violet Night */
+  --vandyke-brown:   #4b3317; /* Vandyke Brown — window frame */
+
   /* Departures board — always dark, both themes */
   --depart-bg:         #111314; /* Black */
   --depart-text:       #f5ecc2; /* Sulphur Yellow */
