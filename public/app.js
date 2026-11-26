@@ -107,32 +107,34 @@ function tracker() {
   }
 }
 
-$('grid').addEventListener('click', e => { const b = e.target.closest('button'); if (!b) return; selCell = selCell === b.dataset.c ? '' : b.dataset.c; tracker(); });
-$('chips').addEventListener('click', e => { const b = e.target.closest('button'); if (!b) return; kind = b.dataset.k; $('chips').querySelectorAll('button').forEach(x => x.setAttribute('aria-pressed', x === b)); selCell = ''; tracker(); });
-tracker();
+if ($('stats')) {
+  $('grid').addEventListener('click', e => { const b = e.target.closest('button'); if (!b) return; selCell = selCell === b.dataset.c ? '' : b.dataset.c; tracker(); });
+  $('chips').addEventListener('click', e => { const b = e.target.closest('button'); if (!b) return; kind = b.dataset.k; $('chips').querySelectorAll('button').forEach(x => x.setAttribute('aria-pressed', x === b)); selCell = ''; tracker(); });
+  tracker();
 
-// Scroll the grid so the current week column is visible
-(function scrollToCurrentWeek() {
-  const today = new Date().toISOString().slice(0, 10);
-  const [cy, cw] = wk(today);
-  const btn = document.querySelector(`.cells button[data-c="${cy}-${cw}"]`);
-  if (btn) btn.scrollIntoView({ inline: 'end', block: 'nearest' });
-})();
+  // Scroll the grid so the current week column is visible
+  (function scrollToCurrentWeek() {
+    const today = new Date().toISOString().slice(0, 10);
+    const [cy, cw] = wk(today);
+    const btn = document.querySelector(`.cells button[data-c="${cy}-${cw}"]`);
+    if (btn) btn.scrollIntoView({ inline: 'end', block: 'nearest' });
+  })();
 
-/* ── Tracker / Charts toggle ── */
-function showTrackerView(which) {
-  const tv = $('tracker-view'), cv = $('charts-view');
-  const isCharts = which === 'charts';
-  tv.hidden = isCharts;
-  cv.hidden = !isCharts;
-  $('tab-tracker').setAttribute('aria-pressed', !isCharts);
-  $('tab-charts').setAttribute('aria-pressed', isCharts);
-  if (isCharts && !cv.dataset.ready) { renderCharts(); cv.dataset.ready = '1'; }
+  /* ── Tracker / Charts toggle ── */
+  const showTrackerView = function(which) {
+    const tv = $('tracker-view'), cv = $('charts-view');
+    const isCharts = which === 'charts';
+    tv.hidden = isCharts;
+    cv.hidden = !isCharts;
+    $('tab-tracker').setAttribute('aria-pressed', !isCharts);
+    $('tab-charts').setAttribute('aria-pressed', isCharts);
+    if (isCharts && !cv.dataset.ready) { renderCharts(); cv.dataset.ready = '1'; }
+  };
+  document.querySelector('.trk-hd .seg').addEventListener('click', e => {
+    const b = e.target.closest('button'); if (!b) return;
+    showTrackerView(b.id === 'tab-charts' ? 'charts' : 'tracker');
+  });
 }
-document.querySelector('.trk-hd .seg').addEventListener('click', e => {
-  const b = e.target.closest('button'); if (!b) return;
-  showTrackerView(b.id === 'tab-charts' ? 'charts' : 'tracker');
-});
 
 /* ── Charts ── */
 function barChart(title, rows, fmtVal, takeaway) {
@@ -415,13 +417,15 @@ function go() {
 }
 function setView(v) { view = v; $('vg').setAttribute('aria-pressed', v === 'gallery'); $('vs').setAttribute('aria-pressed', v === 'shelf'); $('vt').setAttribute('aria-pressed', v === 'table'); try { localStorage.setItem('view', v); } catch (e) {} render(); }
 let tt; function toast(m) { const t = $('toast'); t.textContent = m; t.classList.add('on'); clearTimeout(tt); tt = setTimeout(() => t.classList.remove('on'), 1800); }
-$('out').addEventListener('click', async e => {
-  const b = e.target.closest('.sh'); if (!b) return;
-  const url = b.dataset.u || location.href.split('#')[0] + '#' + b.dataset.id;
-  try { await navigator.clipboard.writeText(url); toast('Link copied — send it to someone'); } catch (err) { toast(url); }
-});
-['q', 'f1', 'f2'].forEach(id => $(id).addEventListener('input', render));
-$('vg').onclick = () => setView('gallery'); $('vs').onclick = () => setView('shelf'); $('vt').onclick = () => setView('table');
-window.addEventListener('hashchange', go);
-setView(view); go();
+if ($('out')) {
+  $('out').addEventListener('click', async e => {
+    const b = e.target.closest('.sh'); if (!b) return;
+    const url = b.dataset.u || location.href.split('#')[0] + '#' + b.dataset.id;
+    try { await navigator.clipboard.writeText(url); toast('Link copied — send it to someone'); } catch (err) { toast(url); }
+  });
+  ['q', 'f1', 'f2'].forEach(id => $(id).addEventListener('input', render));
+  $('vg').onclick = () => setView('gallery'); $('vs').onclick = () => setView('shelf'); $('vt').onclick = () => setView('table');
+  window.addEventListener('hashchange', go);
+  setView(view); go();
+}
 }
