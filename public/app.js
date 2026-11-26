@@ -219,15 +219,15 @@ function fitSpineText(title, baseH) {
   if (!_spineCanvas) _spineCanvas = document.createElement('canvas');
   const ctx = _spineCanvas.getContext('2d');
   const avail = baseH - 22; // minus padding + call-num-tag
-  for (let fs = 13; fs >= 7; fs--) {
+  for (let fs = 13; fs >= 12; fs--) {
     ctx.font = `600 ${fs}px Lato, sans-serif`;
     const totalH = [...title].reduce((sum, ch) => sum + ctx.measureText(ch).width, 0) * 1.05;
     if (totalH <= avail) return { fs, h: baseH };
   }
-  // 7px doesn't fit — extend spine height to accommodate
-  ctx.font = '600 7px Lato, sans-serif';
+  // 12px doesn't fit — extend spine height to accommodate
+  ctx.font = '600 12px Lato, sans-serif';
   const totalH7 = [...title].reduce((sum, ch) => sum + ctx.measureText(ch).width, 0) * 1.05;
-  return { fs: 7, h: Math.ceil(totalH7) + 22 };
+  return { fs: 12, h: Math.ceil(totalH7) + 22 };
 }
 
 /* ── shelf / stacks rendering ── */
@@ -409,8 +409,7 @@ function go() {
     view = tab === 'stories' ? 'shelf' : view === 'shelf' ? 'gallery' : view;
     closeSpinePanel();
   }
-  document.querySelectorAll('nav a').forEach(a => a.toggleAttribute('aria-current', a.getAttribute('href') === '#' + tab));
-  const viewToggle = $('vg').closest('.seg');
+const viewToggle = $('vg').closest('.seg');
   viewToggle.style.display = tab === 'bookshelf' ? 'none' : '';
   setView(view);
   if (h.includes('-')) { const el = document.getElementById(h); if (el) el.scrollIntoView({ block: 'center' }); }

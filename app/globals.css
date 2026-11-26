@@ -328,7 +328,7 @@ h3{font:600 19px/1.25 'Gilda Display',Georgia,serif;margin:0}
   min-height:44px;
   padding:0 20px;
   display:inline-flex;align-items:center;
-  font:600 11px/1 'Josefin Sans',sans-serif;
+  font:600 12px/1 'Josefin Sans',sans-serif;
   letter-spacing:.18em;text-transform:uppercase;
   color:var(--scene-pill-text);
   background:var(--scene-pill-bg);
@@ -477,7 +477,7 @@ h3{font:600 19px/1.25 'Gilda Display',Georgia,serif;margin:0}
 }
 .lab-tool-svg{width:36px;height:72px;fill:var(--scene-figure);flex-shrink:0;overflow:visible}
 .lab-tool-name{
-  font:600 11px/1.2 'Josefin Sans',sans-serif;letter-spacing:.06em;text-transform:uppercase;
+  font:600 12px/1.2 'Josefin Sans',sans-serif;letter-spacing:.06em;text-transform:uppercase;
   color:rgba(245,236,194,.65);text-align:center;word-break:break-word;max-width:90px;
 }
 
@@ -523,7 +523,7 @@ h3{font:600 19px/1.25 'Gilda Display',Georgia,serif;margin:0}
 .lab-drawer--open{transform:translateY(12px)}
 @media(prefers-reduced-motion:reduce){.lab-drawer{transition:none}.lab-drawer--open{transform:none}}
 .lab-drawer-label{font:600 20px/1.2 'Gilda Display',Georgia,serif;color:#f5ecc2;word-break:break-word;margin-bottom:4px}
-.lab-drawer-count{font:600 11px/1 'Josefin Sans',sans-serif;letter-spacing:.12em;color:rgba(245,236,194,.55)}
+.lab-drawer-count{font:600 12px/1 'Josefin Sans',sans-serif;letter-spacing:.12em;color:rgba(245,236,194,.55)}
 
 /* ── Desktop panel (full-stage overlay) ── */
 .lab-panel{
@@ -568,7 +568,7 @@ h3{font:600 19px/1.25 'Gilda Display',Georgia,serif;margin:0}
 .lab-proj-link{color:var(--accent);font:500 14px 'Lato',sans-serif;text-decoration:none}
 .lab-proj-link:hover{text-decoration:underline}
 .lab-copy-btn{
-  font:600 11px/1 'Josefin Sans',sans-serif;letter-spacing:.1em;text-transform:uppercase;
+  font:600 12px/1 'Josefin Sans',sans-serif;letter-spacing:.1em;text-transform:uppercase;
   background:none;border:1px solid var(--border);border-radius:999px;
   padding:0 14px;min-height:36px;cursor:pointer;color:var(--muted);
 }
@@ -711,7 +711,7 @@ body:has(.train-chrome) .lib-header,body:has(.nook-chrome) .lib-header{display:n
 
 /* ── sticky nav ── */
 nav{position:sticky;top:0;z-index:5;background:var(--bg);border-bottom:1px solid var(--border)}
-nav .in{max-width:1240px;margin:0 auto;padding:0 max(5vw,16px);display:flex;gap:4px;overflow-x:auto}
+
 nav a{flex:none;padding:14px 12px;color:var(--muted);text-decoration:none;font:500 14px 'Josefin Sans',sans-serif;letter-spacing:.03em;border-bottom:2px solid transparent}
 nav a[aria-current]{color:var(--text);border-color:var(--accent)}
 
@@ -817,7 +817,7 @@ footer{color:var(--muted);font:13px 'Josefin Sans',sans-serif;border-top:1px sol
 .spine.pulled{transform:translateY(-16px);outline:2px solid var(--signal);outline-offset:1px}
 @media(prefers-reduced-motion:reduce){.spine{transition:none}}
 .spine-title{writing-mode:vertical-rl;text-orientation:mixed;line-height:1.1;word-break:break-word;overflow:hidden;display:block;flex:1;font-family:'Lato',sans-serif}
-.call-num-tag{font:7px/1.3 'Josefin Sans',sans-serif;letter-spacing:.02em;background:var(--call-label-bg);color:var(--call-label-text);padding:2px 3px;border-radius:1px;white-space:nowrap;max-width:calc(100% - 2px);flex-shrink:0;margin-top:3px;text-align:center}
+.call-num-tag{font:12px/1.3 'Josefin Sans',sans-serif;letter-spacing:.02em;background:var(--call-label-bg);color:var(--call-label-text);padding:2px 3px;border-radius:1px;white-space:nowrap;max-width:calc(100% - 2px);flex-shrink:0;margin-top:3px;text-align:center}
 
 /* ── spine panel (desktop side panel + phone bottom sheet) ── */
 .spine-panel{position:fixed;z-index:30;background:var(--bg);overflow-y:auto}
@@ -826,7 +826,7 @@ footer{color:var(--muted);font:13px 'Josefin Sans',sans-serif;border-top:1px sol
 @media(max-width:600px){.spine-panel{bottom:0;left:0;right:0;border-radius:16px 16px 0 0;border-top:1px solid var(--border);padding:20px 20px 32px;max-height:72vh}}
 .spine-panel-close{all:unset;cursor:pointer;float:right;font-size:22px;line-height:1;color:var(--muted);padding:0 2px;margin-left:12px}
 .spine-panel-close:hover{color:var(--text)}
-.call-badge{font:11px 'Josefin Sans',sans-serif;letter-spacing:.07em;text-transform:uppercase;background:var(--call-label-bg);color:var(--call-label-text);padding:3px 8px;border-radius:2px;display:inline-block;margin-bottom:14px;margin-top:4px}
+.call-badge{font:12px 'Josefin Sans',sans-serif;letter-spacing:.07em;text-transform:uppercase;background:var(--call-label-bg);color:var(--call-label-text);padding:3px 8px;border-radius:2px;display:inline-block;margin-bottom:14px;margin-top:4px}
 .spine-panel h2{font:600 20px/1.3 'Gilda Display',Georgia,serif;margin:0 0 8px}
 .spine-panel .meta{font:13px 'Josefin Sans',sans-serif;color:var(--muted);margin:0 0 6px;line-height:1.5}
 .spine-panel .award-line{font:13px 'Josefin Sans',sans-serif;color:var(--accent);margin:0 0 16px}

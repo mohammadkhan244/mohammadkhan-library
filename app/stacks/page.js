@@ -41,7 +41,7 @@ export default async function StacksPage() {
           <select id="f2" aria-label="Filter" />
           <div className="seg" role="group" aria-label="View">
             <button id="vg" aria-pressed="true">Gallery</button>
-            <button id="vs" aria-pressed="false">Shelf</button>
+            <button id="vs" aria-pressed="false">Spines</button>
             <button id="vt" aria-pressed="false">Table</button>
           </div>
         </div>
