@@ -17,3 +17,14 @@ https://claude.ai/artifact/FjWkv9tuf6tjT1B6ALXiCR → boards "Home — 4 doors",
 
 ## Check (every phase)
 Screenshots at 390px and 1280px, dark AND light theme. Tab through everything: visible 2px var(--accent) focus ring, Enter works. No console errors. `next build` passes. Commit once per phase. Wait for my OK, then push.
+
+## Mobile rules (apply to every phase)
+- Mobile first. Design at 390px, then verify 360, 390, 430 (phones), 768 (tablet), 1280 (desktop), and phone landscape (844×390).
+- No fixed-pixel widths on phone layouts. Size the scene with vw/% and clamp() so it fits 360–430 without overflow or horizontal scroll. The home's 4 doors must always fit on one row with ≥8px gaps.
+- Minimum text size 12px. Tap targets ≥44×44px with ≥8px between them. Never truncate text; it wraps.
+- No hover-only information or actions. Anything revealed on hover (tool names, labels) is also visible by default or on tap/focus on touch. Use :active for press feedback on touch; keep :hover lift for desktop only (@media (hover: hover)).
+- Bottom tab bar: height 64px + env(safe-area-inset-bottom) padding; add viewport-fit=cover to the viewport metadata. Use dvh (not vh) for full-height layouts.
+- Performance: animate only transform and opacity. No animation of layout properties. Pause rain, flaps and floor ticks when the tab is hidden (visibilitychange) and when offscreen (IntersectionObserver). prefers-reduced-motion = no animation.
+- Tablet 641–1024px: the scene scales proportionally from its 1280×800 stage; no layout break.
+- Phone landscape (height <500px): hide the floor grid and decorative rain, keep the four doors and the tab bar reachable without vertical clipping.
+- Check every phase at all the sizes above, both themes, and tell me about anything that doesn't fit.
