@@ -24,15 +24,6 @@
     --comparison: var(--accent);
     --card-bg:  #111314; /* Black — dark cards stay on-bg */
     --card-text: #f5ecc2; /* Sulphur Yellow */
-    /* Scene tokens — Violet Night */
-    --scene-arch-fill:   #051230;
-    --scene-arch-border: #40456a;
-    --scene-offset:      #4f4086;
-    --scene-pill-bg:     #111314;
-    --scene-pill-border: #40456a;
-    --scene-pill-text:   #f5ecc2;
-    --scene-rain:        #66629c;
-    --scene-figure:      #b5b1d8;
   }
 }
 
@@ -56,15 +47,6 @@
     --comparison: var(--muted);
     --card-bg:  #111314; /* Black — dark cards on light bg use inverse */
     --card-text: #f5ecc2; /* Sulphur Yellow */
-    /* Scene tokens — Paper */
-    --scene-arch-fill:   #12354e;
-    --scene-arch-border: #064f6e;
-    --scene-offset:      #5a82b3;
-    --scene-pill-bg:     #f5ecc2;
-    --scene-pill-border: #c2ae93;
-    --scene-pill-text:   #111314;
-    --scene-rain:        #a5c8d1;
-    --scene-figure:      #111314;
   }
 }
 
@@ -85,14 +67,6 @@
   --comparison: var(--accent);
   --card-bg:  #111314;
   --card-text: #f5ecc2;
-  --scene-arch-fill:   #051230;
-  --scene-arch-border: #40456a;
-  --scene-offset:      #4f4086;
-  --scene-pill-bg:     #111314;
-  --scene-pill-border: #40456a;
-  --scene-pill-text:   #f5ecc2;
-  --scene-rain:        #66629c;
-  --scene-figure:      #b5b1d8;
 }
 [data-theme=light] {
   --bg:       #f5ecc2;
@@ -110,14 +84,6 @@
   --comparison: var(--muted);
   --card-bg:  #111314;
   --card-text: #f5ecc2;
-  --scene-arch-fill:   #12354e;
-  --scene-arch-border: #064f6e;
-  --scene-offset:      #5a82b3;
-  --scene-pill-bg:     #f5ecc2;
-  --scene-pill-border: #c2ae93;
-  --scene-pill-text:   #111314;
-  --scene-rain:        #a5c8d1;
-  --scene-figure:      #111314;
 }
 
 /* ── SHARED — spine + shelf colours (never change with theme) ──
@@ -151,11 +117,6 @@
 
   /* Nook — always Violet Night */
   --vandyke-brown:   #4b3317; /* Vandyke Brown — window frame */
-
-  /* Scene tokens — shared across both themes */
-  --scene-flap:      #fdc57e; /* Cinnamon Buff — flap chars on #051230 bg */
-  --scene-plank:     #71502f; /* Brown — floor planks */
-  --scene-lamp:      var(--signal); /* lamp glow = signal colour */
 
   /* Departures board — always dark, both themes */
   --depart-bg:         #111314; /* Black */

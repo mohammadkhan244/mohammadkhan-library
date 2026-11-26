@@ -107,34 +107,32 @@ function tracker() {
   }
 }
 
-if ($('stats')) {
-  $('grid').addEventListener('click', e => { const b = e.target.closest('button'); if (!b) return; selCell = selCell === b.dataset.c ? '' : b.dataset.c; tracker(); });
-  $('chips').addEventListener('click', e => { const b = e.target.closest('button'); if (!b) return; kind = b.dataset.k; $('chips').querySelectorAll('button').forEach(x => x.setAttribute('aria-pressed', x === b)); selCell = ''; tracker(); });
-  tracker();
+$('grid').addEventListener('click', e => { const b = e.target.closest('button'); if (!b) return; selCell = selCell === b.dataset.c ? '' : b.dataset.c; tracker(); });
+$('chips').addEventListener('click', e => { const b = e.target.closest('button'); if (!b) return; kind = b.dataset.k; $('chips').querySelectorAll('button').forEach(x => x.setAttribute('aria-pressed', x === b)); selCell = ''; tracker(); });
+tracker();
 
-  // Scroll the grid so the current week column is visible
-  (function scrollToCurrentWeek() {
-    const today = new Date().toISOString().slice(0, 10);
-    const [cy, cw] = wk(today);
-    const btn = document.querySelector(`.cells button[data-c="${cy}-${cw}"]`);
-    if (btn) btn.scrollIntoView({ inline: 'end', block: 'nearest' });
-  })();
+// Scroll the grid so the current week column is visible
+(function scrollToCurrentWeek() {
+  const today = new Date().toISOString().slice(0, 10);
+  const [cy, cw] = wk(today);
+  const btn = document.querySelector(`.cells button[data-c="${cy}-${cw}"]`);
+  if (btn) btn.scrollIntoView({ inline: 'end', block: 'nearest' });
+})();
 
-  /* ── Tracker / Charts toggle ── */
-  const showTrackerView = function(which) {
-    const tv = $('tracker-view'), cv = $('charts-view');
-    const isCharts = which === 'charts';
-    tv.hidden = isCharts;
-    cv.hidden = !isCharts;
-    $('tab-tracker').setAttribute('aria-pressed', !isCharts);
-    $('tab-charts').setAttribute('aria-pressed', isCharts);
-    if (isCharts && !cv.dataset.ready) { renderCharts(); cv.dataset.ready = '1'; }
-  };
-  document.querySelector('.trk-hd .seg').addEventListener('click', e => {
-    const b = e.target.closest('button'); if (!b) return;
-    showTrackerView(b.id === 'tab-charts' ? 'charts' : 'tracker');
-  });
+/* ── Tracker / Charts toggle ── */
+function showTrackerView(which) {
+  const tv = $('tracker-view'), cv = $('charts-view');
+  const isCharts = which === 'charts';
+  tv.hidden = isCharts;
+  cv.hidden = !isCharts;
+  $('tab-tracker').setAttribute('aria-pressed', !isCharts);
+  $('tab-charts').setAttribute('aria-pressed', isCharts);
+  if (isCharts && !cv.dataset.ready) { renderCharts(); cv.dataset.ready = '1'; }
 }
+document.querySelector('.trk-hd .seg').addEventListener('click', e => {
+  const b = e.target.closest('button'); if (!b) return;
+  showTrackerView(b.id === 'tab-charts' ? 'charts' : 'tracker');
+});
 
 /* ── Charts ── */
 function barChart(title, rows, fmtVal, takeaway) {
@@ -219,15 +217,15 @@ function fitSpineText(title, baseH) {
   if (!_spineCanvas) _spineCanvas = document.createElement('canvas');
   const ctx = _spineCanvas.getContext('2d');
   const avail = baseH - 22; // minus padding + call-num-tag
-  for (let fs = 13; fs >= 12; fs--) {
+  for (let fs = 13; fs >= 7; fs--) {
     ctx.font = `600 ${fs}px Lato, sans-serif`;
     const totalH = [...title].reduce((sum, ch) => sum + ctx.measureText(ch).width, 0) * 1.05;
     if (totalH <= avail) return { fs, h: baseH };
   }
-  // 12px doesn't fit — extend spine height to accommodate
-  ctx.font = '600 12px Lato, sans-serif';
+  // 7px doesn't fit — extend spine height to accommodate
+  ctx.font = '600 7px Lato, sans-serif';
   const totalH7 = [...title].reduce((sum, ch) => sum + ctx.measureText(ch).width, 0) * 1.05;
-  return { fs: 12, h: Math.ceil(totalH7) + 22 };
+  return { fs: 7, h: Math.ceil(totalH7) + 22 };
 }
 
 /* ── shelf / stacks rendering ── */
@@ -409,22 +407,21 @@ function go() {
     view = tab === 'stories' ? 'shelf' : view === 'shelf' ? 'gallery' : view;
     closeSpinePanel();
   }
-const viewToggle = $('vg').closest('.seg');
+  document.querySelectorAll('nav a').forEach(a => a.toggleAttribute('aria-current', a.getAttribute('href') === '#' + tab));
+  const viewToggle = $('vg').closest('.seg');
   viewToggle.style.display = tab === 'bookshelf' ? 'none' : '';
   setView(view);
   if (h.includes('-')) { const el = document.getElementById(h); if (el) el.scrollIntoView({ block: 'center' }); }
 }
 function setView(v) { view = v; $('vg').setAttribute('aria-pressed', v === 'gallery'); $('vs').setAttribute('aria-pressed', v === 'shelf'); $('vt').setAttribute('aria-pressed', v === 'table'); try { localStorage.setItem('view', v); } catch (e) {} render(); }
 let tt; function toast(m) { const t = $('toast'); t.textContent = m; t.classList.add('on'); clearTimeout(tt); tt = setTimeout(() => t.classList.remove('on'), 1800); }
-if ($('out')) {
-  $('out').addEventListener('click', async e => {
-    const b = e.target.closest('.sh'); if (!b) return;
-    const url = b.dataset.u || location.href.split('#')[0] + '#' + b.dataset.id;
-    try { await navigator.clipboard.writeText(url); toast('Link copied — send it to someone'); } catch (err) { toast(url); }
-  });
-  ['q', 'f1', 'f2'].forEach(id => $(id).addEventListener('input', render));
-  $('vg').onclick = () => setView('gallery'); $('vs').onclick = () => setView('shelf'); $('vt').onclick = () => setView('table');
-  window.addEventListener('hashchange', go);
-  setView(view); go();
-}
+$('out').addEventListener('click', async e => {
+  const b = e.target.closest('.sh'); if (!b) return;
+  const url = b.dataset.u || location.href.split('#')[0] + '#' + b.dataset.id;
+  try { await navigator.clipboard.writeText(url); toast('Link copied — send it to someone'); } catch (err) { toast(url); }
+});
+['q', 'f1', 'f2'].forEach(id => $(id).addEventListener('input', render));
+$('vg').onclick = () => setView('gallery'); $('vs').onclick = () => setView('shelf'); $('vt').onclick = () => setView('table');
+window.addEventListener('hashchange', go);
+setView(view); go();
 }
