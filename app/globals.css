@@ -52,6 +52,29 @@ h3{font:600 19px/1.25 'Gilda Display',Georgia,serif;margin:0}
 .m-lbl{font:13px 'Josefin Sans',sans-serif;letter-spacing:.04em;text-transform:uppercase;color:var(--muted);display:block;margin-bottom:4px}
 .m-cmp{font-size:13px;color:var(--comparison);line-height:1.45;display:block}
 
+/* ── Shared shell: site header ── */
+.lib-header{text-align:center;padding:16px max(5vw,16px) 14px;border-bottom:1px solid var(--border);background:var(--bg);position:sticky;top:0;z-index:15}
+/* Suppress on pages with their own chrome */
+body:has(.train-chrome) .lib-header,body:has(.nook-chrome) .lib-header{display:none}
+.lib-logo{display:inline-flex;flex-direction:column;align-items:center;gap:2px;text-decoration:none;color:var(--text)}
+.lib-logo:focus-visible{outline:2px solid var(--signal);outline-offset:4px;border-radius:2px}
+.lib-name{font:600 26px/1 'Gilda Display',Georgia,serif}
+.lib-label{font:600 12px/1 'Josefin Sans',sans-serif;letter-spacing:.32em;color:var(--muted);text-transform:uppercase}
+
+/* ── Shared shell: bottom tab bar (mobile ≤640px) ── */
+.lib-tabs{display:none}
+@media(max-width:640px){
+  .lib-tabs{display:flex;position:fixed;top:auto;bottom:0;left:0;right:0;z-index:20;height:64px;padding-bottom:env(safe-area-inset-bottom,0px);box-sizing:content-box;background:var(--bg);border-top:1px solid var(--border);align-items:stretch}
+  .lib-tab{flex:1;display:flex;align-items:center;justify-content:center;font:600 11px/1 'Josefin Sans',sans-serif;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);text-decoration:none;min-height:44px;box-shadow:none}
+  .lib-tab--active{color:var(--text);box-shadow:inset 0 2px 0 var(--accent)}
+  .lib-tab--disabled{opacity:.4;cursor:default}
+  .lib-tab:not(.lib-tab--disabled):focus-visible{outline:2px solid var(--signal);outline-offset:-2px}
+  /* Page content clearance for tab bar */
+  body{padding-bottom:calc(64px + env(safe-area-inset-bottom,0px))}
+  /* Train's own tab bar is replaced by the shared one */
+  .train-tabs{display:none!important}
+}
+
 /* ── sticky nav ── */
 nav{position:sticky;top:0;z-index:5;background:var(--bg);border-bottom:1px solid var(--border)}
 nav .in{max-width:1240px;margin:0 auto;padding:0 max(5vw,16px);display:flex;gap:4px;overflow-x:auto}

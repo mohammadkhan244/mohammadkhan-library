@@ -34,18 +34,6 @@ export default async function StacksPage() {
 
   return (
     <>
-      <nav>
-        <div className="in">
-          <a href="#writing">Newsletter</a>
-          <a href="#stories">Stacks</a>
-          <a href="/train">Train of thought</a>
-          <a href="/nook">Nook</a>
-          <a href="#tools">Tools</a>
-          <a href="#projects">Projects</a>
-          <a href="#bookshelf">Bookshelf</a>
-        </div>
-      </nav>
-
       <main className="band">
         <div className="bar">
           <input id="q" type="search" placeholder="Search titles" aria-label="Search titles" />
