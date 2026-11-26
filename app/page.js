@@ -91,8 +91,8 @@ export default async function HomePage() {
           </a>
           <span className="hs-pill hs-pill--train" aria-hidden="true">Train of thought</span>
 
-          {/* ── Lab arch (no route yet — disabled) ── */}
-          <span className="hs-arch hs-arch--lab hs-arch--disabled" aria-disabled="true" aria-label="The Lab — coming soon">
+          {/* ── Lab arch ── */}
+          <a className="hs-arch hs-arch--lab" href="/lab" aria-label="The Lab — projects and tools">
             <div className="hs-lab-tools" aria-hidden="true">
               <svg width="140" height="52" viewBox="0 0 140 52" fill="none" aria-hidden="true">
                 {/* wrench */}
@@ -132,8 +132,8 @@ export default async function HomePage() {
               <div className="hs-lab-drawer" />
               <div className="hs-lab-drawer" />
             </div>
-          </span>
-          <span className="hs-pill hs-pill--lab hs-pill--disabled" aria-hidden="true">The Lab</span>
+          </a>
+          <span className="hs-pill hs-pill--lab" aria-hidden="true">The Lab</span>
 
           {/* ── Nook arch ── */}
           <a className="hs-arch hs-arch--nook" href="/nook" aria-label="Reading Nook">

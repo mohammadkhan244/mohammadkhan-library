@@ -5,7 +5,7 @@ const TABS = [
   { label: 'Home',   href: '/' },
   { label: 'Stacks', href: '/stacks' },
   { label: 'Train',  href: '/train' },
-  { label: 'Lab',    href: null },
+  { label: 'Lab',    href: '/lab' },
   { label: 'Nook',   href: '/nook' },
 ];
 
