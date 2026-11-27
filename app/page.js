@@ -27,10 +27,21 @@ function firstSentence(text) {
   return m ? m[0].trim() : text.slice(0, 120).trim();
 }
 
+function normalizeTitle(t) {
+  return t
+    .replace(/^Week\s+[\d-]+\s*:\s*/i, '')
+    .replace(/^\[(?:Essay|Short Story)\]\s*/i, '')
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, ' ')
+    .trim();
+}
+
 function pickThreadGlimpse(stories, dayIdx) {
   const map = {};
   for (const s of stories) {
-    if (s.thread) (map[s.thread] = map[s.thread] || []).push(s);
+    for (const th of (s.thread || [])) {
+      (map[th] = map[th] || []).push(s);
+    }
   }
   const eligible = Object.entries(map).filter(([, ss]) => ss.length >= 3);
   if (!eligible.length) return null;
@@ -108,23 +119,62 @@ export default async function FrontDoor() {
     } catch { /* excerpt optional */ }
   }
 
-  // "Currently exploring" — eligible threads with ≥3 items (stories + related book)
-  const threadMap = {};
+  // "Currently exploring" — per-thread pools from stories, newsletter, books
+  const threadPool = {};
+  function _add(th, item) { (threadPool[th] = threadPool[th] || []).push(item); }
+
   for (const s of data.stories) {
-    if (!s.thread) continue;
-    if (!threadMap[s.thread]) threadMap[s.thread] = [];
-    threadMap[s.thread].push(s);
+    if (s.f === 'Anthology') continue;
+    for (const th of (s.thread || []))
+      _add(th, { type: 'STORY', t: s.t, url: s.url, d: s.d, why: s.why || '', key: s.nid || s.t });
   }
+  for (const p of data.posts) {
+    for (const th of (p.thread || []))
+      _add(th, { type: 'NEWSLETTER', t: p.t, url: p.url, d: p.d, why: p.why || '', key: 'nl-' + p.url });
+  }
+  for (const b of notionBooks) {
+    for (const th of (b.thread || []))
+      _add(th, { type: 'BOOK I READ', t: b.t, url: b.url || '', d: b.d || '', why: b.why || '', key: 'bk-' + b.t });
+  }
+
   const eligibleThreads = [];
-  for (const [name, stories] of Object.entries(threadMap)) {
-    const subjects = [...new Set(stories.flatMap(s => s.subjects || []))];
-    const relBook = notionBooks.find(b => b.subjects?.some(subj => subjects.includes(subj))) ?? null;
-    if (stories.length + (relBook ? 1 : 0) < 3) continue;
-    const items = [
-      ...stories.slice(0, 3).map(s => ({ type: 'STORY', t: s.t, url: s.url, key: s.nid || s.t })),
-      ...(relBook ? [{ type: 'BOOK I READ', t: relBook.t, url: relBook.url || '', key: 'book-' + relBook.t }] : []),
-    ].slice(0, 4);
-    eligibleThreads.push({ name, items });
+  for (const [threadName, pool] of Object.entries(threadPool)) {
+    // De-dupe: newsletter loses to story with the same normalized title
+    const storyNorms = new Set(
+      pool.filter(i => i.type === 'STORY').map(i => normalizeTitle(i.t))
+    );
+    const deduped = pool.filter(i =>
+      i.type !== 'NEWSLETTER' || !storyNorms.has(normalizeTitle(i.t))
+    );
+    if (deduped.length < 3) continue;
+
+    // Sort each type: items with 'why' first, then newest
+    const byType = {};
+    for (const item of deduped) (byType[item.type] = byType[item.type] || []).push(item);
+    const sortItems = arr => arr.sort(
+      (a, b) => (b.why ? 1 : 0) - (a.why ? 1 : 0) || (b.d > a.d ? 1 : b.d < a.d ? -1 : 0)
+    );
+    for (const k of Object.keys(byType)) sortItems(byType[k]);
+
+    // Pick: story, newsletter, book, then 2nd story as 4th slot
+    const picks = [
+      byType['STORY']?.[0],
+      byType['NEWSLETTER']?.[0],
+      byType['BOOK I READ']?.[0],
+      byType['STORY']?.[1],
+    ].filter(Boolean).slice(0, 4);
+    if (picks.length < 3) continue;
+
+    // Strip display prefixes (after de-dup, which used raw titles via normalizeTitle)
+    const items = picks.map(item => ({
+      ...item,
+      t: item.t
+        .replace(/^Week\s+[\d-]+\s*:\s*/i, '')
+        .replace(/^\[(?:Essay|Short Story)\]\s*/i, '')
+        .trim(),
+    }));
+
+    eligibleThreads.push({ name: threadName, items });
   }
   eligibleThreads.sort((a, b) => a.name.localeCompare(b.name));
   const tIdx = eligibleThreads.length > 0 ? dayOfYear % eligibleThreads.length : 0;
@@ -264,6 +314,13 @@ export default async function FrontDoor() {
                   <div className="fd-exp-list">
                     {thread.items.map(item => {
                       const isExt = item.url?.startsWith('http');
+                      const inner = (
+                        <>
+                          <span className="fd-exp-item-type">{item.type}</span>
+                          <span className="fd-exp-item-title">{item.t}</span>
+                          {item.why && <span className="fd-exp-item-why">{item.why}</span>}
+                        </>
+                      );
                       return item.url ? (
                         <a
                           key={item.key}
@@ -271,13 +328,11 @@ export default async function FrontDoor() {
                           className="fd-exp-item"
                           {...(isExt ? { target: '_blank', rel: 'noopener noreferrer' } : {})}
                         >
-                          <span className="fd-exp-item-type">{item.type}</span>
-                          <span className="fd-exp-item-title">{item.t}</span>
+                          {inner}
                         </a>
                       ) : (
                         <div key={item.key} className="fd-exp-item">
-                          <span className="fd-exp-item-type">{item.type}</span>
-                          <span className="fd-exp-item-title">{item.t}</span>
+                          {inner}
                         </div>
                       );
                     })}
