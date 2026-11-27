@@ -19,7 +19,7 @@ export async function GET() {
           display: 'flex', flexDirection: 'column',
           justifyContent: 'center', alignItems: 'flex-start',
           padding: '64px 80px',
-          fontFamily: 'Josefin Sans',
+          fontFamily: 'Libre Franklin',
         }}
       >
         {/* Lamp shade */}
@@ -41,7 +41,7 @@ export async function GET() {
           THE READING NOOK
         </div>
         <div style={{
-          fontFamily: 'Gilda Display',
+          fontFamily: 'Libre Franklin',
           fontSize: 56, color: '#f5ecc2',
           lineHeight: 1.1, maxWidth: 800,
           marginBottom: 32,

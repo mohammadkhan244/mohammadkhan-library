@@ -139,7 +139,6 @@ export default async function NookPage() {
         <header className="nook-chrome">
           <a className="nook-home" href="/">
             <span className="nook-home-name">Mohammad Khan</span>
-            <span className="nook-home-sub">Library</span>
           </a>
           <span className="nook-timer-display" id="nook-timer-display" hidden />
           <div className="nook-chrome-right">
@@ -259,12 +258,11 @@ export default async function NookPage() {
         <div className="toast" id="nook-toast" role="status" />
 
         {/* ── Mobile bottom tab bar ── */}
-        <nav className="train-tabs nook-tabs" aria-label="Sections">
-          <a href="/#stories">Stacks</a>
+        <nav className="train-tabs nook-tabs" aria-label="Pages">
+          <a href="/">Home</a>
           <a href="/train">Train</a>
-          <a href="/nook" aria-current="page">Nook</a>
-          <a href="/#tracker">Tracker</a>
-          <a href="/#bookshelf">Books</a>
+          <a href="/library">Library</a>
+          <a href="/lab">Lab</a>
         </nav>
       </div>
 

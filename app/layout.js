@@ -21,7 +21,7 @@ export default function RootLayout({ children }) {
         <script dangerouslySetInnerHTML={{ __html: `try{var t=localStorage.getItem('theme');if(t)document.documentElement.setAttribute('data-theme',t)}catch(e){}` }} />
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="" />
-        <link href="https://fonts.googleapis.com/css2?family=Gilda+Display&family=Josefin+Sans:wght@400;600&family=Lato:wght@400;700&display=swap" rel="stylesheet" />
+        <link href="https://fonts.googleapis.com/css2?family=Libre+Franklin:wght@400;500;700;800&display=swap" rel="stylesheet" />
       </head>
       <body>{children}</body>
     </html>

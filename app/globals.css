@@ -1,14 +1,14 @@
 /* VOICE: quiet, archival, a writer's open shelf — nothing to like, only things to pass along
    COLOURS: Sanzo Wada only — all hex lives in theme.css
-   TYPE: Gilda Display headings · Lato body · Josefin Sans labels/tabs/chips */
+   TYPE: Libre Franklin everywhere — 800 headings · 400 body · 700+tracking labels */
 
 *{box-sizing:border-box;min-width:0}
 [hidden]{display:none!important}
-body{margin:0;background:var(--bg);color:var(--text);font:16px/1.55 'Lato',system-ui,sans-serif;overflow-x:hidden}
+body{margin:0;background:var(--bg);color:var(--text);font:16px/1.55 'Libre Franklin',system-ui,sans-serif;overflow-x:hidden}
 .band{padding:clamp(28px,4vw,56px) max(5vw,16px);max-width:1240px;margin:0 auto}
-h1{font:600 clamp(34px,5vw,52px)/1.05 'Gilda Display',Georgia,serif;margin:0 0 10px;text-wrap:balance}
-h2{font:600 clamp(22px,3vw,30px)/1.1 'Gilda Display',Georgia,serif;margin:0 0 8px}
-h3{font:600 19px/1.25 'Gilda Display',Georgia,serif;margin:0}
+h1{font:800 clamp(34px,5vw,52px)/1.05 'Libre Franklin',system-ui,sans-serif;margin:0 0 10px;text-wrap:balance}
+h2{font:700 clamp(22px,3vw,30px)/1.1 'Libre Franklin',system-ui,sans-serif;margin:0 0 8px}
+h3{font:700 19px/1.25 'Libre Franklin',system-ui,sans-serif;margin:0}
 .lede{color:var(--muted);max-width:62ch;margin:0}
 .hero{display:grid;gap:clamp(20px,3vw,32px)}
 
@@ -21,26 +21,26 @@ h3{font:600 19px/1.25 'Gilda Display',Georgia,serif;margin:0}
 /* ── tracker card ── */
 .trk{border:1px solid var(--border);border-radius:12px;padding:clamp(14px,2.5vw,24px)}
 .stats{display:flex;flex-wrap:wrap;gap:8px 32px;margin-bottom:16px}
-.stats b{display:block;font:600 clamp(26px,4vw,36px)/1.1 'Gilda Display',Georgia,serif;font-variant-numeric:tabular-nums}
-.stats span{font:13px 'Josefin Sans',sans-serif;color:var(--muted)}
+.stats b{display:block;font:600 clamp(26px,4vw,36px)/1.1 'Libre Franklin',system-ui,sans-serif;font-variant-numeric:tabular-nums}
+.stats span{font:13px 'Libre Franklin',system-ui,sans-serif;color:var(--muted)}
 
 /* ── filter chips ── */
 .chips{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:14px}
-.chips button{min-height:36px;font:14px 'Josefin Sans',sans-serif;letter-spacing:.03em;border-radius:999px;border:1px solid var(--border);background:var(--bg);color:var(--muted);padding:0 14px;cursor:pointer}
+.chips button{min-height:36px;font:14px 'Libre Franklin',system-ui,sans-serif;letter-spacing:.03em;border-radius:999px;border:1px solid var(--border);background:var(--bg);color:var(--muted);padding:0 14px;cursor:pointer}
 .chips button[aria-pressed=true]{background:var(--accent);color:var(--bg);border-color:var(--accent)}
 .chips button:focus-visible{outline:2px solid var(--signal);outline-offset:2px}
 
 /* ── heat grid ── */
 .yr{display:grid;grid-template-columns:3.2em minmax(0,1fr) 2.6em;gap:8px;align-items:center;margin-bottom:3px}
-.yr>span{font:13px 'Josefin Sans',sans-serif;color:var(--muted);font-variant-numeric:tabular-nums}.yr>span:last-child{text-align:right}
+.yr>span{font:13px 'Libre Franklin',system-ui,sans-serif;color:var(--muted);font-variant-numeric:tabular-nums}.yr>span:last-child{text-align:right}
 .cells{display:grid;grid-template-columns:repeat(53,minmax(0,1fr));gap:2px;overflow-x:auto}
 .cells button{all:unset;aspect-ratio:1;border-radius:2px;background:var(--c,var(--heat-0));cursor:pointer}
 .cells button:hover,.cells button:focus-visible{outline:2px solid var(--muted);outline-offset:1px}
 .cells button[aria-pressed=true]{outline:2px solid var(--signal);outline-offset:1px}
-.legend{display:flex;justify-content:space-between;flex-wrap:wrap;gap:8px;font:13px 'Josefin Sans',sans-serif;color:var(--muted);margin-top:10px}
+.legend{display:flex;justify-content:space-between;flex-wrap:wrap;gap:8px;font:13px 'Libre Franklin',system-ui,sans-serif;color:var(--muted);margin-top:10px}
 .legend i{display:inline-block;width:11px;height:11px;border-radius:2px;margin:0 2px;vertical-align:-1px}
 .det{margin-top:14px;border-top:1px solid var(--border);padding-top:12px;font-size:15px}
-.det ul{margin:6px 0 0;padding:0;list-style:none;display:grid;gap:4px}.det a{color:var(--text)}.det .k{color:var(--muted);font:13px 'Josefin Sans',sans-serif;margin-right:6px}
+.det ul{margin:6px 0 0;padding:0;list-style:none;display:grid;gap:4px}.det a{color:var(--text)}.det .k{color:var(--muted);font:13px 'Libre Franklin',system-ui,sans-serif;margin-right:6px}
 
 /* ── tracker/charts toggle ── */
 .trk-hd{display:flex;align-items:center;justify-content:flex-end;margin-bottom:14px}
@@ -48,14 +48,14 @@ h3{font:600 19px/1.25 'Gilda Display',Georgia,serif;margin:0}
 /* ── metrics ── */
 .m-stats{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:10px}
 .m-stat{border:1px solid var(--border);border-radius:10px;padding:14px 16px}
-.m-stat b{display:block;font:600 clamp(22px,3vw,30px)/1.1 'Gilda Display',Georgia,serif;font-variant-numeric:tabular-nums;margin-bottom:2px}
-.m-lbl{font:13px 'Josefin Sans',sans-serif;letter-spacing:.04em;text-transform:uppercase;color:var(--muted);display:block;margin-bottom:4px}
+.m-stat b{display:block;font:600 clamp(22px,3vw,30px)/1.1 'Libre Franklin',system-ui,sans-serif;font-variant-numeric:tabular-nums;margin-bottom:2px}
+.m-lbl{font:13px 'Libre Franklin',system-ui,sans-serif;letter-spacing:.04em;text-transform:uppercase;color:var(--muted);display:block;margin-bottom:4px}
 .m-cmp{font-size:13px;color:var(--comparison);line-height:1.45;display:block}
 
 /* ── sticky nav ── */
 nav{position:sticky;top:0;z-index:5;background:var(--bg);border-bottom:1px solid var(--border)}
 nav .in{max-width:1240px;margin:0 auto;padding:0 max(5vw,16px);display:flex;gap:4px;overflow-x:auto}
-nav a{flex:none;padding:14px 12px;color:var(--muted);text-decoration:none;font:500 14px 'Josefin Sans',sans-serif;letter-spacing:.03em;border-bottom:2px solid transparent}
+nav a{flex:none;padding:14px 12px;color:var(--muted);text-decoration:none;font:500 14px 'Libre Franklin',system-ui,sans-serif;letter-spacing:.03em;border-bottom:2px solid transparent}
 nav a[aria-current]{color:var(--text);border-color:var(--accent)}
 
 /* ── filter bar ── */
@@ -67,23 +67,23 @@ button:focus-visible,input:focus-visible,select:focus-visible,a:focus-visible{ou
 
 /* ── seg controls ── */
 .seg{display:flex;border:1px solid var(--border);border-radius:8px;overflow:hidden}
-.seg button{font:500 14px 'Josefin Sans',sans-serif;letter-spacing:.03em;border:0;border-radius:0;min-height:44px;padding:0 14px;background:var(--bg);color:var(--muted)}
+.seg button{font:500 14px 'Libre Franklin',system-ui,sans-serif;letter-spacing:.03em;border:0;border-radius:0;min-height:44px;padding:0 14px;background:var(--bg);color:var(--muted)}
 .seg button[aria-pressed=true]{background:var(--text);color:var(--bg)}
 .seg button:focus-visible{outline:2px solid var(--signal);outline-offset:-2px}
 
 /* ── count ── */
-.count{font:13px 'Josefin Sans',sans-serif;color:var(--muted);margin-bottom:8px}
+.count{font:13px 'Libre Franklin',system-ui,sans-serif;color:var(--muted);margin-bottom:8px}
 
 /* ── table ── */
 table{width:100%;border-collapse:collapse;font-size:15px}
-th{font:500 13px 'Josefin Sans',sans-serif;letter-spacing:.04em;text-transform:uppercase;color:var(--muted);text-align:left;padding:8px 10px;border-bottom:1px solid var(--border)}
+th{font:500 13px 'Libre Franklin',system-ui,sans-serif;letter-spacing:.04em;text-transform:uppercase;color:var(--muted);text-align:left;padding:8px 10px;border-bottom:1px solid var(--border)}
 td{padding:10px;border-bottom:1px solid var(--border);vertical-align:top}
 tr:target td{background:color-mix(in srgb,var(--accent) 10%,transparent)}
 .ttl{font-weight:500}.ttl a{color:inherit;text-decoration:none}.ttl a:hover{text-decoration:underline}
-.wk{color:var(--muted);font:13px 'Josefin Sans',sans-serif;font-variant-numeric:tabular-nums;white-space:nowrap}
-.tag{display:inline-block;font:13px 'Josefin Sans',sans-serif;line-height:1.2;padding:3px 7px;border-radius:4px;margin:0 4px 4px 0;white-space:nowrap;background:var(--t,color-mix(in srgb,var(--accent) 15%,var(--bg)));color:var(--text)}
-.star{color:var(--signal)}.award{font:13px 'Josefin Sans',sans-serif;color:var(--accent);display:block;margin-top:2px}
-.sh{min-height:36px;font:14px 'Josefin Sans',sans-serif;padding:0 10px;white-space:nowrap;background:var(--bg);border:1px solid var(--border);border-radius:8px;color:var(--muted)}
+.wk{color:var(--muted);font:13px 'Libre Franklin',system-ui,sans-serif;font-variant-numeric:tabular-nums;white-space:nowrap}
+.tag{display:inline-block;font:13px 'Libre Franklin',system-ui,sans-serif;line-height:1.2;padding:3px 7px;border-radius:4px;margin:0 4px 4px 0;white-space:nowrap;background:var(--t,color-mix(in srgb,var(--accent) 15%,var(--bg)));color:var(--text)}
+.star{color:var(--signal)}.award{font:13px 'Libre Franklin',system-ui,sans-serif;color:var(--accent);display:block;margin-top:2px}
+.sh{min-height:36px;font:14px 'Libre Franklin',system-ui,sans-serif;padding:0 10px;white-space:nowrap;background:var(--bg);border:1px solid var(--border);border-radius:8px;color:var(--muted)}
 .sh:hover{color:var(--text);border-color:var(--accent)}
 
 /* ── gallery grid ── */
@@ -97,7 +97,7 @@ tr:target td{background:color-mix(in srgb,var(--accent) 10%,transparent)}
 /* ── card thumbnail ── */
 .th{position:relative;aspect-ratio:16/9;border-radius:6px;overflow:hidden;background:var(--fc,var(--border));margin:-4px -4px 2px}
 .th img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
-.th span{position:absolute;left:10px;bottom:6px;font:600 28px/1 'Gilda Display',Georgia,serif;color:var(--call-label-bg);opacity:.9}
+.th span{position:absolute;left:10px;bottom:6px;font:600 28px/1 'Libre Franklin',system-ui,sans-serif;color:var(--call-label-bg);opacity:.9}
 .card:hover .th img{transform:scale(1.03)}.th img{transition:transform .3s}
 td .mini{width:64px;aspect-ratio:16/9;margin:0;border-radius:4px}
 @media (prefers-reduced-motion:reduce){.th img{transition:none}}
@@ -109,18 +109,18 @@ td .mini{width:64px;aspect-ratio:16/9;margin:0;border-radius:4px}
 @media (prefers-reduced-motion:reduce){.toast{transition:none}}
 
 /* ── footer ── */
-footer{color:var(--muted);font:13px 'Josefin Sans',sans-serif;border-top:1px solid var(--border)}
+footer{color:var(--muted);font:13px 'Libre Franklin',system-ui,sans-serif;border-top:1px solid var(--border)}
 
 /* ── charts ── */
 .charts-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:20px}
 .chart{border:1px solid var(--border);border-radius:10px;padding:16px;background:var(--bg)}
-.chart h4{font:600 15px 'Josefin Sans',sans-serif;letter-spacing:.03em;margin:0 0 12px;color:var(--text)}
+.chart h4{font:600 15px 'Libre Franklin',system-ui,sans-serif;letter-spacing:.03em;margin:0 0 12px;color:var(--text)}
 .bars{display:flex;flex-direction:column;gap:6px}
 .bar-row{display:grid;grid-template-columns:100px 1fr;gap:8px;align-items:center;min-height:28px}
-.bar-lbl{font:13px 'Josefin Sans',sans-serif;color:var(--muted);text-align:right;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.bar-lbl{font:13px 'Libre Franklin',system-ui,sans-serif;color:var(--muted);text-align:right;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .bar-trk{display:flex;align-items:center;gap:6px;min-width:0}
 .bar-fill{height:20px;border-radius:3px;min-width:2px;flex-shrink:0}
-.bar-num{font:12px 'Josefin Sans',sans-serif;color:var(--muted);white-space:nowrap;font-variant-numeric:tabular-nums}
+.bar-num{font:12px 'Libre Franklin',system-ui,sans-serif;color:var(--muted);white-space:nowrap;font-variant-numeric:tabular-nums}
 .chart-note{margin:12px 0 0;font-size:13px;color:var(--comparison);line-height:1.5}
 .chart-empty{margin:8px 0 0;font-size:13px;color:var(--muted)}
 @media(max-width:600px){.bar-row{grid-template-columns:80px 1fr}.charts-grid{grid-template-columns:1fr}}
@@ -130,26 +130,26 @@ footer{color:var(--muted);font:13px 'Josefin Sans',sans-serif;border-top:1px sol
 .book-card{border:1px solid var(--border);border-radius:10px;padding:14px 16px;display:flex;justify-content:space-between;align-items:flex-start;gap:12px;background:var(--bg)}
 .book-info{display:flex;flex-direction:column;gap:3px;min-width:0}
 .book-title{font-size:15px;font-weight:600;line-height:1.3;display:block}
-.book-auth{font:13px 'Josefin Sans',sans-serif;color:var(--muted);display:block}
+.book-auth{font:13px 'Libre Franklin',system-ui,sans-serif;color:var(--muted);display:block}
 .book-stars{font-size:14px;color:var(--signal);display:block;margin-top:2px;white-space:nowrap}
-.book-date{font:13px 'Josefin Sans',sans-serif;color:var(--muted);white-space:nowrap;flex-shrink:0}
+.book-date{font:13px 'Libre Franklin',system-ui,sans-serif;color:var(--muted);white-space:nowrap;flex-shrink:0}
 .stars{letter-spacing:1px}
 
 /* ── shelf / stacks view ── */
 .books-summary{font-size:15px;color:var(--muted);margin-bottom:16px;line-height:1.6}
 .books-summary strong{color:var(--text)}
 .year-filter{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:20px}
-.year-filter button{font:500 13px 'Josefin Sans',sans-serif;letter-spacing:.04em;padding:4px 14px;border-radius:999px;border:1px solid var(--border);background:var(--bg);color:var(--muted);cursor:pointer;min-height:32px}
+.year-filter button{font:500 13px 'Libre Franklin',system-ui,sans-serif;letter-spacing:.04em;padding:4px 14px;border-radius:999px;border:1px solid var(--border);background:var(--bg);color:var(--muted);cursor:pointer;min-height:32px}
 .year-filter button[aria-pressed=true]{background:var(--text);color:var(--bg);border-color:var(--text)}
 .year-filter button:focus-visible{outline:2px solid var(--signal);outline-offset:2px}
 .room-toggle{display:flex;gap:8px;margin-bottom:20px}
-.room-toggle button{font:500 13px 'Josefin Sans',sans-serif;letter-spacing:.04em;text-transform:uppercase;padding:6px 18px;border-radius:999px;border:1px solid var(--border);background:var(--bg);color:var(--muted);cursor:pointer;min-height:36px}
+.room-toggle button{font:500 13px 'Libre Franklin',system-ui,sans-serif;letter-spacing:.04em;text-transform:uppercase;padding:6px 18px;border-radius:999px;border:1px solid var(--border);background:var(--bg);color:var(--muted);cursor:pointer;min-height:36px}
 .room-toggle button[aria-pressed=true]{background:var(--text);color:var(--bg);border-color:var(--text)}
 .room-toggle button:focus-visible{outline:2px solid var(--signal);outline-offset:2px}
 .shelf-section{margin-bottom:28px}
 .shelf-hd{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:6px;padding:0 4px;gap:16px}
-.shelf-name{font:600 13px 'Josefin Sans',sans-serif;letter-spacing:.06em;text-transform:uppercase;color:var(--text)}
-.shelf-stat{font:11px 'Josefin Sans',sans-serif;color:var(--muted);letter-spacing:.03em;white-space:nowrap}
+.shelf-name{font:600 13px 'Libre Franklin',system-ui,sans-serif;letter-spacing:.06em;text-transform:uppercase;color:var(--text)}
+.shelf-stat{font:11px 'Libre Franklin',system-ui,sans-serif;color:var(--muted);letter-spacing:.03em;white-space:nowrap}
 .shelf-row{display:flex;align-items:flex-end;gap:2px;flex-wrap:wrap}
 .shelf-plank{height:8px;background:var(--shelf-wood);border-radius:2px;margin-top:2px;width:100%;flex-basis:100%}
 @media(max-width:600px){.shelf-row{flex-wrap:nowrap;overflow-x:auto;scroll-snap-type:x mandatory;padding-bottom:4px;-webkit-overflow-scrolling:touch}}
@@ -159,8 +159,8 @@ footer{color:var(--muted);font:13px 'Josefin Sans',sans-serif;border-top:1px sol
 .spine:hover,.spine:focus-visible{transform:translateY(-8px)}
 .spine.pulled{transform:translateY(-16px);outline:2px solid var(--signal);outline-offset:1px}
 @media(prefers-reduced-motion:reduce){.spine{transition:none}}
-.spine-title{writing-mode:vertical-rl;text-orientation:mixed;line-height:1.1;word-break:break-word;overflow:hidden;display:block;flex:1;font-family:'Lato',sans-serif}
-.call-num-tag{font:7px/1.3 'Josefin Sans',sans-serif;letter-spacing:.02em;background:var(--call-label-bg);color:var(--call-label-text);padding:2px 3px;border-radius:1px;white-space:nowrap;max-width:calc(100% - 2px);flex-shrink:0;margin-top:3px;text-align:center}
+.spine-title{writing-mode:vertical-rl;text-orientation:mixed;line-height:1.1;word-break:break-word;overflow:hidden;display:block;flex:1;font-family:'Libre Franklin',system-ui,sans-serif}
+.call-num-tag{font:7px/1.3 'Libre Franklin',system-ui,sans-serif;letter-spacing:.02em;background:var(--call-label-bg);color:var(--call-label-text);padding:2px 3px;border-radius:1px;white-space:nowrap;max-width:calc(100% - 2px);flex-shrink:0;margin-top:3px;text-align:center}
 
 /* ── spine panel (desktop side panel + phone bottom sheet) ── */
 .spine-panel{position:fixed;z-index:30;background:var(--bg);overflow-y:auto}
@@ -169,22 +169,22 @@ footer{color:var(--muted);font:13px 'Josefin Sans',sans-serif;border-top:1px sol
 @media(max-width:600px){.spine-panel{bottom:0;left:0;right:0;border-radius:16px 16px 0 0;border-top:1px solid var(--border);padding:20px 20px 32px;max-height:72vh}}
 .spine-panel-close{all:unset;cursor:pointer;float:right;font-size:22px;line-height:1;color:var(--muted);padding:0 2px;margin-left:12px}
 .spine-panel-close:hover{color:var(--text)}
-.call-badge{font:11px 'Josefin Sans',sans-serif;letter-spacing:.07em;text-transform:uppercase;background:var(--call-label-bg);color:var(--call-label-text);padding:3px 8px;border-radius:2px;display:inline-block;margin-bottom:14px;margin-top:4px}
-.spine-panel h2{font:600 20px/1.3 'Gilda Display',Georgia,serif;margin:0 0 8px}
-.spine-panel .meta{font:13px 'Josefin Sans',sans-serif;color:var(--muted);margin:0 0 6px;line-height:1.5}
-.spine-panel .award-line{font:13px 'Josefin Sans',sans-serif;color:var(--accent);margin:0 0 16px}
+.call-badge{font:11px 'Libre Franklin',system-ui,sans-serif;letter-spacing:.07em;text-transform:uppercase;background:var(--call-label-bg);color:var(--call-label-text);padding:3px 8px;border-radius:2px;display:inline-block;margin-bottom:14px;margin-top:4px}
+.spine-panel h2{font:600 20px/1.3 'Libre Franklin',system-ui,sans-serif;margin:0 0 8px}
+.spine-panel .meta{font:13px 'Libre Franklin',system-ui,sans-serif;color:var(--muted);margin:0 0 6px;line-height:1.5}
+.spine-panel .award-line{font:13px 'Libre Franklin',system-ui,sans-serif;color:var(--accent);margin:0 0 16px}
 .spine-actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:16px}
-.spine-actions a,.spine-actions button{font:500 13px 'Josefin Sans',sans-serif;letter-spacing:.03em;padding:8px 16px;border-radius:8px;border:1px solid var(--border);background:var(--bg);color:var(--text);cursor:pointer;text-decoration:none;display:inline-block;min-height:40px;white-space:nowrap}
+.spine-actions a,.spine-actions button{font:500 13px 'Libre Franklin',system-ui,sans-serif;letter-spacing:.03em;padding:8px 16px;border-radius:8px;border:1px solid var(--border);background:var(--bg);color:var(--text);cursor:pointer;text-decoration:none;display:inline-block;min-height:40px;white-space:nowrap}
 .spine-actions a:hover,.spine-actions button:hover{border-color:var(--accent);color:var(--accent)}
 .spine-actions a:focus-visible,.spine-actions button:focus-visible{outline:2px solid var(--signal);outline-offset:2px}
 
 /* ── Train of Thought ── */
 .train-chrome{display:flex;align-items:center;gap:16px;padding:0 max(5vw,16px);border-bottom:1px solid var(--border);background:var(--bg);position:sticky;top:0;z-index:10;min-height:52px}
 .train-home{text-decoration:none;display:flex;align-items:baseline;gap:8px;flex-shrink:0}
-.train-name{font:600 18px 'Gilda Display',Georgia,serif;color:var(--text)}
-.train-sub{font:13px 'Josefin Sans',sans-serif;color:var(--muted)}
+.train-name{font:600 18px 'Libre Franklin',system-ui,sans-serif;color:var(--text)}
+.train-sub{font:13px 'Libre Franklin',system-ui,sans-serif;color:var(--muted)}
 .train-nav{display:flex;gap:0;overflow-x:auto;flex:1}
-.train-nav a{flex:none;padding:16px 14px;color:var(--muted);text-decoration:none;font:500 13px 'Josefin Sans',sans-serif;letter-spacing:.03em;border-bottom:2px solid transparent;white-space:nowrap}
+.train-nav a{flex:none;padding:16px 14px;color:var(--muted);text-decoration:none;font:500 13px 'Libre Franklin',system-ui,sans-serif;letter-spacing:.03em;border-bottom:2px solid transparent;white-space:nowrap}
 .train-nav a[aria-current]{color:var(--text);border-color:var(--accent)}
 .train-nav a:hover{color:var(--text)}
 .train-theme-btn{all:unset;cursor:pointer;width:32px;height:32px;display:flex;align-items:center;justify-content:center;border-radius:6px;border:1px solid var(--border);color:var(--muted);flex-shrink:0}
@@ -194,27 +194,27 @@ footer{color:var(--muted);font:13px 'Josefin Sans',sans-serif;border-top:1px sol
 
 /* lobby */
 .train-lobby{display:flex;flex-direction:column;gap:28px}
-.lobby-intro{font:15px/1.6 'Lato',sans-serif;color:var(--text);margin:0}
+.lobby-intro{font:15px/1.6 'Libre Franklin',system-ui,sans-serif;color:var(--text);margin:0}
 
 /* ── departures board (always dark, both themes) ── */
 .depart-board{background:#111314;border:1px solid #40456a;border-radius:8px;overflow:hidden}
 .depart-hd{padding:12px 20px;border-bottom:1px solid #1e2435;display:flex;justify-content:space-between;align-items:center}
-.depart-title{font:700 11px 'Josefin Sans',sans-serif;letter-spacing:.18em;color:#f5ecc2}
-.depart-clock{font:600 13px/1 'Josefin Sans',monospace;letter-spacing:.06em;font-variant-numeric:tabular-nums;color:#f5ecc2}
-.depart-col-hd{display:grid;grid-template-columns:6ch minmax(0,1fr) 17ch 10ch 9ch;padding:5px 20px;gap:12px;border-bottom:1px solid #1e2435;font:10px 'Josefin Sans',sans-serif;letter-spacing:.1em;text-transform:uppercase;color:rgba(253,197,126,.4)}
+.depart-title{font:700 11px 'Libre Franklin',system-ui,sans-serif;letter-spacing:.18em;color:#f5ecc2}
+.depart-clock{font:600 13px/1 'Libre Franklin',monospace;letter-spacing:.06em;font-variant-numeric:tabular-nums;color:#f5ecc2}
+.depart-col-hd{display:grid;grid-template-columns:6ch minmax(0,1fr) 17ch 10ch 9ch;padding:5px 20px;gap:12px;border-bottom:1px solid #1e2435;font:10px 'Libre Franklin',system-ui,sans-serif;letter-spacing:.1em;text-transform:uppercase;color:rgba(253,197,126,.4)}
 .dc-status{text-align:right}
 .depart-rows{display:flex;flex-direction:column}
-.depart-row{all:unset;box-sizing:border-box;width:100%;display:grid;grid-template-columns:6ch minmax(0,1fr) 17ch 10ch 9ch;align-items:center;min-height:44px;padding:8px 20px;gap:12px;border-bottom:1px solid #1e2435;cursor:pointer;color:#fdc57e;font:500 12px/1 'Josefin Sans',monospace;letter-spacing:.06em;font-variant-numeric:tabular-nums}
+.depart-row{all:unset;box-sizing:border-box;width:100%;display:grid;grid-template-columns:6ch minmax(0,1fr) 17ch 10ch 9ch;align-items:center;min-height:44px;padding:8px 20px;gap:12px;border-bottom:1px solid #1e2435;cursor:pointer;color:#fdc57e;font:500 12px/1 'Libre Franklin',monospace;letter-spacing:.06em;font-variant-numeric:tabular-nums}
 .depart-row:last-child{border-bottom:0}
 .depart-row:hover,.depart-row:focus-visible{background:#1a2030}
 .depart-row:focus-visible{outline:2px solid var(--signal);outline-offset:-2px}
 .dr-time{white-space:nowrap}
 .dr-dest{overflow:hidden;white-space:nowrap}
 .dr-line{white-space:nowrap;overflow:hidden}
-.dr-status{text-align:right;white-space:nowrap;font:500 11px 'Josefin Sans',sans-serif;letter-spacing:.08em;color:rgba(253,197,126,.55)}
+.dr-status{text-align:right;white-space:nowrap;font:500 11px 'Libre Franklin',system-ui,sans-serif;letter-spacing:.08em;color:rgba(253,197,126,.55)}
 .dr-status--boarding{color:#f48067;animation:board-blink 2s step-end infinite}
 .dr-status--new{color:#fdc57e}
-.dr-board{text-align:right;white-space:nowrap;font:600 11px 'Josefin Sans',sans-serif;letter-spacing:.05em;opacity:0;transition:opacity .15s}
+.dr-board{text-align:right;white-space:nowrap;font:600 11px 'Libre Franklin',system-ui,sans-serif;letter-spacing:.05em;opacity:0;transition:opacity .15s}
 .depart-row:hover .dr-board,.depart-row:focus-visible .dr-board{opacity:1}
 @keyframes board-blink{50%{opacity:0}}
 @media(prefers-reduced-motion:reduce){.dr-status--boarding{animation:none}.dr-board{transition:none}}
@@ -224,7 +224,7 @@ footer{color:var(--muted);font:13px 'Josefin Sans',sans-serif;border-top:1px sol
 .flap-ch::after{content:'';position:absolute;left:0;right:0;top:50%;height:1px;background:rgba(0,0,0,.55);pointer-events:none}
 
 /* just-departed line */
-#depart-just-left{min-height:1.4em;font:12px 'Josefin Sans',sans-serif;color:var(--muted);letter-spacing:.03em}
+#depart-just-left{min-height:1.4em;font:12px 'Libre Franklin',system-ui,sans-serif;color:var(--muted);letter-spacing:.03em}
 #depart-just-left a{color:var(--accent);text-decoration:none}
 #depart-just-left a:hover{text-decoration:underline}
 
@@ -239,7 +239,7 @@ footer{color:var(--muted);font:13px 'Josefin Sans',sans-serif;border-top:1px sol
 /* timetable list */
 #depart-timetable{border:1px solid #40456a;border-radius:8px;overflow:hidden;background:#111314}
 #depart-timetable-inner{display:flex;flex-direction:column}
-.tt-row{all:unset;box-sizing:border-box;width:100%;display:grid;grid-template-columns:6ch minmax(0,1fr) 17ch 10ch 9ch;align-items:center;min-height:40px;padding:6px 20px;gap:12px;border-bottom:1px solid #1e2435;cursor:pointer;color:#fdc57e;font:500 11px 'Josefin Sans',monospace;letter-spacing:.06em;font-variant-numeric:tabular-nums}
+.tt-row{all:unset;box-sizing:border-box;width:100%;display:grid;grid-template-columns:6ch minmax(0,1fr) 17ch 10ch 9ch;align-items:center;min-height:40px;padding:6px 20px;gap:12px;border-bottom:1px solid #1e2435;cursor:pointer;color:#fdc57e;font:500 11px 'Libre Franklin',monospace;letter-spacing:.06em;font-variant-numeric:tabular-nums}
 .tt-row:last-child{border-bottom:0}
 .tt-row:hover{background:#1a2030}
 .tt-row:focus-visible{outline:2px solid var(--signal);outline-offset:-2px}
@@ -254,9 +254,9 @@ footer{color:var(--muted);font:13px 'Josefin Sans',sans-serif;border-top:1px sol
 .train-ride{display:flex;flex-direction:column;gap:0}
 
 /* route strip */
-.route-label{font:500 11px 'Josefin Sans',sans-serif;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);margin:0}
+.route-label{font:500 11px 'Libre Franklin',system-ui,sans-serif;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);margin:0}
 .route-hd{display:flex;align-items:center;justify-content:space-between;margin-bottom:8px}
-.btn-share-ride{all:unset;cursor:pointer;display:inline-flex;align-items:center;gap:5px;font:500 11px 'Josefin Sans',sans-serif;letter-spacing:.04em;color:var(--accent);border:1px solid var(--accent);border-radius:6px;padding:5px 10px;min-height:28px;box-sizing:border-box;line-height:1;flex-shrink:0}
+.btn-share-ride{all:unset;cursor:pointer;display:inline-flex;align-items:center;gap:5px;font:500 11px 'Libre Franklin',system-ui,sans-serif;letter-spacing:.04em;color:var(--accent);border:1px solid var(--accent);border-radius:6px;padding:5px 10px;min-height:28px;box-sizing:border-box;line-height:1;flex-shrink:0}
 .btn-share-ride:hover{background:color-mix(in srgb,var(--accent) 10%,transparent)}
 .btn-share-ride:focus-visible{outline:2px solid var(--signal);outline-offset:2px}
 .route-strip-wrap{overflow-x:auto;border-bottom:1px solid var(--border);padding:16px 0 20px;margin-bottom:28px;-webkit-overflow-scrolling:touch}
@@ -267,7 +267,7 @@ footer{color:var(--muted);font:13px 'Josefin Sans',sans-serif;border-top:1px sol
 .rd-seg.rd-cur .rd-dot{width:14px;height:14px;outline:3px solid var(--accent);outline-offset:3px;cursor:default}
 .rd-seg.rd-future .rd-dot{background:transparent;border:2px solid var(--border);cursor:pointer;width:10px;height:10px;outline:none}
 .rd-seg.rd-future .rd-dot:hover{border-color:var(--accent)}
-.rd-name{font:10px/1.3 'Josefin Sans',sans-serif;letter-spacing:.03em;color:var(--muted);text-align:center;margin-top:8px;white-space:nowrap}
+.rd-name{font:10px/1.3 'Libre Franklin',system-ui,sans-serif;letter-spacing:.03em;color:var(--muted);text-align:center;margin-top:8px;white-space:nowrap}
 .rd-seg.rd-cur .rd-name{color:var(--accent);font-weight:600}
 .rd-seg.rd-future .rd-name{opacity:.55}
 .rd-track{flex:0 0 40px;height:2px;background:var(--accent);align-self:flex-start;margin-top:4px}
@@ -280,65 +280,65 @@ footer{color:var(--muted);font:13px 'Josefin Sans',sans-serif;border-top:1px sol
 /* stop card — always dark */
 .stop-card{background:#161b28;border:1px solid #2a3050;border-radius:12px;padding:clamp(18px,3vw,28px)}
 .stop-card-hd{display:flex;justify-content:space-between;align-items:baseline;gap:12px;margin-bottom:14px;flex-wrap:wrap}
-.stop-town{font:500 11px 'Josefin Sans',sans-serif;letter-spacing:.08em;text-transform:uppercase;color:#9e9acb}
-.stop-card-meta{font:12px 'Josefin Sans',sans-serif;color:rgba(245,236,194,.38);letter-spacing:.03em;white-space:nowrap}
-.stop-title{font:600 clamp(22px,3vw,32px)/1.2 'Gilda Display',Georgia,serif;margin:0 0 10px;color:#f5ecc2}
-.stop-desc{font:15px/1.6 'Lato',sans-serif;color:rgba(245,236,194,.6);margin:0 0 20px}
+.stop-town{font:500 11px 'Libre Franklin',system-ui,sans-serif;letter-spacing:.08em;text-transform:uppercase;color:#9e9acb}
+.stop-card-meta{font:12px 'Libre Franklin',system-ui,sans-serif;color:rgba(245,236,194,.38);letter-spacing:.03em;white-space:nowrap}
+.stop-title{font:800 clamp(22px,3vw,32px)/1.2 'Libre Franklin',system-ui,sans-serif;margin:0 0 10px;color:#f5ecc2}
+.stop-desc{font:15px/1.6 'Libre Franklin',system-ui,sans-serif;color:rgba(245,236,194,.6);margin:0 0 20px}
 .stop-actions{display:flex;gap:10px;flex-wrap:wrap;align-items:center}
-.btn-read{all:unset;cursor:pointer;display:inline-flex;align-items:center;box-sizing:border-box;font:500 14px 'Josefin Sans',sans-serif;letter-spacing:.03em;padding:10px 20px;border-radius:8px;background:rgba(245,236,194,.1);color:#f5ecc2;border:1px solid rgba(245,236,194,.22);min-height:44px;white-space:nowrap;text-decoration:none}
+.btn-read{all:unset;cursor:pointer;display:inline-flex;align-items:center;box-sizing:border-box;font:500 14px 'Libre Franklin',system-ui,sans-serif;letter-spacing:.03em;padding:10px 20px;border-radius:8px;background:rgba(245,236,194,.1);color:#f5ecc2;border:1px solid rgba(245,236,194,.22);min-height:44px;white-space:nowrap;text-decoration:none}
 .btn-read:hover{background:rgba(245,236,194,.18)}
 .btn-read:focus-visible{outline:2px solid var(--signal);outline-offset:2px}
-.pickup-btn{all:unset;cursor:pointer;box-sizing:border-box;font:500 14px 'Josefin Sans',sans-serif;letter-spacing:.03em;padding:10px 18px;border-radius:8px;border:1px solid rgba(245,236,194,.18);color:rgba(245,236,194,.65);min-height:44px;white-space:nowrap}
+.pickup-btn{all:unset;cursor:pointer;box-sizing:border-box;font:500 14px 'Libre Franklin',system-ui,sans-serif;letter-spacing:.03em;padding:10px 18px;border-radius:8px;border:1px solid rgba(245,236,194,.18);color:rgba(245,236,194,.65);min-height:44px;white-space:nowrap}
 .pickup-btn:hover{border-color:rgba(245,236,194,.45);color:#f5ecc2}
 .pickup-btn[data-picked]{color:#b5b1d8;border-color:rgba(181,177,216,.5);background:rgba(181,177,216,.1)}
 .pickup-btn:focus-visible{outline:2px solid var(--signal);outline-offset:2px}
 
 /* out the window */
 .out-window{margin:24px 0 0}
-.ow-label{font:500 11px 'Josefin Sans',sans-serif;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);margin:0 0 10px}
+.ow-label{font:500 11px 'Libre Franklin',system-ui,sans-serif;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);margin:0 0 10px}
 .ow-cards{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}
 .ow-card{all:unset;display:flex;flex-direction:column;gap:4px;border:1px solid var(--border);border-radius:8px;padding:12px;cursor:pointer;box-sizing:border-box;background:var(--bg)}
 .ow-card:hover{border-color:var(--accent);background:color-mix(in srgb,var(--accent) 5%,var(--bg))}
 .ow-card:focus-visible{outline:2px solid var(--signal);outline-offset:2px}
 .ow-town-bar{height:3px;border-radius:2px;background:var(--tc,var(--accent));margin-bottom:6px;flex-shrink:0}
-.ow-meta{font:11px 'Josefin Sans',sans-serif;color:var(--muted);letter-spacing:.03em}
-.ow-title{font:600 13px/1.3 'Gilda Display',Georgia,serif;color:var(--text);margin:3px 0 auto}
-.ow-hop{font:500 11px 'Josefin Sans',sans-serif;color:var(--accent);margin-top:8px;letter-spacing:.03em}
+.ow-meta{font:11px 'Libre Franklin',system-ui,sans-serif;color:var(--muted);letter-spacing:.03em}
+.ow-title{font:600 13px/1.3 'Libre Franklin',system-ui,sans-serif;color:var(--text);margin:3px 0 auto}
+.ow-hop{font:500 11px 'Libre Franklin',system-ui,sans-serif;color:var(--accent);margin-top:8px;letter-spacing:.03em}
 
 /* next departures */
 .next-dep-wrap{display:flex;flex-direction:column;gap:10px;margin-top:28px}
-.section-label{font:500 11px 'Josefin Sans',sans-serif;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);margin:0}
+.section-label{font:500 11px 'Libre Franklin',system-ui,sans-serif;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);margin:0}
 .next-departures{display:flex;border:1px solid var(--border);border-radius:8px;overflow:hidden}
 .nd-card{all:unset;display:flex;flex-direction:column;gap:3px;flex:1;padding:12px 14px;cursor:pointer;border-right:1px solid var(--border);box-sizing:border-box;min-height:52px;min-width:0}
 .nd-card:last-child{border-right:0}
 .nd-card:hover{background:color-mix(in srgb,var(--accent) 6%,var(--bg))}
 .nd-card:focus-visible{outline:2px solid var(--signal);outline-offset:-2px}
-.nd-title{font:500 13px/1.3 'Lato',sans-serif;color:var(--text);overflow:hidden;white-space:nowrap;text-overflow:ellipsis}
-.nd-town{font:500 11px 'Josefin Sans',sans-serif;letter-spacing:.04em;color:var(--accent);margin-top:auto;padding-top:4px}
+.nd-title{font:500 13px/1.3 'Libre Franklin',system-ui,sans-serif;color:var(--text);overflow:hidden;white-space:nowrap;text-overflow:ellipsis}
+.nd-town{font:500 11px 'Libre Franklin',system-ui,sans-serif;letter-spacing:.04em;color:var(--accent);margin-top:auto;padding-top:4px}
 
 /* carriage panel */
 .carriage-panel{border:1px solid var(--border);border-radius:12px;padding:20px;background:color-mix(in srgb,var(--accent) 4%,var(--bg));position:sticky;top:72px}
 .cp-hd{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:16px}
-.cp-title{font:600 20px/1 'Gilda Display',Georgia,serif;color:var(--text)}
-.cp-seats{font:500 11px 'Josefin Sans',sans-serif;letter-spacing:.04em;color:var(--muted)}
-.cp-empty{font:14px/1.6 'Lato',sans-serif;color:var(--muted);margin:0 0 16px}
+.cp-title{font:600 20px/1 'Libre Franklin',system-ui,sans-serif;color:var(--text)}
+.cp-seats{font:500 11px 'Libre Franklin',system-ui,sans-serif;letter-spacing:.04em;color:var(--muted)}
+.cp-empty{font:14px/1.6 'Libre Franklin',system-ui,sans-serif;color:var(--muted);margin:0 0 16px}
 .cp-items{display:flex;flex-direction:column;gap:8px;margin-bottom:14px}
 .cp-item{border:1px solid var(--border);border-radius:8px;padding:10px 12px;background:var(--bg);display:flex;justify-content:space-between;align-items:flex-start;gap:8px}
 .cp-info{display:flex;flex-direction:column;gap:2px;min-width:0}
-.cp-town{font:10px 'Josefin Sans',sans-serif;text-transform:uppercase;letter-spacing:.06em;color:var(--accent)}
-.cp-item-title{font:500 13px/1.3 'Lato',sans-serif;color:var(--text);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.cp-town{font:10px 'Libre Franklin',system-ui,sans-serif;text-transform:uppercase;letter-spacing:.06em;color:var(--accent)}
+.cp-item-title{font:500 13px/1.3 'Libre Franklin',system-ui,sans-serif;color:var(--text);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 .cp-rm{all:unset;cursor:pointer;font-size:17px;line-height:1;color:var(--muted);flex-shrink:0;padding:0 2px}
 .cp-rm:hover{color:var(--text)}
-.btn-combine{all:unset;display:block;width:100%;text-align:center;background:var(--accent);color:var(--bg);font:600 13px 'Josefin Sans',sans-serif;letter-spacing:.05em;padding:12px;border-radius:8px;cursor:pointer;box-sizing:border-box;min-height:44px}
+.btn-combine{all:unset;display:block;width:100%;text-align:center;background:var(--accent);color:var(--bg);font:600 13px 'Libre Franklin',system-ui,sans-serif;letter-spacing:.05em;padding:12px;border-radius:8px;cursor:pointer;box-sizing:border-box;min-height:44px}
 .btn-combine:hover{opacity:.88}
 .btn-combine:focus-visible{outline:2px solid var(--signal);outline-offset:2px}
 .cp-bridge{margin-top:18px;border-top:1px solid var(--border);padding-top:14px}
-.cp-where{font:500 10px 'Josefin Sans',sans-serif;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin:0 0 8px}
-.cp-q{font:600 16px/1.4 'Gilda Display',Georgia,serif;color:var(--text);margin:0 0 8px}
-.cp-src{font:12px 'Josefin Sans',sans-serif;color:var(--muted);margin:0 0 12px}
+.cp-where{font:500 10px 'Libre Franklin',system-ui,sans-serif;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin:0 0 8px}
+.cp-q{font:600 16px/1.4 'Libre Franklin',system-ui,sans-serif;color:var(--text);margin:0 0 8px}
+.cp-src{font:12px 'Libre Franklin',system-ui,sans-serif;color:var(--muted);margin:0 0 12px}
 .cp-src a{color:var(--accent);text-decoration:none}
 .cp-src a:hover{text-decoration:underline}
-.btn-copy-ride{all:unset;cursor:pointer;font:500 12px 'Josefin Sans',sans-serif;color:var(--accent);letter-spacing:.03em;margin-top:12px;display:block}
+.btn-copy-ride{all:unset;cursor:pointer;font:500 12px 'Libre Franklin',system-ui,sans-serif;color:var(--accent);letter-spacing:.03em;margin-top:12px;display:block}
 .btn-copy-ride:hover{text-decoration:underline}
 .btn-copy-ride:focus-visible{outline:2px solid var(--signal);outline-offset:2px}
 
@@ -355,36 +355,36 @@ footer{color:var(--muted);font:13px 'Josefin Sans',sans-serif;border-top:1px sol
 /* carriage bar — fixed bottom (mobile only) */
 .carriage-bar{position:fixed;bottom:0;left:0;right:0;z-index:30;background:var(--bg);border-top:1px solid var(--border);display:flex;align-items:center;gap:10px;padding:10px max(5vw,16px) max(10px,env(safe-area-inset-bottom,10px));overflow-x:auto;-webkit-overflow-scrolling:touch}
 .cb-chips{display:flex;gap:8px;flex:1;overflow-x:auto}
-.cb-chip{all:unset;display:inline-flex;align-items:center;gap:5px;background:color-mix(in srgb,var(--accent) 12%,var(--bg));color:var(--accent);border:1px solid var(--accent);border-radius:999px;padding:5px 10px;font:13px 'Josefin Sans',sans-serif;cursor:pointer;white-space:nowrap;flex-shrink:0;animation:chip-in .2s ease-out}
+.cb-chip{all:unset;display:inline-flex;align-items:center;gap:5px;background:color-mix(in srgb,var(--accent) 12%,var(--bg));color:var(--accent);border:1px solid var(--accent);border-radius:999px;padding:5px 10px;font:13px 'Libre Franklin',system-ui,sans-serif;cursor:pointer;white-space:nowrap;flex-shrink:0;animation:chip-in .2s ease-out}
 .cb-chip .chip-x{opacity:.7;font-size:14px}
 .cb-chip:hover .chip-x{opacity:1}
 @keyframes chip-in{from{opacity:0;transform:scale(.75)}to{opacity:1;transform:scale(1)}}
 @media(prefers-reduced-motion:reduce){.cb-chip{animation:none}}
-.cb-combine{all:unset;cursor:pointer;font:600 13px 'Josefin Sans',sans-serif;letter-spacing:.04em;color:var(--accent);border:1px solid var(--accent);border-radius:8px;padding:7px 16px;white-space:nowrap;flex-shrink:0}
+.cb-combine{all:unset;cursor:pointer;font:600 13px 'Libre Franklin',system-ui,sans-serif;letter-spacing:.04em;color:var(--accent);border:1px solid var(--accent);border-radius:8px;padding:7px 16px;white-space:nowrap;flex-shrink:0}
 .cb-combine:hover{background:color-mix(in srgb,var(--accent) 10%,var(--bg))}
 .cb-combine:focus-visible{outline:2px solid var(--signal);outline-offset:2px}
 
 /* combine sheet — slides up from bottom */
 .combine-sheet{position:fixed;inset:0;z-index:40;background:color-mix(in srgb,var(--bg) 60%,transparent);display:flex;align-items:flex-end}
 .combine-inner{background:var(--bg);border-radius:16px 16px 0 0;border:1px solid var(--border);padding:clamp(16px,4vw,32px);width:100%;max-height:85vh;overflow-y:auto;padding-bottom:calc(clamp(16px,4vw,32px) + env(safe-area-inset-bottom,0px))}
-.combine-hd{font:600 13px 'Josefin Sans',sans-serif;text-transform:uppercase;letter-spacing:.08em;color:var(--muted);margin:0 0 16px;display:flex;justify-content:space-between;align-items:center}
+.combine-hd{font:600 13px 'Libre Franklin',system-ui,sans-serif;text-transform:uppercase;letter-spacing:.08em;color:var(--muted);margin:0 0 16px;display:flex;justify-content:space-between;align-items:center}
 .combine-pair{display:flex;align-items:flex-start;gap:10px;margin-bottom:16px;flex-wrap:wrap}
 .combine-piece{flex:1 1 120px;padding:10px 12px;border:1px solid var(--border);border-radius:8px}
-.cp-town{display:block;font:10px 'Josefin Sans',sans-serif;text-transform:uppercase;letter-spacing:.06em;color:var(--accent);margin-bottom:4px}
-.combine-amp{font:600 20px 'Gilda Display',serif;color:var(--muted);align-self:center;padding-top:4px}
-.combine-q{font:16px/1.6 'Lato',sans-serif;color:var(--text);margin:0 0 16px}
+.cp-town{display:block;font:10px 'Libre Franklin',system-ui,sans-serif;text-transform:uppercase;letter-spacing:.06em;color:var(--accent);margin-bottom:4px}
+.combine-amp{font:600 20px 'Libre Franklin',system-ui,sans-serif;color:var(--muted);align-self:center;padding-top:4px}
+.combine-q{font:16px/1.6 'Libre Franklin',system-ui,sans-serif;color:var(--text);margin:0 0 16px}
 .q-signal{color:var(--signal)}
-.bridge-label{font:11px 'Josefin Sans',sans-serif;text-transform:uppercase;letter-spacing:.08em;color:var(--muted);margin-bottom:8px}
+.bridge-label{font:11px 'Libre Franklin',system-ui,sans-serif;text-transform:uppercase;letter-spacing:.08em;color:var(--muted);margin-bottom:8px}
 .bridge-row{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:12px}
 .bridge-card{flex:1 1 160px;border:1px solid var(--border);border-radius:8px;padding:10px 12px}
-.bc-town{display:block;font:10px 'Josefin Sans',sans-serif;text-transform:uppercase;letter-spacing:.06em;color:var(--accent);margin-bottom:3px}
-.bc-link{font:12px 'Josefin Sans',sans-serif;color:var(--accent);text-decoration:none;display:block;margin-top:6px}
+.bc-town{display:block;font:10px 'Libre Franklin',system-ui,sans-serif;text-transform:uppercase;letter-spacing:.06em;color:var(--accent);margin-bottom:3px}
+.bc-link{font:12px 'Libre Franklin',system-ui,sans-serif;color:var(--accent);text-decoration:none;display:block;margin-top:6px}
 
 /* share sheet */
 .share-sheet{position:fixed;inset:0;z-index:45;background:color-mix(in srgb,var(--bg) 60%,transparent);display:flex;align-items:center;justify-content:center}
 .share-inner{background:var(--bg);border:1px solid var(--border);border-radius:16px;padding:clamp(16px,4vw,28px);width:calc(100% - 32px);max-width:480px;overflow-y:auto;box-shadow:0 8px 32px color-mix(in srgb,var(--text) 10%,transparent)}
 .share-hd{display:flex;justify-content:space-between;align-items:center;margin-bottom:16px}
-.share-title{font:600 13px 'Josefin Sans',sans-serif;text-transform:uppercase;letter-spacing:.08em;color:var(--muted)}
+.share-title{font:600 13px 'Libre Franklin',system-ui,sans-serif;text-transform:uppercase;letter-spacing:.08em;color:var(--muted)}
 .share-close{all:unset;cursor:pointer;font-size:20px;line-height:1;color:var(--muted);padding:4px;min-width:28px;text-align:center}
 .share-close:hover{color:var(--text)}
 .share-close:focus-visible{outline:2px solid var(--signal);outline-offset:2px}
@@ -401,14 +401,14 @@ footer{color:var(--muted);font:13px 'Josefin Sans',sans-serif;border-top:1px sol
 .train-tabs{display:none}
 
 /* buttons */
-.btn-primary{font:500 14px 'Josefin Sans',sans-serif;letter-spacing:.04em;padding:10px 22px;border-radius:8px;border:0;background:var(--text);color:var(--bg);cursor:pointer;text-decoration:none;display:inline-block;min-height:44px;white-space:nowrap}
+.btn-primary{font:500 14px 'Libre Franklin',system-ui,sans-serif;letter-spacing:.04em;padding:10px 22px;border-radius:8px;border:0;background:var(--text);color:var(--bg);cursor:pointer;text-decoration:none;display:inline-block;min-height:44px;white-space:nowrap}
 .btn-primary:hover{opacity:.85}
 .btn-primary:focus-visible{outline:2px solid var(--signal);outline-offset:2px}
-.btn-sec{font:500 14px 'Josefin Sans',sans-serif;letter-spacing:.04em;padding:10px 22px;border-radius:8px;border:1px solid var(--border);background:var(--bg);color:var(--text);cursor:pointer;min-height:44px;white-space:nowrap}
+.btn-sec{font:500 14px 'Libre Franklin',system-ui,sans-serif;letter-spacing:.04em;padding:10px 22px;border-radius:8px;border:1px solid var(--border);background:var(--bg);color:var(--text);cursor:pointer;min-height:44px;white-space:nowrap}
 .btn-sec:hover{border-color:var(--accent);color:var(--accent)}
 .btn-sec:disabled{opacity:.4;cursor:not-allowed}
 .btn-sec:focus-visible{outline:2px solid var(--signal);outline-offset:2px}
-.btn-ghost{font:500 13px 'Josefin Sans',sans-serif;letter-spacing:.03em;padding:8px 16px;border-radius:8px;border:1px solid var(--border);background:transparent;color:var(--muted);cursor:pointer;min-height:40px;white-space:nowrap}
+.btn-ghost{font:500 13px 'Libre Franklin',system-ui,sans-serif;letter-spacing:.03em;padding:8px 16px;border-radius:8px;border:1px solid var(--border);background:transparent;color:var(--muted);cursor:pointer;min-height:40px;white-space:nowrap}
 .btn-ghost:hover{color:var(--text);border-color:var(--muted)}
 .btn-ghost:focus-visible{outline:2px solid var(--signal);outline-offset:2px}
 
@@ -417,7 +417,7 @@ footer{color:var(--muted);font:13px 'Josefin Sans',sans-serif;border-top:1px sol
   .train-sub{display:none}
   .train-nav{display:none}
   .train-tabs{display:flex;position:fixed;top:auto;bottom:0;left:0;right:0;z-index:35;background:var(--bg);border-top:1px solid var(--border);padding-bottom:env(safe-area-inset-bottom,0)}
-  .train-tabs a{flex:1;display:flex;align-items:center;justify-content:center;font:500 11px 'Josefin Sans',sans-serif;letter-spacing:.04em;color:var(--muted);text-decoration:none;min-height:52px;border-bottom:2px solid transparent}
+  .train-tabs a{flex:1;display:flex;align-items:center;justify-content:center;font:500 11px 'Libre Franklin',system-ui,sans-serif;letter-spacing:.04em;color:var(--muted);text-decoration:none;min-height:52px;border-bottom:2px solid transparent}
   .train-tabs a[aria-current]{color:var(--accent);border-bottom-color:var(--accent)}
   .carriage-bar{bottom:calc(52px + env(safe-area-inset-bottom,0px))}
   .train-wrap{padding-bottom:140px}
@@ -488,9 +488,9 @@ body:has([data-nook]){background:#0d1829}
   position:sticky;top:0;z-index:10;flex-shrink:0;
 }
 .nook-home{display:flex;align-items:baseline;gap:8px;text-decoration:none;flex-shrink:0}
-.nook-home-name{font:600 17px 'Gilda Display',Georgia,serif;color:#f5ecc2}
-.nook-home-sub{font:13px 'Josefin Sans',sans-serif;color:#b5b1d8}
-.nook-timer-display{flex:1;font:600 13px/1 'Josefin Sans',monospace;letter-spacing:.06em;font-variant-numeric:tabular-nums;color:#fdc57e;text-align:center}
+.nook-home-name{font:600 17px 'Libre Franklin',system-ui,sans-serif;color:#f5ecc2}
+.nook-home-sub{font:13px 'Libre Franklin',system-ui,sans-serif;color:#b5b1d8}
+.nook-timer-display{flex:1;font:600 13px/1 'Libre Franklin',monospace;letter-spacing:.06em;font-variant-numeric:tabular-nums;color:#fdc57e;text-align:center}
 .nook-chrome-right{display:flex;gap:8px;align-items:center;margin-left:auto}
 .nook-theme-btn{all:unset;cursor:pointer;width:32px;height:32px;display:flex;align-items:center;justify-content:center;border-radius:6px;border:1px solid #40456a;color:#b5b1d8;flex-shrink:0}
 .nook-theme-btn:hover{color:#f5ecc2;border-color:#b5b1d8}
@@ -586,24 +586,24 @@ body:has([data-nook]){background:#0d1829}
   margin-bottom:14px;
 }
 .nook-call-badge{
-  font:600 11px 'Josefin Sans',sans-serif;letter-spacing:.1em;text-transform:uppercase;
+  font:600 11px 'Libre Franklin',system-ui,sans-serif;letter-spacing:.1em;text-transform:uppercase;
   background:#f5ecc2;color:#111314;padding:3px 7px;border-radius:2px;
 }
 .nook-call-sep{color:#b5b1d8;font-size:12px}
-.nook-call-format,.nook-call-wc{font:13px 'Josefin Sans',sans-serif;color:#b5b1d8;letter-spacing:.03em}
+.nook-call-format,.nook-call-wc{font:13px 'Libre Franklin',system-ui,sans-serif;color:#b5b1d8;letter-spacing:.03em}
 
 .nook-title{
-  font:600 clamp(28px,4vw,38px)/1.1 'Gilda Display',Georgia,serif;
+  font:800 clamp(28px,4vw,38px)/1.1 'Libre Franklin',system-ui,sans-serif;
   color:#f5ecc2;margin:0 0 20px;text-wrap:balance;
 }
-.nook-excerpt{font:19px/1.7 'Gilda Display',Georgia,serif;color:#ebd3a2;margin:0 0 28px}
+.nook-excerpt{font:500 19px/1.7 'Libre Franklin',system-ui,sans-serif;color:#ebd3a2;margin:0 0 28px}
 .nook-excerpt p{margin:0}
-.nook-excerpt--empty{font:16px/1.6 'Lato',sans-serif;color:#b5b1d8}
+.nook-excerpt--empty{font:16px/1.6 'Libre Franklin',system-ui,sans-serif;color:#b5b1d8}
 
 .nook-actions{display:flex;flex-wrap:wrap;gap:10px;align-items:center}
 .nook-btn-read{
   all:unset;cursor:pointer;box-sizing:border-box;
-  font:500 14px 'Josefin Sans',sans-serif;letter-spacing:.03em;
+  font:500 14px 'Libre Franklin',system-ui,sans-serif;letter-spacing:.03em;
   padding:10px 22px;border-radius:8px;
   background:#ae5224;color:#f5ecc2;
   min-height:44px;white-space:nowrap;text-decoration:none;
@@ -613,7 +613,7 @@ body:has([data-nook]){background:#0d1829}
 .nook-btn-read:focus-visible{outline:2px solid #f48067;outline-offset:2px}
 .nook-btn-sec{
   all:unset;cursor:pointer;box-sizing:border-box;
-  font:500 14px 'Josefin Sans',sans-serif;letter-spacing:.03em;
+  font:500 14px 'Libre Franklin',system-ui,sans-serif;letter-spacing:.03em;
   padding:10px 20px;border-radius:8px;border:1px solid #40456a;
   color:#b5b1d8;min-height:44px;white-space:nowrap;
 }
@@ -621,7 +621,7 @@ body:has([data-nook]){background:#0d1829}
 .nook-btn-sec:focus-visible{outline:2px solid #f48067;outline-offset:2px}
 .nook-btn-ghost{
   all:unset;cursor:pointer;box-sizing:border-box;
-  font:500 13px 'Josefin Sans',sans-serif;letter-spacing:.03em;
+  font:500 13px 'Libre Franklin',system-ui,sans-serif;letter-spacing:.03em;
   padding:8px 16px;border-radius:8px;border:1px solid #2a3050;
   color:#66629c;min-height:40px;white-space:nowrap;
 }
@@ -654,7 +654,7 @@ body:has([data-nook]){background:#0d1829}
 }
 .nook-spine-title{
   writing-mode:vertical-rl;text-orientation:mixed;
-  font:600 8px/1.1 'Lato',sans-serif;
+  font:600 8px/1.1 'Libre Franklin',system-ui,sans-serif;
   overflow:hidden;white-space:nowrap;
   padding:4px 2px;max-height:100%;
   opacity:.7;
@@ -718,7 +718,7 @@ body:has([data-nook]){background:#0d1829}
 }
 .radio-bar-toggle{
   all:unset;cursor:pointer;display:flex;align-items:center;gap:7px;
-  font:500 13px 'Josefin Sans',sans-serif;letter-spacing:.03em;
+  font:500 13px 'Libre Franklin',system-ui,sans-serif;letter-spacing:.03em;
   color:#b5b1d8;min-height:44px;flex:1;
 }
 .radio-bar-toggle:hover{color:#f5ecc2}
@@ -726,19 +726,19 @@ body:has([data-nook]){background:#0d1829}
 .radio-icon{flex-shrink:0;opacity:.7}
 .radio-bar-label{white-space:nowrap}
 .radio-bar-now{
-  flex:1;font:12px 'Josefin Sans',sans-serif;color:#66629c;
+  flex:1;font:12px 'Libre Franklin',system-ui,sans-serif;color:#66629c;
   overflow:hidden;text-overflow:ellipsis;white-space:nowrap;
   padding-left:4px;
 }
 .radio-bar-skip{
-  all:unset;cursor:pointer;font:14px 'Josefin Sans',sans-serif;
+  all:unset;cursor:pointer;font:14px 'Libre Franklin',system-ui,sans-serif;
   color:#66629c;min-height:36px;min-width:36px;text-align:center;
   border-radius:4px;flex-shrink:0;
 }
 .radio-bar-skip:hover{color:#b5b1d8}
 .radio-bar-skip:focus-visible{outline:2px solid #f48067;outline-offset:2px}
 .radio-bar-caret{
-  font:500 16px 'Josefin Sans',sans-serif;color:#40456a;
+  font:500 16px 'Libre Franklin',system-ui,sans-serif;color:#40456a;
   flex-shrink:0;user-select:none;line-height:1;
 }
 
@@ -752,13 +752,13 @@ body:has([data-nook]){background:#0d1829}
 .radio-section{display:flex;flex-direction:column;gap:10px}
 .radio-divider{height:1px;background:#2a3050}
 .radio-row{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
-.radio-lbl{font:600 11px 'Josefin Sans',sans-serif;letter-spacing:.1em;text-transform:uppercase;color:#66629c;flex-shrink:0}
+.radio-lbl{font:600 11px 'Libre Franklin',system-ui,sans-serif;letter-spacing:.1em;text-transform:uppercase;color:#66629c;flex-shrink:0}
 
 /* Ambience seg control */
 .radio-seg{display:flex;border:1px solid #40456a;border-radius:6px;overflow:hidden;flex-shrink:0}
 .radio-seg-btn{
   all:unset;cursor:pointer;
-  font:500 12px 'Josefin Sans',sans-serif;letter-spacing:.03em;
+  font:500 12px 'Libre Franklin',system-ui,sans-serif;letter-spacing:.03em;
   padding:0 12px;min-height:32px;color:#66629c;
   border-right:1px solid #40456a;box-sizing:border-box;
 }
@@ -767,7 +767,7 @@ body:has([data-nook]){background:#0d1829}
 .radio-seg-btn:focus-visible{outline:2px solid #f48067;outline-offset:-2px}
 .radio-skip-btn{
   all:unset;cursor:pointer;
-  font:500 12px 'Josefin Sans',sans-serif;letter-spacing:.03em;
+  font:500 12px 'Libre Franklin',system-ui,sans-serif;letter-spacing:.03em;
   color:#66629c;border:1px solid #40456a;border-radius:6px;
   padding:0 10px;min-height:32px;white-space:nowrap;
 }
@@ -775,12 +775,12 @@ body:has([data-nook]){background:#0d1829}
 .radio-skip-btn:focus-visible{outline:2px solid #f48067;outline-offset:2px}
 
 /* Track name */
-.radio-track-name{font:12px/1.4 'Josefin Sans',sans-serif;color:#66629c;margin:0;min-height:1em}
+.radio-track-name{font:12px/1.4 'Libre Franklin',system-ui,sans-serif;color:#66629c;margin:0;min-height:1em}
 .radio-track-name:empty{display:none}
 
 /* Volume row */
 .radio-vol-row{display:flex;align-items:center;gap:10px}
-.radio-vol-lbl{font:11px 'Josefin Sans',sans-serif;letter-spacing:.06em;text-transform:uppercase;color:#40456a;flex-shrink:0;white-space:nowrap}
+.radio-vol-lbl{font:11px 'Libre Franklin',system-ui,sans-serif;letter-spacing:.06em;text-transform:uppercase;color:#40456a;flex-shrink:0;white-space:nowrap}
 .radio-vol{
   flex:1;accent-color:#b5b1d8;height:3px;
   -webkit-appearance:none;appearance:none;background:#2a3050;border-radius:2px;
@@ -793,7 +793,7 @@ body:has([data-nook]){background:#0d1829}
 .radio-cars{display:flex;flex-wrap:wrap;gap:6px}
 .radio-car-btn{
   all:unset;cursor:pointer;box-sizing:border-box;
-  font:500 12px 'Josefin Sans',sans-serif;letter-spacing:.04em;
+  font:500 12px 'Libre Franklin',system-ui,sans-serif;letter-spacing:.04em;
   border:1px solid #40456a;border-radius:999px;
   padding:0 14px;min-height:32px;color:#66629c;white-space:nowrap;
 }
@@ -812,10 +812,10 @@ body:has([data-nook]){background:#0d1829}
 
 /* ── Site header ── */
 .fd-header{position:sticky;top:0;z-index:10;background:var(--bg);border-bottom:1px solid var(--border);display:flex;align-items:center;gap:0;padding:0 max(5vw,16px);min-height:56px}
-.fd-logo{font:700 13px/1 'Josefin Sans',sans-serif;letter-spacing:.12em;text-transform:uppercase;text-decoration:none;color:var(--text);flex-shrink:0;padding:18px 0;margin-right:16px}
+.fd-logo{font:700 13px/1 'Libre Franklin',system-ui,sans-serif;letter-spacing:.12em;text-transform:uppercase;text-decoration:none;color:var(--text);flex-shrink:0;padding:18px 0;margin-right:16px}
 .fd-logo:hover{color:var(--accent)}
 .fd-nav{display:flex;gap:0;overflow-x:auto;flex:1}
-.fd-nav a{flex:none;padding:18px 12px;color:var(--muted);text-decoration:none;font:500 13px 'Josefin Sans',sans-serif;letter-spacing:.03em;border-bottom:2px solid transparent;white-space:nowrap}
+.fd-nav a{flex:none;padding:18px 12px;color:var(--muted);text-decoration:none;font:500 13px 'Libre Franklin',system-ui,sans-serif;letter-spacing:.03em;border-bottom:2px solid transparent;white-space:nowrap}
 .fd-nav a[aria-current]{color:var(--text);border-color:var(--accent)}
 .fd-nav a:hover{color:var(--text)}
 .fd-theme-btn{all:unset;cursor:pointer;width:44px;height:44px;display:flex;align-items:center;justify-content:center;border-radius:8px;border:1px solid var(--border);color:var(--muted);flex-shrink:0;margin-left:auto}
@@ -824,22 +824,22 @@ body:has([data-nook]){background:#0d1829}
 
 /* ── Hero ── */
 .fd-hero{display:grid;grid-template-columns:1fr 1fr;gap:clamp(32px,5vw,64px);align-items:center;padding-top:clamp(48px,6vw,80px);padding-bottom:clamp(48px,6vw,80px)}
-.fd-h1{font:800 clamp(36px,5vw,56px)/1.1 'Gilda Display',Georgia,serif;margin:0 0 32px;text-wrap:balance}
+.fd-h1{font:800 clamp(36px,5vw,56px)/1.1 'Libre Franklin',system-ui,sans-serif;margin:0 0 32px;text-wrap:balance}
 .fd-phrase{text-decoration:underline;text-decoration-color:#ae5224;text-underline-offset:5px;text-decoration-thickness:2px;transition:opacity .2s}
 @media(prefers-reduced-motion:reduce){.fd-phrase{transition:none}}
 
 .fd-question-box{margin-bottom:32px;display:flex;flex-direction:column;gap:10px}
-.fd-q-label{font:700 11px 'Josefin Sans',sans-serif;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin:0}
-.fd-q-text{font:italic 17px/1.65 'Gilda Display',Georgia,serif;color:var(--text);margin:0}
+.fd-q-label{font:700 11px 'Libre Franklin',system-ui,sans-serif;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin:0}
+.fd-q-text{font:italic 17px/1.65 'Libre Franklin',system-ui,sans-serif;color:var(--text);margin:0}
 .fd-q-btn{all:unset;cursor:pointer;width:44px;height:44px;border-radius:50%;border:1px solid var(--border);display:flex;align-items:center;justify-content:center;color:var(--muted);font-size:20px;line-height:1;align-self:flex-start;box-sizing:border-box}
 .fd-q-btn:hover{color:var(--text);border-color:var(--accent)}
 .fd-q-btn:focus-visible{outline:2px solid var(--signal);outline-offset:2px}
 
 .fd-hero-actions{display:flex;gap:12px;flex-wrap:wrap}
-.fd-btn-primary{display:inline-flex;align-items:center;justify-content:center;min-height:44px;padding:10px 24px;border-radius:8px;font:500 15px 'Josefin Sans',sans-serif;letter-spacing:.04em;text-decoration:none;background:#ae5224;color:#f5ecc2;border:0;cursor:pointer;white-space:nowrap}
+.fd-btn-primary{display:inline-flex;align-items:center;justify-content:center;min-height:44px;padding:10px 24px;border-radius:8px;font:500 15px 'Libre Franklin',system-ui,sans-serif;letter-spacing:.04em;text-decoration:none;background:#ae5224;color:#f5ecc2;border:0;cursor:pointer;white-space:nowrap}
 .fd-btn-primary:hover{opacity:.88}
 .fd-btn-primary:focus-visible{outline:2px solid var(--signal);outline-offset:2px}
-.fd-btn-outlined{display:inline-flex;align-items:center;justify-content:center;min-height:44px;padding:10px 24px;border-radius:8px;font:500 15px 'Josefin Sans',sans-serif;letter-spacing:.04em;text-decoration:none;background:transparent;color:var(--text);border:1px solid var(--border);cursor:pointer;white-space:nowrap}
+.fd-btn-outlined{display:inline-flex;align-items:center;justify-content:center;min-height:44px;padding:10px 24px;border-radius:8px;font:500 15px 'Libre Franklin',system-ui,sans-serif;letter-spacing:.04em;text-decoration:none;background:transparent;color:var(--text);border:1px solid var(--border);cursor:pointer;white-space:nowrap}
 .fd-btn-outlined:hover{border-color:var(--accent);color:var(--accent)}
 .fd-btn-outlined:focus-visible{outline:2px solid var(--signal);outline-offset:2px}
 
@@ -850,33 +850,33 @@ body:has([data-nook]){background:#0d1829}
 
 /* ── A few ways in ── */
 .fd-ways{border-top:1px solid var(--border);padding-top:clamp(40px,5vw,64px);padding-bottom:clamp(40px,5vw,64px)}
-.fd-ways-hd{font:700 11px 'Josefin Sans',sans-serif;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin:0 0 24px}
+.fd-ways-hd{font:700 11px 'Libre Franklin',system-ui,sans-serif;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin:0 0 24px}
 .fd-way-row{display:grid;grid-template-columns:56px 1fr auto;gap:20px;align-items:center;padding:20px 0;border-bottom:1px solid var(--border);text-decoration:none;color:var(--text)}
 .fd-way-row:first-of-type{border-top:1px solid var(--border)}
 .fd-way-row:hover .fd-way-title{color:var(--accent)}
 .fd-way-tile{width:56px;height:56px;flex-shrink:0;border-radius:8px;overflow:hidden}
 .fd-way-content{display:flex;flex-direction:column;gap:4px;min-width:0}
-.fd-way-title{font:600 17px/1.2 'Gilda Display',Georgia,serif;transition:color .15s;display:block}
-.fd-way-glimpse{font:14px/1.5 'Lato',sans-serif;color:var(--muted);overflow:hidden;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical}
+.fd-way-title{font:600 17px/1.2 'Libre Franklin',system-ui,sans-serif;transition:color .15s;display:block}
+.fd-way-glimpse{font:14px/1.5 'Libre Franklin',system-ui,sans-serif;color:var(--muted);overflow:hidden;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical}
 .fd-way-arrow{font-size:18px;color:var(--muted);flex-shrink:0}
 @media(prefers-reduced-motion:reduce){.fd-way-title{transition:none}}
 
 /* ── Currently exploring ── */
 .fd-exploring{background:var(--heat-0);border-top:1px solid var(--border);border-bottom:1px solid var(--border);padding-top:clamp(32px,4vw,56px);padding-bottom:clamp(32px,4vw,56px)}
-.fd-exp-label{font:700 11px 'Josefin Sans',sans-serif;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin:0 0 10px}
-.fd-exp-thread{font:600 clamp(22px,3vw,32px)/1.2 'Gilda Display',Georgia,serif;margin:0 0 20px;text-wrap:balance}
+.fd-exp-label{font:700 11px 'Libre Franklin',system-ui,sans-serif;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin:0 0 10px}
+.fd-exp-thread{font:600 clamp(22px,3vw,32px)/1.2 'Libre Franklin',system-ui,sans-serif;margin:0 0 20px;text-wrap:balance}
 .fd-exp-chips{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:24px}
-.fd-chip{font:500 13px 'Josefin Sans',sans-serif;letter-spacing:.02em;padding:6px 14px;border-radius:999px;border:1px solid var(--border);background:var(--bg);color:var(--text)}
+.fd-chip{font:500 13px 'Libre Franklin',system-ui,sans-serif;letter-spacing:.02em;padding:6px 14px;border-radius:999px;border:1px solid var(--border);background:var(--bg);color:var(--text)}
 .fd-chip--book{color:var(--accent);border-color:var(--accent)}
-.fd-btn-ride{display:inline-flex;align-items:center;justify-content:center;min-height:44px;padding:8px 20px;border-radius:8px;font:500 14px 'Josefin Sans',sans-serif;letter-spacing:.04em;text-decoration:none;background:transparent;color:var(--text);border:1px solid var(--border);cursor:pointer;white-space:nowrap}
+.fd-btn-ride{display:inline-flex;align-items:center;justify-content:center;min-height:44px;padding:8px 20px;border-radius:8px;font:500 14px 'Libre Franklin',system-ui,sans-serif;letter-spacing:.04em;text-decoration:none;background:transparent;color:var(--text);border:1px solid var(--border);cursor:pointer;white-space:nowrap}
 .fd-btn-ride:hover{border-color:var(--accent);color:var(--accent)}
 .fd-btn-ride:focus-visible{outline:2px solid var(--signal);outline-offset:2px}
 
 /* ── Footer ── */
 .fd-footer{display:flex;align-items:center;justify-content:space-between;gap:20px;padding-top:clamp(20px,3vw,32px);padding-bottom:clamp(20px,3vw,32px);border-top:1px solid var(--border)}
-.fd-footer-logo{font:700 13px 'Josefin Sans',sans-serif;letter-spacing:.1em;text-transform:uppercase;color:var(--text);text-decoration:none}
+.fd-footer-logo{font:700 13px 'Libre Franklin',system-ui,sans-serif;letter-spacing:.1em;text-transform:uppercase;color:var(--text);text-decoration:none}
 .fd-footer-logo:hover{color:var(--accent)}
-.fd-footer-links{display:flex;gap:10px;align-items:center;font:13px 'Josefin Sans',sans-serif;color:var(--muted)}
+.fd-footer-links{display:flex;gap:10px;align-items:center;font:13px 'Libre Franklin',system-ui,sans-serif;color:var(--muted)}
 .fd-footer-links a{color:var(--muted);text-decoration:none}
 .fd-footer-links a:hover{color:var(--text);text-decoration:underline}
 
@@ -884,7 +884,7 @@ body:has([data-nook]){background:#0d1829}
 .fd-tabs{display:none}
 @media(max-width:768px){
   .fd-tabs{display:flex;position:fixed;bottom:0;left:0;right:0;z-index:35;background:var(--bg);border-top:1px solid var(--border);padding-bottom:env(safe-area-inset-bottom,0)}
-  .fd-tabs a{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;min-height:52px;color:var(--muted);text-decoration:none;font:500 10px 'Josefin Sans',sans-serif;letter-spacing:.04em;text-transform:uppercase;border-top:2px solid transparent}
+  .fd-tabs a{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;min-height:52px;color:var(--muted);text-decoration:none;font:500 10px 'Libre Franklin',system-ui,sans-serif;letter-spacing:.04em;text-transform:uppercase;border-top:2px solid transparent}
   .fd-tabs a[aria-current]{color:var(--accent);border-top-color:var(--accent)}
 }
 
@@ -904,8 +904,8 @@ body:has([data-nook]){background:#0d1829}
 
 /* ── /work page ── */
 .work-page{min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:clamp(40px,8vw,100px) max(5vw,24px);text-align:center;gap:28px}
-.work-h1{font:700 clamp(32px,5vw,52px)/1.1 'Gilda Display',Georgia,serif;margin:0;text-wrap:balance}
-.work-sub{font:17px/1.6 'Lato',sans-serif;color:var(--muted);margin:0;max-width:48ch}
+.work-h1{font:700 clamp(32px,5vw,52px)/1.1 'Libre Franklin',system-ui,sans-serif;margin:0;text-wrap:balance}
+.work-sub{font:17px/1.6 'Libre Franklin',system-ui,sans-serif;color:var(--muted);margin:0;max-width:48ch}
 .work-actions{display:flex;gap:12px;flex-wrap:wrap;justify-content:center;margin-top:4px}
 @media(max-width:480px){
   .work-actions{flex-direction:column;width:100%}
@@ -914,5 +914,5 @@ body:has([data-nook]){background:#0d1829}
 
 /* ── /lab page placeholder ── */
 .lab-placeholder{min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:clamp(40px,8vw,100px) max(5vw,24px);text-align:center;gap:16px}
-.lab-placeholder h1{font:700 clamp(28px,4vw,44px)/1.1 'Gilda Display',Georgia,serif;margin:0}
-.lab-placeholder p{font:16px/1.6 'Lato',sans-serif;color:var(--muted);margin:0;max-width:44ch}
+.lab-placeholder h1{font:700 clamp(28px,4vw,44px)/1.1 'Libre Franklin',system-ui,sans-serif;margin:0}
+.lab-placeholder p{font:16px/1.6 'Libre Franklin',system-ui,sans-serif;color:var(--muted);margin:0;max-width:44ch}

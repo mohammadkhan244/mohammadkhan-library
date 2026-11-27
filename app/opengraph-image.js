@@ -45,7 +45,7 @@ export default async function HomeOgImage() {
       title: 'The Library',
       subtitle,
       stamps,
-      subtitleFont: 'Gilda Display',
+      subtitleFont: 'Libre Franklin',
     }),
     { width: 1200, height: 630, fonts: ogFontList(fonts) },
   );
