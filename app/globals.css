@@ -868,9 +868,13 @@ body:has([data-nook]){background:#0d1829}
 .fd-exploring{background:var(--heat-0);border-top:1px solid var(--border);border-bottom:1px solid var(--border);padding-top:clamp(32px,4vw,56px);padding-bottom:clamp(32px,4vw,56px)}
 .fd-exp-label{font:700 11px 'Libre Franklin',system-ui,sans-serif;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin:0 0 10px}
 .fd-exp-thread{font:600 clamp(22px,3vw,32px)/1.2 'Libre Franklin',system-ui,sans-serif;margin:0 0 20px;text-wrap:balance}
-.fd-exp-chips{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:24px}
-.fd-chip{font:500 13px 'Libre Franklin',system-ui,sans-serif;letter-spacing:.02em;padding:6px 14px;border-radius:999px;border:1px solid var(--border);background:var(--bg);color:var(--text)}
-.fd-chip--book{color:var(--accent);border-color:var(--accent)}
+.fd-exp-desc{font:16px/1.6 'Libre Franklin',system-ui,sans-serif;color:var(--muted);margin:0 0 24px}
+.fd-exp-list{display:flex;flex-direction:column;gap:8px;margin-bottom:24px}
+.fd-exp-item{display:block;border:1px solid var(--border);padding:12px 16px;min-height:44px;text-decoration:none;color:var(--text);box-sizing:border-box}
+.fd-exp-item:hover{border-color:var(--accent)}
+.fd-exp-item-type{display:block;font:700 12px/1 'Libre Franklin',system-ui,sans-serif;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin-bottom:6px}
+.fd-exp-item-title{display:block;font:16px/1.4 'Libre Franklin',system-ui,sans-serif;color:var(--text)}
+.fd-exp-actions{display:flex;gap:12px;flex-wrap:wrap}
 .fd-btn-ride{display:inline-flex;align-items:center;justify-content:center;min-height:44px;padding:8px 20px;border-radius:8px;font:500 14px 'Libre Franklin',system-ui,sans-serif;letter-spacing:.04em;text-decoration:none;background:transparent;color:var(--text);border:1px solid var(--border);cursor:pointer;white-space:nowrap}
 .fd-btn-ride:hover{border-color:var(--accent);color:var(--accent)}
 .fd-btn-ride:focus-visible{outline:2px solid var(--signal);outline-offset:2px}
@@ -902,6 +906,9 @@ body:has([data-nook]){background:#0d1829}
   .fd-way-row{grid-template-columns:48px 1fr auto;gap:14px}
   .fd-way-tile{width:48px;height:48px}
   .fd-exploring{padding-bottom:calc(clamp(32px,4vw,56px) + 52px)}
+  .fd-exp-actions{flex-direction:column}
+  .fd-exp-actions .fd-btn-ride,
+  .fd-exp-actions .fd-btn-outlined{width:100%;box-sizing:border-box}
 }
 
 /* ── /work page ── */

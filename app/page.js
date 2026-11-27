@@ -116,6 +116,12 @@ export default async function FrontDoor() {
     b.subjects?.some(subj => activeSubjects.includes(subj))
   ) ?? null;
 
+  // Stacked list: Story Database → STORY, Books I've Read → BOOK I READ
+  const exploreItems = [
+    ...activeStories.map(s => ({ type: 'STORY',      t: s.t, url: s.url,       key: s.nid || s.t })),
+    ...(relatedBook ? [{ type: 'BOOK I READ', t: relatedBook.t, url: relatedBook.url || '', key: 'book-' + relatedBook.t }] : []),
+  ].slice(0, 4);
+
   const questionsJson = JSON.stringify(questionsRaw).replace(/</g, '\\u003c');
 
   return (
@@ -230,19 +236,40 @@ export default async function FrontDoor() {
       <section className="fd-exploring band" aria-label="Currently exploring">
         <p className="fd-exp-label">CURRENTLY EXPLORING</p>
         <h2 className="fd-exp-thread">{ACTIVE_THREAD}</h2>
+        <p className="fd-exp-desc">A question I keep returning to, and what I&apos;ve made and read about it.</p>
 
-        {(activeStories.length > 0 || relatedBook) && (
-          <div className="fd-exp-chips">
-            {activeStories.map(s => (
-              <span key={s.nid || s.t} className="fd-chip">{s.t}</span>
-            ))}
-            {relatedBook && (
-              <span className="fd-chip fd-chip--book">{relatedBook.t}</span>
-            )}
+        {exploreItems.length > 0 && (
+          <div className="fd-exp-list">
+            {exploreItems.map(item => {
+              const isExt = item.url?.startsWith('http');
+              if (item.url) {
+                return (
+                  <a
+                    key={item.key}
+                    href={item.url}
+                    className="fd-exp-item"
+                    {...(isExt ? { target: '_blank', rel: 'noopener noreferrer' } : {})}
+                  >
+                    <span className="fd-exp-item-type">{item.type}</span>
+                    <span className="fd-exp-item-title">{item.t}</span>
+                  </a>
+                );
+              }
+              return (
+                <div key={item.key} className="fd-exp-item">
+                  <span className="fd-exp-item-type">{item.type}</span>
+                  <span className="fd-exp-item-title">{item.t}</span>
+                </div>
+              );
+            })}
           </div>
         )}
 
-        <a href="/train" className="fd-btn-ride">Ride this line →</a>
+        <div className="fd-exp-actions">
+          <a href="/train" className="fd-btn-ride">Ride this line →</a>
+          <a href={LINKEDIN_URL} target="_blank" rel="noopener noreferrer"
+             className="fd-btn-outlined">Have your own take? Let&apos;s talk →</a>
+        </div>
       </section>
 
       {/* ── Footer ── */}
