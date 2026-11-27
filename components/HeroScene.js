@@ -1,53 +1,19 @@
-// HeroScene — approximate from spec description: "figure on dark ridge, lit path to an
-// open doorway, large sun, teal and mustard planes". Replace SVG paths with artboard
-// assets once the Canva doc is accessible from this conversation.
-// Colours via CSS custom properties so the scene works in both Paper and Violet Night.
-
 export default function HeroScene() {
   return (
-    <div className="fd-scene" aria-hidden="true">
-      <svg viewBox="0 0 480 520" fill="none" xmlns="http://www.w3.org/2000/svg">
-        {/* Large sun — upper right, sits behind everything */}
-        <circle cx="318" cy="108" r="118" fill="var(--ill-sun)" />
-
-        {/* Teal plane — dominant left-to-centre shape */}
-        <polygon
-          points="0,0 0,520 295,520 358,245 232,0"
-          fill="var(--ill-teal)"
-        />
-
-        {/* Mustard accent — upper right wedge */}
-        <polygon
-          points="480,0 480,345 358,265 342,0"
-          fill="var(--ill-mustard)"
-        />
-
-        {/* Ridge — dark curved band that anchors the bottom */}
-        <path
-          d="M0,418 C65,398 148,410 218,404 C298,397 378,408 480,400 L480,520 L0,520 Z"
-          fill="var(--ill-ridge)"
-        />
-
-        {/* Lit path — bright corridor from foreground toward the doorway */}
-        <polygon
-          points="198,520 282,520 254,406 226,406"
-          fill="var(--ill-path)"
-        />
-
-        {/* Doorway arch at the end of the path */}
-        <path
-          d="M222,406 L222,370 Q222,350 240,350 Q258,350 258,370 L258,406"
-          fill="var(--ill-path)"
-        />
-
-        {/* Soft halo around the doorway entrance */}
-        <ellipse cx="240" cy="378" rx="26" ry="18" fill="var(--ill-path)" opacity="0.28" />
-
-        {/* Figure silhouette — standing on the ridge to the left of the path */}
-        {/* Head */}
-        <circle cx="94" cy="400" r="10" fill="var(--ill-ridge)" />
-        {/* Torso */}
-        <rect x="87" y="410" width="14" height="20" rx="3" fill="var(--ill-ridge)" />
+    <div className="fd-scene">
+      <svg viewBox="0 0 560 440" role="img" aria-label="A small figure stands on a dark ridge; a lit path leads to an open doorway in front of a large sun">
+        <circle cx="430" cy="110" r="190" fill="var(--art-sun)"/>
+        <polygon points="420,226 560,176 560,330 396,296" fill="var(--art-teal)"/>
+        <polygon points="70,190 380,255 560,330 560,440 0,440 0,330" fill="var(--art-shape)"/>
+        <polygon points="380,256 560,312 560,440 330,440" fill="var(--art-mustard)"/>
+        <polygon points="240,440 310,336 430,440" fill="var(--art-shape)"/>
+        <polygon points="350,254 380,258 190,440 0,440 0,420" fill="var(--art-path)"/>
+        <rect x="336" y="58" width="74" height="198" fill="var(--art-shape)"/>
+        <rect x="354" y="78" width="38" height="178" fill="var(--art-sun)"/>
+        <circle cx="132" cy="140" r="10" fill="var(--art-shape)"/>
+        <polygon points="123,153 141,153 146,192 118,192" fill="var(--art-shape)"/>
+        <line x1="125" y1="190" x2="122" y2="204" stroke="var(--art-shape)" strokeWidth="6"/>
+        <line x1="139" y1="190" x2="142" y2="204" stroke="var(--art-shape)" strokeWidth="6"/>
       </svg>
     </div>
   );

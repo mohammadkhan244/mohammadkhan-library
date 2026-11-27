@@ -24,6 +24,7 @@
     --comparison: var(--accent);
     --card-bg:  #111314; /* Black — dark cards stay on-bg */
     --card-text: #f5ecc2; /* Sulphur Yellow */
+    --art-shape: #40456a; /* Violet Blue — figure + ground in Violet Night */
   }
 }
 
@@ -47,6 +48,7 @@
     --comparison: var(--muted);
     --card-bg:  #111314; /* Black — dark cards on light bg use inverse */
     --card-text: #f5ecc2; /* Sulphur Yellow */
+    --art-shape: #111314; /* Black — figure + ground on Paper */
   }
 }
 
@@ -67,6 +69,7 @@
   --comparison: var(--accent);
   --card-bg:  #111314;
   --card-text: #f5ecc2;
+  --art-shape: #40456a;
 }
 [data-theme=light] {
   --bg:       #f5ecc2;
@@ -84,6 +87,7 @@
   --comparison: var(--muted);
   --card-bg:  #111314;
   --card-text: #f5ecc2;
+  --art-shape: #111314;
 }
 
 /* ── SHARED — spine + shelf colours (never change with theme) ──
@@ -124,6 +128,13 @@
   --ill-mustard:     #fdc57e; /* Cinnamon Buff */
   --ill-path:        #ebd3a2; /* Ivory Buff */
   --ill-ridge:       #40456a; /* Violet Blue — ridge + figure silhouette */
+
+  /* Art tokens — HeroScene v2 (spec SVG) */
+  --art-sun:         #ae5224; /* Burnt Sienna */
+  --art-teal:        #064f6e; /* Vandar Poel's Blue */
+  --art-mustard:     #fdc57e; /* Cinnamon Buff */
+  --art-path:        #ebd3a2; /* Ivory Buff */
+  /* --art-shape varies by theme; defined in dark/light blocks above */
 
   /* Departures board — always dark, both themes */
   --depart-bg:         #111314; /* Black */

@@ -883,7 +883,7 @@ body:has([data-nook]){background:#0d1829}
 /* ── Bottom tab bar (front door mobile, Phase 2) ── */
 .fd-tabs{display:none}
 @media(max-width:768px){
-  .fd-tabs{display:flex;position:fixed;bottom:0;left:0;right:0;z-index:35;background:var(--bg);border-top:1px solid var(--border);padding-bottom:env(safe-area-inset-bottom,0)}
+  .fd-tabs{display:flex;position:fixed;top:auto;bottom:0;left:0;right:0;z-index:35;background:var(--bg);border-top:1px solid var(--border);padding-bottom:env(safe-area-inset-bottom,0)}
   .fd-tabs a{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;min-height:52px;color:var(--muted);text-decoration:none;font:500 10px 'Libre Franklin',system-ui,sans-serif;letter-spacing:.04em;text-transform:uppercase;border-top:2px solid transparent}
   .fd-tabs a[aria-current]{color:var(--accent);border-top-color:var(--accent)}
 }
@@ -892,8 +892,7 @@ body:has([data-nook]){background:#0d1829}
 @media(max-width:768px){
   .fd-header .fd-nav{display:none}
   .fd-hero{grid-template-columns:1fr;padding-bottom:80px}
-  .fd-hero-right{order:-1}
-  .fd-scene{max-height:300px;max-width:100%}
+  .fd-scene{width:100%;max-width:100%;height:auto}
   .fd-hero-actions{flex-direction:column}
   .fd-hero-actions .fd-btn-primary,
   .fd-hero-actions .fd-btn-outlined{width:100%}
