@@ -118,6 +118,13 @@
   /* Nook — always Violet Night */
   --vandyke-brown:   #4b3317; /* Vandyke Brown — window frame */
 
+  /* Illustration fills — fixed in both themes; only used by HeroScene */
+  --ill-sun:         #ae5224; /* Burnt Sienna */
+  --ill-teal:        #064f6e; /* Vandar Poel's Blue */
+  --ill-mustard:     #fdc57e; /* Cinnamon Buff */
+  --ill-path:        #ebd3a2; /* Ivory Buff */
+  --ill-ridge:       #40456a; /* Violet Blue — ridge + figure silhouette */
+
   /* Departures board — always dark, both themes */
   --depart-bg:         #111314; /* Black */
   --depart-text:       #f5ecc2; /* Sulphur Yellow */
