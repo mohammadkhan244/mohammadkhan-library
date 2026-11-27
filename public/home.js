@@ -21,11 +21,12 @@
   /* ── Rotating H1 phrase ───────────────────────────────────── */
   var phraseEl = document.getElementById('h1-phrase');
   var accentEl = phraseEl ? phraseEl.querySelector('.fd-phrase-accent') : null;
+  var restEl   = phraseEl ? phraseEl.querySelector('.fd-phrase-rest')   : null;
   var reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-  if (phraseEl && accentEl && !reduced) {
+  if (phraseEl && accentEl && restEl && !reduced) {
     var phrases = [
       { accent: 'write stories',     rest: ' to see where an idea leads.' },
-      { accent: 'build tools',       rest: ' to make thinking visible.' },
+      { accent: 'build tools',       rest: ' to see problems differently.' },
       { accent: 'take things apart', rest: ' to understand how they work.' },
     ];
     var pIdx = 0;
@@ -35,8 +36,7 @@
       setTimeout(function () {
         var p = phrases[pIdx];
         accentEl.textContent = p.accent;
-        var node = accentEl.nextSibling;
-        if (node && node.nodeType === 3) node.nodeValue = p.rest;
+        restEl.textContent = p.rest;
         phraseEl.style.opacity = '1';
       }, 200);
     }, 4000);

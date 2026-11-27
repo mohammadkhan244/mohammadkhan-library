@@ -165,11 +165,11 @@ export default async function FrontDoor() {
         <div className="fd-hero-left">
           <h1 className="fd-h1">
             <span className="sr-only">
-              I write stories to see where an idea leads. I build tools to make thinking visible. I take things apart to understand how they work.
+              I write stories to see where an idea leads. I build tools to see problems differently. I take things apart to understand how they work.
             </span>
             <span aria-hidden="true" className="fd-h1-wrap">
-              <span className="fd-h1-sizer">I <span className="fd-phrase-accent">take things apart</span> to understand how they work.</span>
-              <span className="fd-h1-live">I{' '}<span id="h1-phrase" className="fd-phrase"><span className="fd-phrase-accent">write stories</span>{' '}to see where an idea leads.</span></span>
+              <span className="fd-h1-sizer">I <span className="fd-phrase-accent">take things apart</span><span className="fd-phrase-rest"> to understand how they work.</span></span>
+              <span className="fd-h1-live">I{' '}<span id="h1-phrase" className="fd-phrase"><span className="fd-phrase-accent">write stories</span><span className="fd-phrase-rest"> to see where an idea leads.</span></span></span>
             </span>
           </h1>
           <p className="fd-subline">Engineer and writer. I&apos;m curious how things work, and why they go wrong.</p>
