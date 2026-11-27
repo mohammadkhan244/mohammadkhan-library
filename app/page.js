@@ -20,12 +20,6 @@ const ACTIVE_THREAD = 'Why do systems protect themselves?';
 
 // ── Helpers ───────────────────────────────────────────────────
 
-function getAllQuestions(raw) {
-  return Object.entries(raw)
-    .filter(([k]) => !k.startsWith('_'))
-    .flatMap(([, qs]) => qs);
-}
-
 function firstSentence(text) {
   if (!text) return '';
   const m = text.match(/^[^.!?]*[.!?]/);
@@ -93,9 +87,11 @@ export default async function FrontDoor() {
     getNotionBooks(),
   ]);
 
-  const allQuestions = getAllQuestions(questionsRaw);
   const dayIdx = Math.floor(Date.now() / 86400000);
-  const dailyQuestion = allQuestions[dayIdx % allQuestions.length];
+  const now = new Date();
+  const dayOfYear = Math.floor((now - new Date(now.getFullYear(), 0, 0)) / 86400000);
+  const qIdx = dayOfYear % questionsRaw.length;
+  const dailyQuestion = questionsRaw[qIdx];
 
   // "A few ways in" — Train entry
   const threadGlimpse = pickThreadGlimpse(data.stories, dayIdx);
@@ -120,7 +116,7 @@ export default async function FrontDoor() {
     b.subjects?.some(subj => activeSubjects.includes(subj))
   ) ?? null;
 
-  const questionsJson = JSON.stringify(allQuestions).replace(/</g, '\\u003c');
+  const questionsJson = JSON.stringify(questionsRaw).replace(/</g, '\\u003c');
 
   return (
     <>
@@ -164,8 +160,11 @@ export default async function FrontDoor() {
           </h1>
 
           <div className="fd-question-box">
-            <p className="fd-q-label">A QUESTION I&apos;M SITTING WITH</p>
-            <p id="question-text" className="fd-q-text">{dailyQuestion}</p>
+            <p className="fd-q-label">QUESTIONS WORTH EXPLORING</p>
+            <div className="fd-q-row">
+              <p id="question-text" className="fd-q-text">{dailyQuestion.text}</p>
+              <a id="q-link" href={dailyQuestion.href} className="fd-q-link">{dailyQuestion.linkText} →</a>
+            </div>
             <button id="next-question" className="fd-q-btn" aria-label="Show another question"
                     title="Show another question">↺</button>
           </div>

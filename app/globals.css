@@ -831,6 +831,9 @@ body:has([data-nook]){background:#0d1829}
 .fd-question-box{margin-bottom:32px;display:flex;flex-direction:column;gap:10px}
 .fd-q-label{font:700 11px 'Libre Franklin',system-ui,sans-serif;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin:0}
 .fd-q-text{font:italic 17px/1.65 'Libre Franklin',system-ui,sans-serif;color:var(--text);margin:0}
+.fd-q-row{display:flex;flex-wrap:wrap;align-items:baseline;gap:4px 12px}
+.fd-q-link{font:500 15px 'Libre Franklin',system-ui,sans-serif;color:var(--accent);text-decoration:none;white-space:nowrap;flex-shrink:0}
+.fd-q-link:hover{text-decoration:underline}
 .fd-q-btn{all:unset;cursor:pointer;width:44px;height:44px;border-radius:50%;border:1px solid var(--border);display:flex;align-items:center;justify-content:center;color:var(--muted);font-size:20px;line-height:1;align-self:flex-start;box-sizing:border-box}
 .fd-q-btn:hover{color:var(--text);border-color:var(--accent)}
 .fd-q-btn:focus-visible{outline:2px solid var(--signal);outline-offset:2px}

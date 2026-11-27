@@ -37,20 +37,23 @@
   /* ── Question cycling ─────────────────────────────────────── */
   var dataEl = document.getElementById('questions-data');
   var qEl = document.getElementById('question-text');
+  var qLink = document.getElementById('q-link');
   var nextBtn = document.getElementById('next-question');
   if (dataEl && qEl && nextBtn) {
     var questions;
     try { questions = JSON.parse(dataEl.textContent); } catch (_) { return; }
     if (!questions || !questions.length) return;
 
-    /* sync starting index to the server-rendered text */
-    var init = qEl.textContent.trim();
-    var qIdx = questions.indexOf(init);
-    if (qIdx < 0) qIdx = 0;
+    /* sync starting index to the server-rendered day-of-year mod n */
+    var now = new Date();
+    var dayOfYear = Math.floor((now - new Date(now.getFullYear(), 0, 0)) / 86400000);
+    var qIdx = dayOfYear % questions.length;
 
     nextBtn.addEventListener('click', function () {
       qIdx = (qIdx + 1) % questions.length;
-      qEl.textContent = questions[qIdx];
+      var q = questions[qIdx];
+      qEl.textContent = q.text;
+      if (qLink) { qLink.href = q.href; qLink.textContent = q.linkText + ' →'; }
     });
   }
 })();

@@ -1,7 +1,7 @@
 import Script from 'next/script';
 import { getLibrary } from '../../lib/notion';
 import { classifyTowns, TOWNS } from '../../lib/towns';
-import questions from '../../data/questions.json';
+import questions from '../../data/questions-train.json';
 
 export const revalidate = 3600;
 
