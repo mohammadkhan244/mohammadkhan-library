@@ -20,15 +20,23 @@
 
   /* ── Rotating H1 phrase ───────────────────────────────────── */
   var phraseEl = document.getElementById('h1-phrase');
+  var accentEl = phraseEl ? phraseEl.querySelector('.fd-phrase-accent') : null;
   var reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-  if (phraseEl && !reduced) {
-    var phrases = ['build things', 'write stories', 'design thinking tools'];
+  if (phraseEl && accentEl && !reduced) {
+    var phrases = [
+      { accent: 'write stories',     rest: ' to see where an idea leads.' },
+      { accent: 'build tools',       rest: ' to make thinking visible.' },
+      { accent: 'take things apart', rest: ' to understand how they work.' },
+    ];
     var pIdx = 0;
     setInterval(function () {
       pIdx = (pIdx + 1) % phrases.length;
       phraseEl.style.opacity = '0';
       setTimeout(function () {
-        phraseEl.textContent = phrases[pIdx];
+        var p = phrases[pIdx];
+        accentEl.textContent = p.accent;
+        var node = accentEl.nextSibling;
+        if (node && node.nodeType === 3) node.nodeValue = p.rest;
         phraseEl.style.opacity = '1';
       }, 200);
     }, 4000);

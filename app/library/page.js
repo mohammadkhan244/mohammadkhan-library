@@ -73,7 +73,7 @@ export default async function LibraryPage() {
         <div className="hd-row">
           <div>
             <h1>Mohammad Khan</h1>
-            <p className="lede">Engineer, filmmaker and writer from Columbus, Ohio. Fiction, essays, tools and projects. One story a week since 2020. No likes, no comments — if something here helped you, share it with someone it&apos;ll help too.</p>
+            <p className="lede">Engineer and writer. I&apos;m curious how things work, and why they go wrong. One story a week since 2020. No likes, no comments — if something here helped you, share it with someone it&apos;ll help too.</p>
           </div>
         </div>
 

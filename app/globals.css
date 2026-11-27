@@ -824,8 +824,13 @@ body:has([data-nook]){background:#0d1829}
 
 /* ── Hero ── */
 .fd-hero{display:grid;grid-template-columns:1fr 1fr;gap:clamp(32px,5vw,64px);align-items:center;padding-top:clamp(48px,6vw,80px);padding-bottom:clamp(48px,6vw,80px)}
-.fd-h1{font:800 clamp(36px,5vw,56px)/1.1 'Libre Franklin',system-ui,sans-serif;margin:0 0 32px;text-wrap:balance}
-.fd-phrase{text-decoration:underline;text-decoration-color:#ae5224;text-underline-offset:5px;text-decoration-thickness:2px;transition:opacity .2s}
+.fd-h1{font:800 clamp(36px,5vw,56px)/1.1 'Libre Franklin',system-ui,sans-serif;margin:0 0 8px;text-wrap:balance}
+.fd-h1-wrap{display:grid}
+.fd-h1-wrap>*{grid-area:1/1}
+.fd-h1-sizer{visibility:hidden;pointer-events:none;user-select:none}
+.fd-phrase{transition:opacity .2s}
+.fd-phrase-accent{text-decoration:underline;text-decoration-color:#ae5224;text-underline-offset:5px;text-decoration-thickness:2px}
+.fd-subline{font:400 clamp(15px,1.6vw,18px)/1.5 'Libre Franklin',system-ui,sans-serif;color:var(--muted);margin:0 0 28px}
 @media(prefers-reduced-motion:reduce){.fd-phrase{transition:none}}
 
 .fd-question-box{margin-bottom:32px;display:flex;flex-direction:column;gap:10px}

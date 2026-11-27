@@ -7,7 +7,11 @@ export const revalidate = 3600;
 
 export const metadata = {
   title: 'Mohammad Khan',
-  description: 'Engineer, filmmaker and writer from Columbus, Ohio. Fiction, essays, tools and projects.',
+  description: 'Engineer and writer. I\'m curious how things work, and why they go wrong.',
+  openGraph: {
+    title: 'I write stories to see where an idea leads.',
+    description: 'Engineer and writer. I\'m curious how things work, and why they go wrong.',
+  },
 };
 
 // ── URLs (fill in) ────────────────────────────────────────────
@@ -160,10 +164,15 @@ export default async function FrontDoor() {
         {/* Left column */}
         <div className="fd-hero-left">
           <h1 className="fd-h1">
-            I{' '}
-            <span id="h1-phrase" className="fd-phrase">build things</span>
-            {' '}to understand the world.
+            <span className="sr-only">
+              I write stories to see where an idea leads. I build tools to make thinking visible. I take things apart to understand how they work.
+            </span>
+            <span aria-hidden="true" className="fd-h1-wrap">
+              <span className="fd-h1-sizer">I <span className="fd-phrase-accent">take things apart</span> to understand how they work.</span>
+              <span className="fd-h1-live">I{' '}<span id="h1-phrase" className="fd-phrase"><span className="fd-phrase-accent">write stories</span>{' '}to see where an idea leads.</span></span>
+            </span>
           </h1>
+          <p className="fd-subline">Engineer and writer. I&apos;m curious how things work, and why they go wrong.</p>
 
           <div className="fd-question-box">
             <p className="fd-q-label">QUESTIONS WORTH EXPLORING</p>
