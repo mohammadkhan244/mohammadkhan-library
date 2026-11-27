@@ -22,7 +22,7 @@
   var phraseEl = document.getElementById('h1-phrase');
   var reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   if (phraseEl && !reduced) {
-    var phrases = ['build things', 'write stories', 'design ways of thinking'];
+    var phrases = ['build things', 'write stories', 'design thinking tools'];
     var pIdx = 0;
     setInterval(function () {
       pIdx = (pIdx + 1) % phrases.length;
