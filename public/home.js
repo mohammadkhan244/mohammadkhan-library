@@ -42,6 +42,41 @@
     }, 4000);
   }
 
+  /* ── Explore shuffle ─────────────────────────────────────── */
+  var expWrap = document.querySelector('.fd-exp-panels');
+  var expShuffle = document.getElementById('exp-shuffle');
+  if (expWrap && expShuffle) {
+    var expPanels = Array.from(expWrap.children);
+    var expReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    var expIdx = expPanels.findIndex(function (p) { return !p.hasAttribute('aria-hidden'); });
+    if (expIdx < 0) expIdx = 0;
+
+    function activatePanel(idx) {
+      expPanels.forEach(function (p, i) {
+        if (i === idx) p.removeAttribute('aria-hidden');
+        else p.setAttribute('aria-hidden', 'true');
+      });
+      var h = expPanels[idx] && expPanels[idx].querySelector('.fd-exp-thread');
+      if (h) h.focus();
+    }
+
+    expShuffle.addEventListener('click', function () {
+      var next = (expIdx + 1) % expPanels.length;
+      if (expReduced) {
+        expIdx = next;
+        activatePanel(expIdx);
+      } else {
+        var cur = expPanels[expIdx];
+        cur.style.opacity = '0';
+        setTimeout(function () {
+          cur.style.opacity = '';
+          expIdx = next;
+          activatePanel(expIdx);
+        }, 200);
+      }
+    });
+  }
+
   /* ── Question cycling ─────────────────────────────────────── */
   var dataEl = document.getElementById('questions-data');
   var qEl = document.getElementById('question-text');

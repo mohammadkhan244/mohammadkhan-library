@@ -18,9 +18,6 @@ export const metadata = {
 const LINKEDIN_URL = 'https://www.linkedin.com/in/mohammadukhan/';
 const SUBSTACK_URL = 'https://mohammadkhan.substack.com/';
 
-// ── Active thread for "Currently exploring" panel ─────────────
-// Set an Active flag in Notion later; for now hardcoded here.
-const ACTIVE_THREAD = 'Why do systems protect themselves?';
 
 // ── Helpers ───────────────────────────────────────────────────
 
@@ -111,20 +108,26 @@ export default async function FrontDoor() {
     } catch { /* excerpt optional */ }
   }
 
-  // "Currently exploring" panel
-  const activeStories = data.stories
-    .filter(s => s.thread === ACTIVE_THREAD)
-    .slice(0, 3);
-  const activeSubjects = [...new Set(activeStories.flatMap(s => s.subjects || []))];
-  const relatedBook = notionBooks.find(b =>
-    b.subjects?.some(subj => activeSubjects.includes(subj))
-  ) ?? null;
-
-  // Stacked list: Story Database → STORY, Books I've Read → BOOK I READ
-  const exploreItems = [
-    ...activeStories.map(s => ({ type: 'STORY',      t: s.t, url: s.url,       key: s.nid || s.t })),
-    ...(relatedBook ? [{ type: 'BOOK I READ', t: relatedBook.t, url: relatedBook.url || '', key: 'book-' + relatedBook.t }] : []),
-  ].slice(0, 4);
+  // "Currently exploring" — eligible threads with ≥3 items (stories + related book)
+  const threadMap = {};
+  for (const s of data.stories) {
+    if (!s.thread) continue;
+    if (!threadMap[s.thread]) threadMap[s.thread] = [];
+    threadMap[s.thread].push(s);
+  }
+  const eligibleThreads = [];
+  for (const [name, stories] of Object.entries(threadMap)) {
+    const subjects = [...new Set(stories.flatMap(s => s.subjects || []))];
+    const relBook = notionBooks.find(b => b.subjects?.some(subj => subjects.includes(subj))) ?? null;
+    if (stories.length + (relBook ? 1 : 0) < 3) continue;
+    const items = [
+      ...stories.slice(0, 3).map(s => ({ type: 'STORY', t: s.t, url: s.url, key: s.nid || s.t })),
+      ...(relBook ? [{ type: 'BOOK I READ', t: relBook.t, url: relBook.url || '', key: 'book-' + relBook.t }] : []),
+    ].slice(0, 4);
+    eligibleThreads.push({ name, items });
+  }
+  eligibleThreads.sort((a, b) => a.name.localeCompare(b.name));
+  const tIdx = eligibleThreads.length > 0 ? dayOfYear % eligibleThreads.length : 0;
 
   const questionsJson = JSON.stringify(questionsRaw).replace(/</g, '\\u003c');
 
@@ -242,44 +245,65 @@ export default async function FrontDoor() {
       </section>
 
       {/* ── Currently exploring ── */}
-      <section className="fd-exploring band" aria-label="Currently exploring">
-        <p className="fd-exp-label">CURRENTLY EXPLORING</p>
-        <h2 className="fd-exp-thread">{ACTIVE_THREAD}</h2>
-        <p className="fd-exp-desc">A question I keep returning to, and what I&apos;ve made and read about it.</p>
+      {eligibleThreads.length > 0 && (
+        <section className="fd-exploring band" aria-label="Currently exploring">
+          <p className="fd-exp-label">CURRENTLY EXPLORING</p>
 
-        {exploreItems.length > 0 && (
-          <div className="fd-exp-list">
-            {exploreItems.map(item => {
-              const isExt = item.url?.startsWith('http');
-              if (item.url) {
-                return (
-                  <a
-                    key={item.key}
-                    href={item.url}
-                    className="fd-exp-item"
-                    {...(isExt ? { target: '_blank', rel: 'noopener noreferrer' } : {})}
-                  >
-                    <span className="fd-exp-item-type">{item.type}</span>
-                    <span className="fd-exp-item-title">{item.t}</span>
-                  </a>
-                );
-              }
-              return (
-                <div key={item.key} className="fd-exp-item">
-                  <span className="fd-exp-item-type">{item.type}</span>
-                  <span className="fd-exp-item-title">{item.t}</span>
-                </div>
-              );
-            })}
+          <div className="fd-exp-panels">
+            {eligibleThreads.map((thread, i) => (
+              <div
+                key={thread.name}
+                className="fd-exp-panel"
+                aria-hidden={i !== tIdx ? 'true' : undefined}
+              >
+                <h2 className="fd-exp-thread" tabIndex={-1} aria-live="polite">
+                  {thread.name}
+                </h2>
+                <p className="fd-exp-desc">A question I keep returning to, and what I&apos;ve made and read about it.</p>
+                {thread.items.length > 0 && (
+                  <div className="fd-exp-list">
+                    {thread.items.map(item => {
+                      const isExt = item.url?.startsWith('http');
+                      return item.url ? (
+                        <a
+                          key={item.key}
+                          href={item.url}
+                          className="fd-exp-item"
+                          {...(isExt ? { target: '_blank', rel: 'noopener noreferrer' } : {})}
+                        >
+                          <span className="fd-exp-item-type">{item.type}</span>
+                          <span className="fd-exp-item-title">{item.t}</span>
+                        </a>
+                      ) : (
+                        <div key={item.key} className="fd-exp-item">
+                          <span className="fd-exp-item-type">{item.type}</span>
+                          <span className="fd-exp-item-title">{item.t}</span>
+                        </div>
+                      );
+                    })}
+                  </div>
+                )}
+              </div>
+            ))}
           </div>
-        )}
 
-        <div className="fd-exp-actions">
-          <a href="/train" className="fd-btn-ride">Ride this line →</a>
-          <a href={LINKEDIN_URL} target="_blank" rel="noopener noreferrer"
-             className="fd-btn-outlined">Have your own take? Let&apos;s talk →</a>
-        </div>
-      </section>
+          <div className="fd-exp-actions">
+            <a href="/train" className="fd-btn-ride">Ride this line →</a>
+            {eligibleThreads.length >= 2 && (
+              <button id="exp-shuffle" type="button" className="fd-btn-outlined" style={{gap:'6px'}}>
+                Another question
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                     strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+                  <path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/>
+                  <path d="M3 3v5h5"/>
+                </svg>
+              </button>
+            )}
+            <a href={LINKEDIN_URL} target="_blank" rel="noopener noreferrer"
+               className="fd-btn-outlined">Have your own take? Let&apos;s talk →</a>
+          </div>
+        </section>
+      )}
 
       {/* ── Footer ── */}
       <footer className="fd-footer band">
